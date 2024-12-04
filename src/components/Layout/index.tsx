@@ -23,10 +23,10 @@ import FlagIcon from "@atlaskit/icon/core/flag";
 const AtlassianProductHome = () => (
     <Box xcss={xcss({marginRight: "space.250"})}>
         <Text weight={'bold'} size={'large'} color={'color.text.brand'}>
-            VID-
+            Mock {" "}
         </Text>
         <Text size={'large'} color={'color.text.brand'}>
-            THUMB
+            N Roll
         </Text>
     </Box>
 );
