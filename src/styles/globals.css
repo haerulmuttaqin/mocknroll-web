@@ -1,0 +1,213 @@
+:root, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#__next {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+#main {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background: var(--backgound-color);
+}
+
+#main > div {
+    display: flex;
+    flex-direction: column;
+    flex: inherit;
+}
+
+html[data-color-mode="light"][data-theme~="light:light"],
+html[data-color-mode="dark"][data-theme~="dark:light"] {
+    --ds-border-input: #b7bfcb !important;
+    --backgound-color: #fafbfc
+}
+
+html[data-color-mode="light"][data-theme~="light:dark"],
+html[data-color-mode="dark"][data-theme~="dark:dark"] {
+    --ds-border-input: #55616e !important;
+    --backgound-color: transparent
+}
+
+.font {
+    font-family: "Charlie Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-weight: 400;
+}
+
+.font-bold {
+    font-family: "Charlie Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-weight: 600;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.container-grid > div > div {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#table-container__card-meter > div > table {
+    border-block-end: unset !important;
+}
+
+#image-container {
+    display: inline-block;
+    overflow: hidden;
+}
+
+#image-container #image__card-meter {
+    display: block;
+    transition: transform .2s;
+}
+
+#container__card-meter:hover #image__card-meter {
+    transition: transform .2s;
+    transform: scale(1.2);
+}
+
+#image-container #image__card-area {
+    display: block;
+    transition: transform .2s;
+}
+
+/*#container__card-area:hover #image__card-area {*/
+/*    transition: transform .2s;*/
+/*    transform: scale(1.2);*/
+/*}*/
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.block {
+    background: skyblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.droppable-element {
+    height: 50px;
+    width: 250px;
+    background: skyblue;
+    margin: 10px;
+    border: 2px dashed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.react-grid-layout {
+    margin: -10px;
+}
+
+.variable-meter-select {
+    min-width: 170px;
+}
+
+/*text input */
+#container_start_date_time > div > div > div > div > div > div, #container_end_date_time > div > div > div > div > div > div {
+    min-height: 36px !important;
+}
+
+#box_date_time_compact > div > div > div > div > div > div {
+    min-height: 30px !important;
+}
+
+#mobile-header > header > div {
+    background-color: #F4F5F7 !important;
+    border-bottom: 1px solid #e7e7e7 !important;
+}
+
+#mobile-header-dark > header > div {
+    background-color: #292f35 !important;
+    border-bottom: 1px solid #1b2023 !important;
+}
+
+#mobile-header-dark > header > div {
+    background-color: #172B4D;
+    border-bottom: 1px solid #10203a;
+}
+
+.text-overflow-clip {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div[class*="-ActionsWrapper"] {
+    max-width: 92% !important;
+}
+
+#left-sidebar-mobile > div[class*="-"] {
+    width: unset !important;
+}
+
+#company_img {
+    background: url("https://source.unsplash.com/random/?energy");
+}
+
+[data-testid="side-navigation"] > div > div > div > div {
+    padding-bottom: 200px;
+}
+
+[data-testid="side-navigation-app"] > div > div > div > div > div {
+    padding-bottom: 200px;
+}
+
+#image__card-video {
+    max-width: 100%;
+    overflow: hidden;
+    display: block;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+#image__card-video > video {
+    border-radius: inherit;
+    display: block;
+}
+
+#image__card-thumbnail {
+    overflow: hidden;
+    display: block;
+    height: 100px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+#image__card-thumbnail > video {
+    border-radius: inherit;
+    display: block;
+}
+
+#tag-playing-dark > span {
+    color: whitesmoke;
+}
+
+#tag-live-streaming > span {
+    color: whitesmoke;
+    padding-right: 4px;
+    padding-bottom: 1px;
+}
+
+#nav-links > li {
+    display: inline-flex;
+    margin-block-start: 0;
+}

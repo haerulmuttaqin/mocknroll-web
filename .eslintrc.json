@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "next/core-web-vitals"
+    /*,
+    "plugin:@atlaskit/design-system/recommended"*/
+  ],
+  "plugins": [
+    "react-hooks"
+    /*,
+    "@atlaskit/design-system"*/
+  ],
+  "rules": {
+    "ts-expect-error": "off",
+    "react-hooks/exhaustive-deps": "off"
+    /*,
+    "@atlaskit/design-system/no-direct-use-of-web-platform-drag-and-drop": "off"*/
+  }
+}

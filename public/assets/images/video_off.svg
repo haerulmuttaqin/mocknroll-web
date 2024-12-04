@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" opacity="0.2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+  <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+  <g id="SVGRepo_iconCarrier" style="" transform="matrix(0.35755303502082825, 0, 0, 0.34802699089050293, 7.7093629837036115, 7.823676109313967)">
+    <path d="M16 16v1a2 2 0 01-2 2H3a2 2 0 01-2-2V7a2 2 0 012-2h2m5.66 0H14a2 2 0 012 2v3.34l1 1L23 7v10" style="fill-rule: nonzero;"/>
+    <line x1="1" y1="1" x2="23" y2="23" style="fill-rule: nonzero;"/>
+  </g>
+</svg>
