@@ -12,6 +12,7 @@ import {G400, R300} from "@atlaskit/theme/colors";
 import {resetFlag, showFlag as showFlagWithResetBack} from "@/store/actions/show-flag";
 import {useRouter} from "next/router";
 import Footer from "@component/Footer";
+import ContentWrapper from "@component/Layout/common/content-wrapper";
 
 const containerStyles = xcss({
     paddingLeft: "space.250",
@@ -107,10 +108,10 @@ const BaseContent: FC<LayoutProps> = (
     return (
         <div id={"main"}>
             <Box>
-                <Box xcss={containerStyles}>
-                    {shouldShowPageHeader &&
-                        (
-                            shouldShowBreadcrumbs && title ?
+                {shouldShowPageHeader &&
+                    (
+                        shouldShowBreadcrumbs && title ?
+                            <ContentWrapper>
                                 <PageHeader
                                     breadcrumbs={BreadcrumbList()}
                                     actions={renderAction}
@@ -123,14 +124,16 @@ const BaseContent: FC<LayoutProps> = (
                                         </Box>
                                     }
                                 </PageHeader>
-                                :
-                                title && (
+                            </ContentWrapper>
+                            :
+                            title && (
+                                <ContentWrapper>
                                     <PageHeader>
                                         {title}
                                     </PageHeader>
-                                )
-                        )}
-                </Box>
+                                </ContentWrapper>
+                            )
+                    )}
                 {children}
             </Box>
             <Footer/>

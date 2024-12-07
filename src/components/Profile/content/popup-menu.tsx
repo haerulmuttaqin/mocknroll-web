@@ -7,9 +7,10 @@ import useThemeSwitcher from "@component/Profile/content/ThemeSwither/useThemeSw
 import {useSetColorMode} from "@atlaskit/app-provider";
 import {ColorMode} from "@atlaskit/app-provider/theme-provider";
 import secureLocalStorage from "react-secure-storage";
-import Modal, {ModalTransition, useModal} from '@atlaskit/modal-dialog';
+import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 import LogoutModal from "@component/Logout";
 import {useRouter} from "next/router";
+import {useSession} from "next-auth/react";
 
 const ProfilePopupMenu = () => {
     const router = useRouter()
@@ -19,6 +20,8 @@ const ProfilePopupMenu = () => {
     const [user, setUser] = useState<any>();
     const openModalLogout = useCallback(() => setIsOpen(true), []);
     const closeModalLogout = useCallback(() => setIsOpen(false), []);
+
+    const {data, status} = useSession()
 
     useEffect(() => {
         setColorMode(selectedValue as ColorMode)
@@ -38,10 +41,11 @@ const ProfilePopupMenu = () => {
                         iconBefore={<Avatar
                             size="medium"
                             name="ATCS Account"
+                            src={data?.user?.image as string}
                         />}
-                        description={`Loggedin as ${user?.user_role}`}
+                        description={data?.user?.email as string}
                     >
-                        {user?.user_name}
+                        {data?.user?.name}
                     </ButtonItem>
                 </Section>
                 <Section title="Profile" hasSeparator>

@@ -8,15 +8,18 @@ import {SWRConfig} from 'swr'
 import React from "react";
 import {appWithTranslation, UserConfig} from 'next-i18next'
 import nextI18nConfig from '../../next-i18next.config'
+import {SessionProvider} from "next-auth/react";
 
-function MyApp({Component, pageProps}: AppProps) {
+function MyApp({Component, pageProps: {session, ...pageProps}}: AppProps) {
     return (
         <SWRConfig value={{provider: () => new Map()}}>
-            <Provider store={store}>
-                <AppThemeProvider>
-                    <Component {...pageProps} />
-                </AppThemeProvider>
-            </Provider>
+            <SessionProvider session={session}>
+                <Provider store={store}>
+                    <AppThemeProvider>
+                        <Component {...pageProps} />
+                    </AppThemeProvider>
+                </Provider>
+            </SessionProvider>
         </SWRConfig>
     )
 }

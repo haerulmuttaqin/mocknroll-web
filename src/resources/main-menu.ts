@@ -7,7 +7,7 @@ export const mainMenu: MainMenu[] = [
         title: 'Home',
         locale: 'Home',
         icon: ScreenIcon,
-        route: '/region',
+        route: '/',
         accessor: [Role.SuperAdmin, Role.Admin, Role.User],
     },
     {
@@ -25,7 +25,7 @@ export const mainMenu: MainMenu[] = [
                 subMenu: [
                     {
                         title: 'Language',
-                        locale: 'language',
+                        locale: 'lang',
                         route: '/language',
                         accessor: [Role.SuperAdmin, Role.Admin, Role.User]
                     },

@@ -16,7 +16,7 @@ import Grid, {GridItem} from "@atlaskit/grid";
 import Image from "next/image";
 
 const Content: FC<any> = (props) => {
-    const {t} = useTranslation(['region'])
+    const {t} = useTranslation(['common'])
     const dispatch = useDispatch()
     const [thumbnail, setThumbnail] = useState<string>("")
 

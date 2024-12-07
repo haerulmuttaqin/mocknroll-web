@@ -34,9 +34,9 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: 'api-atcs.pasbe.id',
+                hostname: 'lh3.googleusercontent.com',
                 port: '',
-                pathname: '/thumbnail/**',
+                pathname: '/a/**',
             },
             {
                 protocol: 'https',

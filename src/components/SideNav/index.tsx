@@ -44,7 +44,7 @@ const SideNav = ({
                  }: SideNavContentProps) => {
     const router = useRouter()
     const user = JSON.parse(secureLocalStorage.getItem("user") as string || `{"user_role": "user"}`)
-    const [userRole, serUserRole] = useState<string>(user.user_role)
+    const [userRole, serUserRole] = useState<string>("admin")
     const regionId = useNextQueryParam('region_id', 2)
     const {t} = useTranslation(['common'])
 
