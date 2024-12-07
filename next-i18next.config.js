@@ -21,7 +21,7 @@ module.exports = {
     //   useSuspense: false
     // },
     i18n: {
-        defaultLocale: 'id',
+        defaultLocale: 'en',
         locales: ['id', 'en'],
         localeDetection: false,
     },

@@ -18,7 +18,6 @@ import Button from "@atlaskit/button";
 import DropdownMenu, {DropdownItemRadio, DropdownItemRadioGroup} from '@atlaskit/dropdown-menu';
 import secureLocalStorage from "react-secure-storage";
 import Tooltip from "@atlaskit/tooltip";
-import FlagIcon from "@atlaskit/icon/core/flag";
 
 const AtlassianProductHome = () => (
     <Box xcss={xcss({marginRight: "space.250"})}>
