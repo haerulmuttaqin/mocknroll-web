@@ -8,7 +8,6 @@ import {SWRConfig} from 'swr'
 import React from "react";
 import {appWithTranslation, UserConfig} from 'next-i18next'
 import nextI18nConfig from '../../next-i18next.config'
-import Footer from "@component/Footer";
 
 function MyApp({Component, pageProps}: AppProps) {
     return (
