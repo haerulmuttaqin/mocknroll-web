@@ -1,6 +1,9 @@
 {
   "home": "Home",
   "api_doc": "Dokumentasi API",
+  "projects": "Projects",
+  "my_projects": "Proyek Saya",
+  "create_new_project": "Buat Proyek Baru",
   "about": "Tentang",
   "privacy": "Privasi",
   "privacy_policy": "Kebijakan Privasi",
@@ -9,6 +12,7 @@
   "lang_en": "Inggris",
   "go_back": "Kembali",
   "setting": "Pengaturan",
+  "profile_setting": "Pengaturan Profil",
   "setting_category": "Kategori Pengaturan",
   "app_setting": "Pengaturan Aplikasi",
   "app_setting_desc": "Bagian “Pengaturan” memungkinkan Anda untuk menyesuaikan dan mengelola preferensi aplikasi Anda. Sesuaikan berbagai opsi untuk meningkatkan pengalaman pengguna Anda.",

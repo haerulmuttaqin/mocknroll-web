@@ -32,7 +32,7 @@ const langOptions = [
 ];
 
 const Lang: NextPage = () => {
-    const [selected, setSelected] = useState<string>(secureLocalStorage.getItem("lang") as string || "id");
+    const [selected, setSelected] = useState<string>(secureLocalStorage.getItem("lang") as string || "en");
     const {t, i18n} = useTranslation(['common'])
 
     const onChange = ({currentTarget: {value}}: SyntheticEvent<HTMLInputElement>) => {

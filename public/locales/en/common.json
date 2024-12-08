@@ -1,6 +1,9 @@
 {
   "home": "Home",
   "api_doc": "API Documentation",
+  "projects": "Projects",
+  "my_projects": "My Projects",
+  "create_new_project": "Create New Project",
   "about": "About",
   "privacy": "Privacy",
   "privacy_policy": "Privacy Policy",
@@ -9,6 +12,7 @@
   "lang_en": "English",
   "go_back": "Go Back",
   "setting": "Settings",
+  "profile_setting": "Profile Setting",
   "setting_category": "Setting Category",
   "app_setting": "Application Settings",
   "app_setting_desc": "The “Settings” section allows you to customize and manage your application preferences. Adjust various options to enhance your user experience.",

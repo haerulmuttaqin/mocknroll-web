@@ -28,6 +28,7 @@ import Tooltip from "@atlaskit/tooltip";
 import DefaultProfile from "@component/Profile";
 import {useSession} from "next-auth/react";
 import Auth from '@protected/auth';
+import {LinkButton} from "@atlaskit/button/new";
 
 const AtlassianProductHome = () => (
     <Box xcss={xcss({marginRight: "space.250"})}>
@@ -90,6 +91,8 @@ const DefaultLangSwitcher = () => {
     );
 };
 const DefaultSignIn = () => <SignIn href="/auth" tooltip="Sign in"/>;
+const ButtonProject = () => <LinkButton href="/projects">My Projects</LinkButton>;
+
 
 const Layout: FC<LayoutProps> = (
     {
@@ -115,8 +118,6 @@ const Layout: FC<LayoutProps> = (
     const activeLanguage = router.locale;
     const {data: session, status} = useSession()
 
-    console.log(session)
-
     const updateWindowDimensions = () => {
         setSize(window.innerWidth);
     };
@@ -132,6 +133,10 @@ const Layout: FC<LayoutProps> = (
 
     const openHome = () => {
         router.push("/main")
+    }
+
+    const openProject = () => {
+        router.push("/projects")
     }
 
     const openApiDoc = () => {
@@ -191,9 +196,9 @@ const Layout: FC<LayoutProps> = (
                                             label="dashboard"
                                             primaryItems={[
                                                 <PrimaryButton key={0} onClick={openHome}>{t('home')}</PrimaryButton>,
-                                                <PrimaryButton key={1}
-                                                               onClick={openApiDoc}>{t('api_doc')}</PrimaryButton>,
-                                                <PrimaryButton key={2} onClick={openAbout}>{t('about')}</PrimaryButton>,
+                                                status == "authenticated" ? <PrimaryButton key={1}
+                                                                                           onClick={openProject}>{t('my_projects')}</PrimaryButton> : null,
+                                                <PrimaryButton key={3} onClick={openAbout}>{t('about')}</PrimaryButton>,
                                             ]}
                                             renderAppSwitcher={DefaultAppSwitcher}
                                             renderProductHome={AtlassianProductHome}

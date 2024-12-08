@@ -1,51 +1,44 @@
-import { NextPage } from 'next';
+import {NextPage} from 'next';
 import React, {useEffect, useState} from 'react';
 import dynamic from 'next/dynamic';
-import { FlagsProvider } from '@atlaskit/flag';
-import { useRouter } from 'next/router';
+import {FlagsProvider} from '@atlaskit/flag';
+import {useRouter} from 'next/router';
 import SpinnerLoading from '@component/Spinner';
-import {addBillingConfig, editBillingConfig, getBillingConfig} from "@api/data/services/project";
-import BillingConfingForm from './content/form';
-import { BillingConfigPayloadProps } from '@api/data/interfaces/project';
+import {addProject, updateProject, getProject} from "@api/data/services/project";
+import ProjectForm from './form';
+import {ProjectPayloadProps} from '@api/data/interfaces/project';
 import {useDispatch} from "react-redux";
-import { showFlag } from '@store/actions/show-flag';
-import {useCompany} from "@utils/hooks";
-
-
-
+import {showFlag} from '@store/actions/show-flag';
+import ContentWrapper from "@component/Layout/common/content-wrapper";
 
 const Layout = dynamic(
     () => import('@component/Layout'),
     {ssr: false}
 )
 
-const BillingConfig: NextPage = () => {
+const Project: NextPage = () => {
     const router = useRouter()
-    const companyId = useCompany()
-    const {project_id, action} = router.query
+    const {project_id, sid, idx, action} = router.query
     const [loading, setLoading] = useState<boolean>(action == "edit");
-    const [billingconfData, setBillingconfData] = useState<BillingConfigPayloadProps>();
+    const [projectData, setProjectData] = useState<ProjectPayloadProps>();
     const dispatch = useDispatch();
 
     const handleCancel = () => {
         router.back()
     }
 
-    const updateBillingConfig = async (params: any) => {
-        let errors = {}
+    const updateProjectData = async (params: any) => {
         const payload = {
-            billconf_name: params.billconf_name,
-            billconf_wbp: params.billconf_wbp,
-            billconf_lwbp: params.billconf_lwbp,
-            billconf_wbp_start: params.billconf_wbp_start,
-            billconf_wbp_end: params.billconf_wbp_end,
-            billconf_vat: params.billconf_vat,
-            admin_fee: params.admin_fee,
+            id: params.id,
+            name: params.name,
+            key: params.key,
+            prefix: params.prefix,
             is_active: params.is_active ? 1 : 0,
-            var_column: params.var_column.value,
-            company_id: companyId,
+            created_at: params.created_at,
+            updated_at: params.updated_at,
+            sid: params.sid
         }
-        await editBillingConfig(project_id as any, payload)
+        await updateProject(project_id as string, sid as string, idx as any, payload)
             .then((res) => {
                 if (!res.success) {
                     dispatch(
@@ -55,19 +48,12 @@ const BillingConfig: NextPage = () => {
                             message: res.message
                         }) as any
                     );
-                    if (res.errors) {
-                        errors = res.errors
-                    } else if (res.data) {
-                        errors = res.data
-                    } else {
-                        errors = {}
-                    }
                 } else {
                     dispatch(
                         showFlag({
                             success: true,
-                            title: "Successfuly Updated",
-                            message: "The config alarm has been successfully updated!",
+                            title: "Successfully Updated",
+                            message: "The project has been successfully updated!",
                             goBack: true
                         }) as any
                     )
@@ -82,24 +68,15 @@ const BillingConfig: NextPage = () => {
                     }) as any
                 );
             })
-        return errors
     }
 
     const postDataBillingConf = async (params: any) => {
-        let errors = {}
         const payload = {
-            billconf_name: params.billconf_name,
-            billconf_wbp: params.billconf_wbp,
-            billconf_lwbp: params.billconf_lwbp,
-            billconf_wbp_start: params.billconf_wbp_start,
-            billconf_wbp_end: params.billconf_wbp_end,
-            billconf_vat: params.billconf_vat,
-            admin_fee: params.admin_fee,
+            name: params.name,
+            prefix: params.prefix,
             is_active: params.is_active,
-            var_column: params.var_column.value,
-            company_id: companyId,
         }
-        await addBillingConfig(payload)
+        await addProject(payload)
             .then((res) => {
                 if (!res.success) {
                     dispatch(
@@ -109,19 +86,12 @@ const BillingConfig: NextPage = () => {
                             message: res.message
                         }) as any
                     );
-                    if (res.errors) {
-                        errors = res.errors
-                    } else if (res.data) {
-                        errors = res.data
-                    } else {
-                        errors = {}
-                    }
                 } else {
                     dispatch(
                         showFlag({
                             success: true,
-                            title: "Successfuly saved",
-                            message: "The config billing has been successfully saved!",
+                            title: "Successfully saved",
+                            message: "The project has been successfully saved!",
                             goBack: true
                         }) as any
                     )
@@ -136,16 +106,15 @@ const BillingConfig: NextPage = () => {
                     }) as any
                 );
             })
-        return errors
     }
 
-    const getDataBillingConf = async (project_id: number) => {
+    const getProjectById = async (project_id: string, sheet_id: string) => {
         setLoading(true)
         try {
-            const {data} = await getBillingConfig(project_id)
+            const {data} = await getProject(project_id, sheet_id)
             setLoading(false)
             if (data?.data != null) {
-                setBillingconfData(data.data)
+                setProjectData(data.data)
             } else {
                 dispatch(
                     showFlag({
@@ -171,7 +140,7 @@ const BillingConfig: NextPage = () => {
 
     useEffect(() => {
         if (router.isReady && action != undefined) {
-            getDataBillingConf(project_id as any)
+            getProjectById(project_id as string, sid as string)
         }
     }, [router.isReady])
 
@@ -179,22 +148,24 @@ const BillingConfig: NextPage = () => {
     return (
         <FlagsProvider>
             <Layout
-                title={action == "edit" ? "Edit Billing Config" : "Create Billing Configuration"}
+                title={action == "edit" ? "Edit Project" : "Create Project"}
             >
-                {
-                    loading
-                        ? <SpinnerLoading size={"large"}/>
-                        : <BillingConfingForm
-                            data={billingconfData as any}
-                            setData={setBillingconfData}
-                            type={action as any || project_id}
-                            onHandleCancel={handleCancel}
-                            onHandleSubmit={action == "edit" ? updateBillingConfig : postDataBillingConf}
-                        />
-                }
+                <ContentWrapper>
+                    {
+                        loading
+                            ? <SpinnerLoading size={"large"}/>
+                            : <ProjectForm
+                                data={projectData as any}
+                                setData={setProjectData}
+                                type={action as any || project_id}
+                                onHandleCancel={handleCancel}
+                                onHandleSubmit={action == "edit" ? updateProjectData : postDataBillingConf}
+                            />
+                    }
+                </ContentWrapper>
             </Layout>
         </FlagsProvider>
     );
 };
 
-export default BillingConfig;
+export default Project;

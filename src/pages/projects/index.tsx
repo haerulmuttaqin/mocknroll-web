@@ -16,7 +16,7 @@ import {useDispatch} from "react-redux";
 import Modal, {ModalBody, ModalFooter, ModalHeader, ModalTitle, ModalTransition,} from '@atlaskit/modal-dialog';
 import Tooltip from "@atlaskit/tooltip";
 import {OptionProps} from "@api/data/interfaces";
-import {deleteBillingConfig, getBillingConfigs} from "@api/data/services/project";
+import {deleteProject, getProjects} from "@api/data/services/project";
 import DropdownMenu, {DropdownItem, DropdownItemGroup} from "@atlaskit/dropdown-menu";
 import MoreIcon from "@atlaskit/icon/glyph/more";
 import {ProjectProps} from "@api/data/interfaces/project";
@@ -24,6 +24,9 @@ import Lozenge from "@atlaskit/lozenge";
 import {filterFlexItemStyle} from "@styles/styles";
 import ContentWrapper from "@component/Layout/common/content-wrapper";
 import Auth from "@protected/auth";
+import {useTranslation} from "next-i18next";
+import Link from "next/link";
+import {useFetchProjects} from "@pages/projects/data/remote";
 
 const Layout = dynamic(
     () => import('@component/Layout'),
@@ -31,17 +34,16 @@ const Layout = dynamic(
 )
 
 const Projects: NextPage = () => {
+    const {t} = useTranslation(["common"])
     const dispatch = useDispatch();
     const router = useRouter()
-    const [billingConfigs, setBillingConfigs] = useState<ProjectProps[]>([])
     const [statusActive, setConfigTypes] = useState<OptionProps[]>([
         {value: 1, label: "Active"},
         {value: 0, label: "Inactive"},
     ])
     const [filterType, setFilterType] = useState<number>(1)
     const [filterQuery, setFilterQuery] = useState<string>("")
-    const [shouldBeDelete, setShouldBeDelete] = useState<number>(-1)
-    const [loading, setLoading] = useState<boolean>(true);
+    const [shouldBeDelete, setShouldBeDelete] = useState<ProjectProps | undefined>()
     const onFilterQueryChange = (e: any) => {
         setFilterQuery(e.target.value)
     }
@@ -49,26 +51,21 @@ const Projects: NextPage = () => {
     const openModalDelete = useCallback(() => setIsOpenAlertDelete(true), []);
     const closeModalDelete = useCallback(() => setIsOpenAlertDelete(false), []);
 
+    const {
+        data: dataProjects,
+        isLoading: isLoadingProjects,
+        mutate: mutateProject,
+        error: errorProject
+    } = useFetchProjects()
+
     const onFilterTypeChange = (option: any) => {
         setFilterType(option ? option.value : 1)
     }
-    const getDataListBillingConfigs = async () => {
-        setLoading(true)
-        try {
-            const {data} = await getBillingConfigs()
-            setBillingConfigs(data?.data)
-        } catch (err) {
-            setLoading(false)
-        } finally {
-            setLoading(false)
-        }
-    };
-    const doDelete = async (params: any) => {
-        let errors = {}
-        await deleteBillingConfig(params)
+    const doDelete = async (params: ProjectProps) => {
+        closeModalDelete()
+        await deleteProject(params.id as string, params.sid as string, params.idx as any)
             .then((res: any) => {
                 if (!res.success) {
-                    closeModalDelete()
                     dispatch(
                         showFlag({
                             success: false,
@@ -76,29 +73,20 @@ const Projects: NextPage = () => {
                             message: res.message
                         }) as any
                     );
-                    if (res.errors) {
-                        errors = res.errors
-                    } else if (res.data) {
-                        errors = res.data
-                    } else {
-                        errors = {}
-                    }
                 } else {
-                    closeModalDelete()
-                    setShouldBeDelete(-1)
-                    getDataListBillingConfigs()
+                    setShouldBeDelete(undefined)
+                    mutateProject()
                     dispatch(
                         showFlag({
                             success: true,
                             title: "Successfully Deleted.",
-                            message: "The billing config has been successfully deleted!",
+                            message: "The project has been successfully deleted!",
                             goBack: false
                         }) as any
                     )
                 }
             })
             .catch((err: any) => {
-                closeModalDelete()
                 dispatch(
                     showFlag({
                         success: false,
@@ -107,38 +95,50 @@ const Projects: NextPage = () => {
                     }) as any
                 );
             })
-        return errors
     }
     const handleClickNew = () => {
         router.push("/projects/create")
     }
-    const handleOnShow = (project_id: number) => {
-        router.push(`/projects/${project_id}?action=edit`)
+    const handleOnShow = (project_id: string, sid?: string, idx?: number) => {
+        router.push(`/projects/${project_id}?action=edit&sid=${sid}&idx=${idx}`)
     }
-    const handleOnEdit = (project_id: number) => {
-        router.push(`/projects/${project_id}?action=edit`)
+    const handleOnEdit = (project_id: string, sid?: string, idx?: number) => {
+        router.push(`/projects/${project_id}?action=edit&sid=${sid}&idx=${idx}`)
     }
-    const handleOpenModalDelete = (project_id: number) => {
-        setShouldBeDelete(project_id)
+    const handleOpenModalDelete = (params: ProjectProps) => {
+        setShouldBeDelete(params)
         openModalDelete()
     }
     const handleOnDelete = () => {
-        doDelete(shouldBeDelete)
+        doDelete(shouldBeDelete as any)
     }
 
     useEffect(() => {
-        getDataListBillingConfigs()
+        mutateProject()
+    }, []);
+
+    useEffect(() => {
+        if ((dataProjects == undefined) && errorProject) {
+            dispatch(
+                showFlag({
+                    success: false,
+                    title: "Failed While Loading Project Data.",
+                    message: "An error occurred!",
+                }) as any
+            )
+        }
     }, [])
+
     const head = {
         cells: [
             {
-                key: 'name',
-                content: 'Project Name',
+                key: 'id',
+                content: 'Project Id',
                 isSortable: true,
             },
             {
-                key: 'key',
-                content: 'Secret Key',
+                key: 'name',
+                content: 'Project Name',
                 isSortable: true,
             },
             {
@@ -153,13 +153,13 @@ const Projects: NextPage = () => {
             },
             {
                 key: 'more',
-                content: 'Actiom',
+                content: 'Action',
                 shouldTruncate: true,
             },
         ],
     };
 
-    const dataWithFilterQuery = (filterQuery == "" ? billingConfigs : filterByValue(billingConfigs, filterQuery))
+    const dataWithFilterQuery = (filterQuery == "" ? dataProjects : filterByValue(dataProjects, filterQuery))
     const dataWithFilterType = (filterType == 1 ? dataWithFilterQuery : dataWithFilterQuery.filter((filter: ProjectProps) => filter.is_active == filterType))
     const rows = dataWithFilterType?.map(
         (row: ProjectProps, index: number) => ({
@@ -167,21 +167,23 @@ const Projects: NextPage = () => {
             isHighlighted: false,
             cells: [
                 {
+                    key: row.id,
+                    content: (
+                        <Link href={`/projects/${row.id}?action=edit&sid=${row.sid}&idx=${row.idx}`}>{row.id}</Link>
+                    )
+                },
+                {
                     key: createKey(row.name?.toString()),
                     content: (
                         <Tooltip content={row.name}>
                             {(tooltipProps) => (
                                 <Box {...tooltipProps} xcss={xcss({color: "color.text", cursor: "pointer"})}
-                                     onClick={() => handleOnShow(row.id)}>
+                                     onClick={() => handleOnShow(row.id, row.sid)}>
                                     {row.name}
                                 </Box>
                             )}
                         </Tooltip>
                     ),
-                },
-                {
-                    key: row.key,
-                    content: row.key
                 },
                 {
                     key: row.prefix,
@@ -204,10 +206,10 @@ const Projects: NextPage = () => {
                             )}
                             label={`More about ${row.name}`}>
                             <DropdownItemGroup>
-                                <DropdownItem onClick={() => handleOnShow(row.id)}>View</DropdownItem>
-                                <DropdownItem onClick={() => handleOnEdit(row.id)}>Edit</DropdownItem>
+                                <DropdownItem onClick={() => handleOnShow(row.id, row.sid)}>View</DropdownItem>
+                                <DropdownItem onClick={() => handleOnEdit(row.id, row.sid)}>Edit</DropdownItem>
                                 <DropdownItem
-                                    onClick={() => handleOpenModalDelete(row.id)}>Delete</DropdownItem>
+                                    onClick={() => handleOpenModalDelete(row)}>Delete</DropdownItem>
                             </DropdownItemGroup>
                         </DropdownMenu>
                     ),
@@ -222,7 +224,7 @@ const Projects: NextPage = () => {
             title="Mock N' Roll Project"
             renderAction={
                 <ButtonGroup label="Content actions">
-                    <Button appearance="primary" onClick={handleClickNew}>New Billing Config</Button>
+                    <Button appearance="primary" onClick={handleClickNew}>{t("create_new_project")}</Button>
                 </ButtonGroup>
             }
             renderBottomBar={
@@ -266,7 +268,7 @@ const Projects: NextPage = () => {
                     rows={rows}
                     rowsPerPage={10}
                     defaultPage={1}
-                    isLoading={loading}
+                    isLoading={isLoadingProjects}
                     loadingSpinnerSize="large"
                 />
             </ContentWrapper>

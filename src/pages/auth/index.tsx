@@ -11,7 +11,7 @@ import ContentWrapper from "@component/Layout/common/content-wrapper";
 import {useTranslation} from "next-i18next";
 import {useSession} from "next-auth/react";
 import Button from "@atlaskit/button/new";
-import {cardStyle} from "@component/Common/style-util";
+import {cardBasicStyle, cardStyle} from "@component/Common/style-util";
 import {SpinnerWrapper} from "@atlaskit/media-ui/modalSpinner";
 import SpinnerLoading from "@component/Spinner";
 import {useRouter} from "next/router";
@@ -152,7 +152,7 @@ const Auth: NextPage = () => {
                     >
                         <Grid maxWidth="wide">
                             <GridItem start={{md: 3}} span={{md: 8}}>
-                                <Box xcss={cardStyle}>
+                                <Box xcss={cardBasicStyle}>
                                     <Box xcss={xcss({
                                         padding: "space.400",
                                     })}>

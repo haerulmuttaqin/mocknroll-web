@@ -22,7 +22,7 @@ export const actionSignIn = async (data: SignInProps): Promise<BaseResponse> => 
         })
         if (data) {
             secureLocalStorage.setItem("is_login", true)
-            secureLocalStorage.setItem("token", data?.data?.access)
+            secureLocalStorage.setItem("token", data?.data?.token)
             secureLocalStorage.setItem("refresh", data?.data?.refresh)
             secureLocalStorage.setItem("user", JSON.stringify(data?.data))
             return {success: true, message: "Login Successfully"}

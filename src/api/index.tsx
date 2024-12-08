@@ -8,7 +8,7 @@ export const localApi = axios.create({
 })
 api.interceptors.request.use(
     (config: any) => {
-        config.headers["Authorization"] = `Bearer ${secureLocalStorage.getItem('api_token')}`
+        config.headers["Authorization"] = `Bearer ${secureLocalStorage.getItem('token')}`
         config.headers["company_id"] = secureLocalStorage.getItem('company_id')
         return config;
     },
