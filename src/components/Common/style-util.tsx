@@ -1,5 +1,11 @@
 import {xcss} from "@atlaskit/primitives";
 
+export const cardBasicStyle = xcss({
+    backgroundColor: "elevation.surface.raised",
+    boxShadow: "elevation.shadow.raised",
+    borderRadius: "border.radius.100",
+})
+
 export const cardStyle = xcss({
     backgroundColor: "elevation.surface.raised",
     boxShadow: "elevation.shadow.raised",

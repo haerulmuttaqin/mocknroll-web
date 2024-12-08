@@ -1,7 +1,14 @@
 "use client";
 import React, {FC, Fragment, useEffect, useState} from 'react';
 import {Content, LeftSidebarState, Main, PageLayout, TopNavigation,} from '@atlaskit/page-layout';
-import {AppSwitcher, AtlassianNavigation, Help, IconButton, PrimaryButton} from "@atlaskit/atlassian-navigation";
+import {
+    AppSwitcher,
+    AtlassianNavigation,
+    Help,
+    IconButton,
+    PrimaryButton,
+    SignIn
+} from "@atlaskit/atlassian-navigation";
 import {NavigationProvider} from "@atlaskit/navigation-next";
 import SideNav from "@component/SideNav";
 import MobileNavigation from "@component/SideNav/Mobile";
@@ -18,6 +25,10 @@ import Button from "@atlaskit/button";
 import DropdownMenu, {DropdownItemRadio, DropdownItemRadioGroup} from '@atlaskit/dropdown-menu';
 import secureLocalStorage from "react-secure-storage";
 import Tooltip from "@atlaskit/tooltip";
+import DefaultProfile from "@component/Profile";
+import {useSession} from "next-auth/react";
+import Auth from '@protected/auth';
+import {LinkButton} from "@atlaskit/button/new";
 
 const AtlassianProductHome = () => (
     <Box xcss={xcss({marginRight: "space.250"})}>
@@ -79,6 +90,8 @@ const DefaultLangSwitcher = () => {
         </DropdownMenu>
     );
 };
+const DefaultSignIn = () => <SignIn href="/auth" tooltip="Sign in"/>;
+const ButtonProject = () => <LinkButton href="/projects">My Projects</LinkButton>;
 
 
 const Layout: FC<LayoutProps> = (
@@ -90,6 +103,7 @@ const Layout: FC<LayoutProps> = (
         description,
         shouldShowPageHeader,
         shouldShowBreadcrumbs,
+        shouldShowNavBar = true,
         shouldShowFooter,
         renderAction,
         renderBottomBar,
@@ -102,6 +116,7 @@ const Layout: FC<LayoutProps> = (
     const router = useRouter()
     const [wSize, setSize] = React.useState(0);
     const activeLanguage = router.locale;
+    const {data: session, status} = useSession()
 
     const updateWindowDimensions = () => {
         setSize(window.innerWidth);
@@ -120,6 +135,10 @@ const Layout: FC<LayoutProps> = (
         router.push("/main")
     }
 
+    const openProject = () => {
+        router.push("/projects")
+    }
+
     const openApiDoc = () => {
         router.push("https://vid-thumb-api.hae.my.id/")
     }
@@ -133,10 +152,10 @@ const Layout: FC<LayoutProps> = (
             <Head>
                 <title>{`${title || "Video Thumbnail API"}`}</title>
                 <meta property="og:title" content={`ATCS - ${title || "CCTV Indonesia"}`} key="title"/>
-                <meta property="og:url" content={window?.location?.href as string || "https://api-atcs.pasbe.id/"} />
-                <meta name="robots" content="index, follow" />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <meta charSet="UTF-8" />
+                <meta property="og:url" content={window?.location?.href as string || "https://api-atcs.pasbe.id/"}/>
+                <meta name="robots" content="index, follow"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <meta charSet="UTF-8"/>
             </Head>
             <NavigationProvider initialUIController={{isResizeDisabled: true}}>
                 {wSize < 800 ? (
@@ -169,21 +188,28 @@ const Layout: FC<LayoutProps> = (
                                 console.log('onCollapse', state)
                             }
                         >
-                            <TopNavigation isFixed={true}>
-                                <AtlassianNavigation
-                                    label="dashboard"
-                                    primaryItems={[
-                                        <PrimaryButton key={0} onClick={openHome}>{t('home')}</PrimaryButton>,
-                                        <PrimaryButton key={1} onClick={openApiDoc}>{t('api_doc')}</PrimaryButton>,
-                                        <PrimaryButton key={2} onClick={openAbout}>{t('about')}</PrimaryButton>,
-                                    ]}
-                                    renderAppSwitcher={DefaultAppSwitcher}
-                                    renderProductHome={AtlassianProductHome}
-                                    // renderNotifications={DefaultLangSwitcher}
-                                    renderHelp={DefaultHelp}
-                                    renderSettings={DefaultSettings}
-                                />
-                            </TopNavigation>
+                            {
+                                shouldShowNavBar &&
+                                (
+                                    <TopNavigation isFixed={true}>
+                                        <AtlassianNavigation
+                                            label="dashboard"
+                                            primaryItems={[
+                                                <PrimaryButton key={0} onClick={openHome}>{t('home')}</PrimaryButton>,
+                                                status == "authenticated" ? <PrimaryButton key={1}
+                                                                                           onClick={openProject}>{t('my_projects')}</PrimaryButton> : null,
+                                                <PrimaryButton key={3} onClick={openAbout}>{t('about')}</PrimaryButton>,
+                                            ]}
+                                            renderAppSwitcher={DefaultAppSwitcher}
+                                            renderProductHome={AtlassianProductHome}
+                                            // renderNotifications={DefaultLangSwitcher}
+                                            renderHelp={DefaultHelp}
+                                            renderSettings={DefaultSettings}
+                                            renderProfile={status == "authenticated" ? DefaultProfile : DefaultSignIn}
+                                        />
+                                    </TopNavigation>
+                                )
+                            }
                             <Content>
                                 {isSideNavOpen &&
                                     <SideNav menuList={sidebarList} title={sidebarTitle} loading={loadingSidebar}/>}
@@ -211,5 +237,4 @@ const Layout: FC<LayoutProps> = (
     );
 };
 
-// export default Auth(Layout)
 export default Layout

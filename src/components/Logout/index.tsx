@@ -6,6 +6,7 @@ import {ModalBody, ModalFooter, ModalHeader, ModalTitle, useModal,} from '@atlas
 import type {UIAnalyticsEvent} from "@atlaskit/analytics-next";
 import {KeyboardOrMouseEvent} from "@atlaskit/modal-dialog/types";
 import {useRouter} from "next/router";
+import {signOut} from "next-auth/react";
 
 const LogoutModal = () => {
     const {onClose} = useModal();

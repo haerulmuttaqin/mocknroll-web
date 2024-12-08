@@ -14,8 +14,8 @@ export const getIcon = (type: any) => {
     }
 };
 
-const LangOption = ({ children, optionType } : any) => (
-    <Box style={{cursor: "pointer", padding: "14px"}}>
+const LangOptionSmall = ({ children, optionType } : any) => (
+    <Box style={{cursor: "pointer"}}>
         <Image
             style={{ marginRight: `${8 * 1.5}px`, verticalAlign: "middle" }}
             width="24"
@@ -27,4 +27,4 @@ const LangOption = ({ children, optionType } : any) => (
     </Box>
 );
 
-export default LangOption
+export default LangOptionSmall

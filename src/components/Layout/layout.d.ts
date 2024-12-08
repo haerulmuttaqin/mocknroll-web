@@ -26,6 +26,7 @@ export interface LayoutProps {
     shouldShowDescription?: boolean;
     shouldShowBreadcrumbs?: boolean;
     shouldShowPageHeader?: boolean;
+    shouldShowNavBar?: boolean;
     shouldShowFooter?: boolean;
     sidebarList?: RegionProps | AreaProps | any;
     sidebarTitle?: string,

@@ -3,10 +3,13 @@ import secureLocalStorage from "react-secure-storage";
 export const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
 })
+export const localApi = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_PAGE_URL + "api/",
+})
 api.interceptors.request.use(
     (config: any) => {
-        config.headers["Authorization"] = `Bearer ${secureLocalStorage.getItem('api_token')}`
-        config.headers["X-Company-Id"] = secureLocalStorage.getItem('company_id')
+        config.headers["Authorization"] = `Bearer ${secureLocalStorage.getItem('token')}`
+        config.headers["company_id"] = secureLocalStorage.getItem('company_id')
         return config;
     },
     (err) => {
@@ -24,12 +27,6 @@ api.interceptors.response.use(
     },
 );
 
-export const plainApi = axios.create({
+export const authApi = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
 })
-
-export const userApi = axios.create({
-    baseURL: 'https://jsonplaceholder.typicode.com/',
-})
-
-export const playerApi = axios.create()

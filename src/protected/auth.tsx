@@ -15,7 +15,7 @@ const Auth = (WrapperComponent: any) => {
             if (isLogin) {
                 setIsAuth(true)
             } else {
-                router.push('/auth')
+                router.replace('/')
             }
         }
 

@@ -19,7 +19,7 @@ const Layout = dynamic(
 )
 
 const Main: NextPage = () => {
-    const {t} = useTranslation(['region', 'common'])
+    const {t} = useTranslation(['common'])
     const refContent = useRef<HTMLDivElement>(null)
     const colorMode = useColorMode();
 

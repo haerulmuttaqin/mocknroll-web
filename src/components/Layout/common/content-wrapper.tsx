@@ -27,7 +27,7 @@ const ContentWrapper = ({children}: any) => {
             })
         }>
             <div css={css({
-                paddingBottom: "2rem",
+                // paddingBottom: "2rem",
                 [mediaQuery[0]]: {
                     maxWidth: "90rem",
                     margin: "0 auto",
