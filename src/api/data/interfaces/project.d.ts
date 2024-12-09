@@ -1,7 +1,7 @@
 import {OnSubmitHandler} from "@atlaskit/form";
 
 interface ProjectProps {
-    idx: string
+    idx: number
     id: string
     name: string
     key: string
@@ -22,8 +22,8 @@ interface ProjectFormProps {
 
 interface ProjectPayloadProps {
     name: string
-    prefix: number
-    is_active?: number
+    prefix: string
+    is_active?: string
     created_at?: string
     updated_at?: string
     sid?: string

@@ -25,7 +25,7 @@ const AppBreadcrumb = ({capitalizeLinks}: BreadcrumbProps) => {
     const router = useRouter()
 
     const paths = usePathname()
-    const pathNames = paths.split('/').filter(path => path)
+    const pathNames = paths?.split('/').filter(path => path)
 
     const handleClick = (href: string) => {
         router.push(href)

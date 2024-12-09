@@ -11,7 +11,7 @@ import Button from '@atlaskit/button/new';
 import Toggle from '@atlaskit/toggle';
 
 
-const ProjectForm: FC<ProjectFormProps> = (
+const MockForm: FC<ProjectFormProps> = (
     {
         data,
         setData,
@@ -105,4 +105,4 @@ const ProjectForm: FC<ProjectFormProps> = (
     );
 };
 
-export default ProjectForm;
+export default MockForm;

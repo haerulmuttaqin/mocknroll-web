@@ -33,7 +33,7 @@ const Layout = dynamic(
     {ssr: false}
 )
 
-const Projects: NextPage = () => {
+const ViewProject: NextPage = () => {
     const {t} = useTranslation(["common"])
     const dispatch = useDispatch();
     const router = useRouter()
@@ -100,7 +100,7 @@ const Projects: NextPage = () => {
         router.push("/projects/create")
     }
     const handleOnShow = (project_id: string, sid?: string, idx?: number) => {
-        router.push(`/project?id=${project_id}&sid=${sid}&idx=${idx}`)
+        router.push(`/projects/${project_id}?action=edit&sid=${sid}&idx=${idx}`)
     }
     const handleOnEdit = (project_id: string, sid?: string, idx?: number) => {
         router.push(`/projects/${project_id}?action=edit&sid=${sid}&idx=${idx}`)
@@ -169,7 +169,7 @@ const Projects: NextPage = () => {
                 {
                     key: row.id,
                     content: (
-                        <Link href={`/mocks?pid=${row.id}&sid=${row.sid}&idx=${row.idx}`}>{row.id}</Link>
+                        <Link href={`/projects/${row.id}?action=edit&sid=${row.sid}&idx=${row.idx}`}>{row.id}</Link>
                     )
                 },
                 {
@@ -178,7 +178,7 @@ const Projects: NextPage = () => {
                         <Tooltip content={row.name}>
                             {(tooltipProps) => (
                                 <Box {...tooltipProps} xcss={xcss({color: "color.text", cursor: "pointer"})}
-                                     onClick={() => handleOnShow(row.id, row.sid)}>
+                                     onClick={() => handleOnShow(row.id, row.sid, row.idx)}>
                                     {row.name}
                                 </Box>
                             )}
@@ -221,10 +221,13 @@ const Projects: NextPage = () => {
 
     return (
         <Layout
-            title="Mock N' Roll Project"
+            title="Project Mocks"
+            isSideNavOpen={true}
+            isAdmin={true}
+            sidebarList={dataProjects}
             renderAction={
                 <ButtonGroup label="Content actions">
-                    <Button appearance="primary" onClick={handleClickNew}>{t("create_new_project")}</Button>
+                    <Button appearance="primary" onClick={handleClickNew}>{t("create_new_mock")}</Button>
                 </ButtonGroup>
             }
             renderBottomBar={
@@ -305,4 +308,4 @@ const Projects: NextPage = () => {
     );
 };
 
-export default Auth(Projects);
+export default Auth(ViewProject);

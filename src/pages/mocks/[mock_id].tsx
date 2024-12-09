@@ -5,7 +5,7 @@ import {FlagsProvider} from '@atlaskit/flag';
 import {useRouter} from 'next/router';
 import SpinnerLoading from '@component/Spinner';
 import {addProject, updateProject, getProject} from "@api/data/services/project";
-import ProjectForm from './form';
+import MockForm from './form';
 import {ProjectPayloadProps} from '@api/data/interfaces/project';
 import {useDispatch} from "react-redux";
 import {showFlag} from '@store/actions/show-flag';
@@ -18,7 +18,7 @@ const Layout = dynamic(
 
 const Project: NextPage = () => {
     const router = useRouter()
-    const {project_id, sid, idx, action} = router.query
+    const {mid, pid, sid, idx, action} = router.query
     const [loading, setLoading] = useState<boolean>(action == "edit");
     const [projectData, setProjectData] = useState<ProjectPayloadProps>();
     const dispatch = useDispatch();
@@ -28,46 +28,46 @@ const Project: NextPage = () => {
     }
 
     const updateProjectData = async (params: any) => {
-        const payload = {
-            id: params.id,
-            name: params.name,
-            key: params.key,
-            prefix: params.prefix,
-            is_active: params.is_active ? "1" : "0",
-            created_at: params.created_at,
-            updated_at: params.updated_at,
-            sid: params.sid
-        }
-        await updateProject(project_id as string, sid as string, idx as any, payload)
-            .then((res) => {
-                if (!res.success) {
-                    dispatch(
-                        showFlag({
-                            success: false,
-                            title: "Update Failed, Please try again!",
-                            message: res.message
-                        }) as any
-                    );
-                } else {
-                    dispatch(
-                        showFlag({
-                            success: true,
-                            title: "Successfully Updated",
-                            message: "The project has been successfully updated!",
-                            goBack: true
-                        }) as any
-                    )
-                }
-            })
-            .catch((err) => {
-                dispatch(
-                    showFlag({
-                        success: false,
-                        title: "Update Failed, Please try again!",
-                        message: err.message
-                    }) as any
-                );
-            })
+        // const payload = {
+        //     id: params.id,
+        //     name: params.name,
+        //     key: params.key,
+        //     prefix: params.prefix,
+        //     is_active: params.is_active ? "1" : "0",
+        //     created_at: params.created_at,
+        //     updated_at: params.updated_at,
+        //     sid: params.sid
+        // }
+        // await updateProject(project_id as string, sid as string, idx as any, payload)
+        //     .then((res) => {
+        //         if (!res.success) {
+        //             dispatch(
+        //                 showFlag({
+        //                     success: false,
+        //                     title: "Update Failed, Please try again!",
+        //                     message: res.message
+        //                 }) as any
+        //             );
+        //         } else {
+        //             dispatch(
+        //                 showFlag({
+        //                     success: true,
+        //                     title: "Successfully Updated",
+        //                     message: "The project has been successfully updated!",
+        //                     goBack: true
+        //                 }) as any
+        //             )
+        //         }
+        //     })
+        //     .catch((err) => {
+        //         dispatch(
+        //             showFlag({
+        //                 success: false,
+        //                 title: "Update Failed, Please try again!",
+        //                 message: err.message
+        //             }) as any
+        //         );
+        //     })
     }
 
     const postDataBillingConf = async (params: any) => {
@@ -140,7 +140,7 @@ const Project: NextPage = () => {
 
     useEffect(() => {
         if (router.isReady && action != undefined) {
-            getProjectById(project_id as string, sid as string)
+            getProjectById(mid as string, sid as string)
         }
     }, [router.isReady])
 
@@ -149,15 +149,17 @@ const Project: NextPage = () => {
         <FlagsProvider>
             <Layout
                 title={action == "edit" ? "Edit Project" : "Create Project"}
+                isSideNavOpen={true}
+                isAdmin={true}
             >
                 <ContentWrapper>
                     {
                         loading
                             ? <SpinnerLoading size={"large"}/>
-                            : <ProjectForm
+                            : <MockForm
                                 data={projectData as any}
                                 setData={setProjectData}
-                                type={action as any || project_id}
+                                type={action as any || mid}
                                 onHandleCancel={handleCancel}
                                 onHandleSubmit={action == "edit" ? updateProjectData : postDataBillingConf}
                             />

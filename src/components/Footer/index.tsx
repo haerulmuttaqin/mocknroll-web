@@ -66,7 +66,7 @@ const Footer = () => {
                     </li>
                     <li>
                         <Anchor
-                            href="#"
+                            href={`${process.env.NEXT_PUBLIC_PAGE_URL}/privacy-policy`}
                             target="_blank"
                             rel="noopener"
                             xcss={navLinkStyles}
