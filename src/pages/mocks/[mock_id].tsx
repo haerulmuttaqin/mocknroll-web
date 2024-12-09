@@ -10,18 +10,33 @@ import {ProjectPayloadProps} from '@api/data/interfaces/project';
 import {useDispatch} from "react-redux";
 import {showFlag} from '@store/actions/show-flag';
 import ContentWrapper from "@component/Layout/common/content-wrapper";
+import {useFetchProject, useFetchProjects} from "@pages/projects/data/remote";
 
 const Layout = dynamic(
     () => import('@component/Layout'),
     {ssr: false}
 )
 
-const Project: NextPage = () => {
+const Mock: NextPage = () => {
     const router = useRouter()
     const {mid, pid, sid, idx, action} = router.query
     const [loading, setLoading] = useState<boolean>(action == "edit");
     const [projectData, setProjectData] = useState<ProjectPayloadProps>();
     const dispatch = useDispatch();
+
+    const {
+        data: dataProject,
+        isLoading: isLoadingProject,
+        mutate: mutateProject,
+        error: errorProject
+    } = useFetchProject(pid as string, sid as string)
+
+    const {
+        data: dataProjects,
+        isLoading: isLoadingProjects,
+        mutate: mutateProjects,
+        error: errorProjects
+    } = useFetchProjects()
 
     const handleCancel = () => {
         router.back()
@@ -148,15 +163,17 @@ const Project: NextPage = () => {
     return (
         <FlagsProvider>
             <Layout
-                title={action == "edit" ? "Edit Project" : "Create Project"}
+                title={action == "edit" ? "Edit Endpoint" : "Create Endpoint"}
                 isSideNavOpen={true}
                 isAdmin={true}
+                sidebarList={dataProjects}
             >
                 <ContentWrapper>
                     {
                         loading
                             ? <SpinnerLoading size={"large"}/>
                             : <MockForm
+                                project={dataProject}
                                 data={projectData as any}
                                 setData={setProjectData}
                                 type={action as any || mid}
@@ -170,4 +187,4 @@ const Project: NextPage = () => {
     );
 };
 
-export default Project;
+export default Mock;

@@ -1,9 +1,11 @@
 import {OnSubmitHandler} from "@atlaskit/form";
+import {ProjectProps} from "@api/data/interfaces/project";
 
 interface MockProps {
     idx: number
     id: string
     name: string
+    desc: string
     endpoint: string
     content: string
     header: string
@@ -20,6 +22,7 @@ interface MockProps {
 }
 
 interface MockFormProps {
+    project: ProjectProps
     data: MockProps
     setData: (data: any) => void
     type?: string;
@@ -29,6 +32,7 @@ interface MockFormProps {
 
 interface MockPayloadProps {
     name: string
+    desc: string
     endpoint: string
     content: string
     header: string

@@ -50,7 +50,7 @@ let loadingSideNavStyle = xcss({
 const MenuProject = ({data}: any) => {
     const {t} = useTranslation(["common"])
     const router = useRouter()
-    const {pid, sid, xid} = router.query
+    const {pid, sid, id} = router.query
     const {
         data: dataProjects,
         isLoading: isLoadingProjects,
@@ -115,7 +115,7 @@ const SideNav = ({
     const [userRole, serUserRole] = useState<string>("admin")
     const regionId = useNextQueryParam('region_id', 2)
     const {t} = useTranslation(['common'])
-    const {pid, sid, xid} = router.query
+    const {pid, sid, idx} = router.query
     const {
         data: dataProjects,
         isLoading: isLoadingProjects,
@@ -160,13 +160,13 @@ const SideNav = ({
 
     const navigateToCreateNewMock = (e: any, route: string) => {
         e.preventDefault()
-        router.push(`/mocks/${route}`)
+        router.push(`/mocks/${route}/?pid=${pid}&sid=${sid}&idx=${idx}`)
         return;
     };
 
     const navigateToManageMock = (e: any) => {
         e.preventDefault()
-        router.push(`/mocks/?pid=${pid}&sid=${sid}&xid=${xid}`)
+        router.push(`/mocks/?pid=${pid}&sid=${sid}&idx=${idx}`)
         return;
     };
 
@@ -354,22 +354,22 @@ const SideNav = ({
                                 {/*    {t('go_back')}*/}
                                 {/*</ButtonItem>*/}
                             </NavigationHeader>
-                            {menuList?.length > 0 ?
-                                <NavigationContent showTopScrollIndicator>
-                                    <ButtonItem
-                                        isSelected={checkUrl("create")}
-                                        iconBefore={<AddIcon label="add"/>}
-                                        onClick={e => navigateToCreateNewMock(e, "create")}>
-                                        {t("create_new_mock")}
-                                    </ButtonItem>
-                                    <ButtonItem
-                                        id={"mock"}
-                                        isSelected={checkUrl("mocks")}
-                                        iconBefore={<TasksIcon label="mocks"/>}
-                                        onClick={e => navigateToManageMock(e)}>
-                                        {t("manage_my_mock")}
-                                    </ButtonItem>
-                                    <Section title="My Mocks" isList>
+                            <NavigationContent showTopScrollIndicator>
+                                <ButtonItem
+                                    isSelected={checkSubUrl("[mock_id]")}
+                                    iconBefore={<AddIcon label="add"/>}
+                                    onClick={e => navigateToCreateNewMock(e, "create")}>
+                                    {t("create_new_endpoint")}
+                                </ButtonItem>
+                                <ButtonItem
+                                    id={"mock"}
+                                    isSelected={checkUrl("mocks") && pathnameSub == undefined}
+                                    iconBefore={<TasksIcon label="mocks"/>}
+                                    onClick={e => navigateToManageMock(e)}>
+                                    {t("manage_my_endpoint")}
+                                </ButtonItem>
+                                {menuList?.length > 0 ?
+                                    <Section title="Endpoints" isList>
                                         {
                                             menuList?.map((menu: any, i: number) => {
                                                 return (
@@ -384,8 +384,8 @@ const SideNav = ({
                                             })
                                         }
                                     </Section>
-                                </NavigationContent>
-                                : null}
+                                    : null}
+                            </NavigationContent>
                         </Box>
                     </SideNavigation>)
             }

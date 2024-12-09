@@ -211,3 +211,7 @@ div[class*="-ActionsWrapper"] {
     display: inline-flex;
     margin-block-start: 0;
 }
+
+[data-testid="card-offset"] {
+    margin-left: -18px !important;
+}

@@ -26,7 +26,7 @@ import ContentWrapper from "@component/Layout/common/content-wrapper";
 import Auth from "@protected/auth";
 import {useTranslation} from "next-i18next";
 import Link from "next/link";
-import {useFetchProjects} from "@pages/projects/data/remote";
+import {useFetchProject, useFetchProjects} from "@pages/projects/data/remote";
 
 const Layout = dynamic(
     () => import('@component/Layout'),
@@ -37,6 +37,7 @@ const ViewProject: NextPage = () => {
     const {t} = useTranslation(["common"])
     const dispatch = useDispatch();
     const router = useRouter()
+    const {mid, pid, sid, idx, action} = router.query
     const [statusActive, setConfigTypes] = useState<OptionProps[]>([
         {value: 1, label: "Active"},
         {value: 0, label: "Inactive"},
@@ -52,10 +53,17 @@ const ViewProject: NextPage = () => {
     const closeModalDelete = useCallback(() => setIsOpenAlertDelete(false), []);
 
     const {
-        data: dataProjects,
-        isLoading: isLoadingProjects,
+        data: dataProject,
+        isLoading: isLoadingProject,
         mutate: mutateProject,
         error: errorProject
+    } = useFetchProject(pid as string, sid as string)
+
+    const {
+        data: dataProjects,
+        isLoading: isLoadingProjects,
+        mutate: mutateProjects,
+        error: errorProjects
     } = useFetchProjects()
 
     const onFilterTypeChange = (option: any) => {
@@ -221,13 +229,13 @@ const ViewProject: NextPage = () => {
 
     return (
         <Layout
-            title="Project Mocks"
+            title="Project Endpoints"
             isSideNavOpen={true}
             isAdmin={true}
-            sidebarList={dataProjects}
+            sidebarList={[]}
             renderAction={
                 <ButtonGroup label="Content actions">
-                    <Button appearance="primary" onClick={handleClickNew}>{t("create_new_mock")}</Button>
+                    <Button appearance="primary" onClick={handleClickNew}>{t("create_new_endpoint")}</Button>
                 </ButtonGroup>
             }
             renderBottomBar={

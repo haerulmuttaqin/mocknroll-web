@@ -1,6 +1,6 @@
 import {ProjectFormProps} from "@api/data/interfaces/project";
 import React, {FC, Fragment} from "react";
-import Form, {ErrorMessage, Field, FormFooter} from '@atlaskit/form';
+import Form, {ErrorMessage, Field, FormFooter, HelperMessage} from '@atlaskit/form';
 import {Box, xcss} from '@atlaskit/primitives';
 import ContainerGrid from "@component/ContainerGrid";
 import {Col, Row} from "react-grid-system";
@@ -58,6 +58,7 @@ const ProjectForm: FC<ProjectFormProps> = (
                                         {({fieldProps, error}) => (
                                             <Fragment>
                                                 <TextField {...fieldProps} type={"text"} placeholder="/api/v1"/>
+                                                <HelperMessage>Add API prefix to all endpoints in this project.</HelperMessage>
                                                 {error && (
                                                     <ErrorMessage>
                                                         {error}
