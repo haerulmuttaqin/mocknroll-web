@@ -74,7 +74,7 @@ const Project: NextPage = () => {
         const payload = {
             name: params.name,
             prefix: params.prefix,
-            is_active: params.is_active,
+            is_active: params.is_active ? "1" : "0",
         }
         await addProject(payload)
             .then((res) => {

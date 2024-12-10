@@ -1,27 +1,28 @@
 import {api} from "@/api";
 import {BaseResponse} from "../interfaces";
 import {ProjectPayloadProps} from "../interfaces/project";
+import {MockPayloadProps} from "@api/data/interfaces/mock";
 
 
 export const getMocks = async (pid: string, sid: string): Promise<BaseResponse> => {
     return await api({
         method: 'GET',
-        url: "mocks",
+        url: `mocks/${pid}/${sid}`,
     });
 };
 
-export const getProject = async (project_id: string, sheet_id: string): Promise<BaseResponse> => {
+export const getMock = async (mid: string, pid: string, sid: string): Promise<BaseResponse> => {
     return await api({
         method: 'GET',
-        url: `projects/${project_id}/${sheet_id}`,
+        url: `mocks/${mid}/${pid}/${sid}`,
     });
 };
 
-export const addProject = async (payload: ProjectPayloadProps): Promise<BaseResponse> => {
+export const addMock = async (payload: MockPayloadProps): Promise<BaseResponse> => {
     try {
         const {data} = await api({
             method: "POST",
-            url: "projects",
+            url: "mocks",
             data: payload
         })
         if (data) {
@@ -34,11 +35,11 @@ export const addProject = async (payload: ProjectPayloadProps): Promise<BaseResp
     }
 };
 
-export const updateProject = async (id: string, sid: string, idx: number, payload: ProjectPayloadProps): Promise<BaseResponse> => {
+export const updateMock = async (mid: string, pid: string, sid: string, idx: number, payload: MockPayloadProps): Promise<BaseResponse> => {
     try {
         const {data} = await api({
             method: "POST",
-            url: `projects/${sid}/${idx}/${id}`,
+            url: `mocks/${pid}/${sid}/${idx}/${mid}`,
             data: payload
         })
         if (data) {

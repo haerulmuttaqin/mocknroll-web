@@ -1,21 +1,22 @@
-import {ProjectFormProps} from "@api/data/interfaces/project";
-import React, {FC, Fragment} from "react";
+import React, {FC, Fragment, useEffect, useState} from "react";
 import Form, {ErrorMessage, Field, FormFooter, HelperMessage} from '@atlaskit/form';
-import {Box, xcss, Text, Stack} from '@atlaskit/primitives';
+import {Box, xcss} from '@atlaskit/primitives';
 import ContainerGrid from "@component/ContainerGrid";
 import {Col, Row} from "react-grid-system";
 import ContainerForm from "@component/ContainerForm";
 import TextField from '@atlaskit/textfield';
 import {ButtonGroup, LoadingButton} from "@atlaskit/button";
-import Button from '@atlaskit/button/new';
+import Button, {IconButton} from '@atlaskit/button/new';
 import Toggle from '@atlaskit/toggle';
 import {MockFormProps} from "@api/data/interfaces/mock";
 import Heading from "@atlaskit/heading";
-import {cardNoShadowStyle} from "@component/Common/style-util";
 import {OptionType, ValueType} from "@atlaskit/select/types";
-import Select from "@atlaskit/select";
+import {Code} from '@atlaskit/code';
+import Select, {GroupedOptionsType} from "@atlaskit/select";
+import LinkExternalIcon from '@atlaskit/icon/core/link-external';
+import SectionMessage from '@atlaskit/section-message';
 import TextArea from "@atlaskit/textarea";
-
+import {codeOption, methodOption} from "@pages/mocks/data/props";
 
 const MockForm: FC<MockFormProps> = (
     {
@@ -28,19 +29,62 @@ const MockForm: FC<MockFormProps> = (
     }
 ) => {
 
+    const [placeHolderHeader, setPlaceHolderHeader] = useState("")
+    const [placeHolderResponse, setPlaceHolderResponse] = useState("")
+    const [methodOptions, setMethodOptions] = useState<OptionType[]>(methodOption)
+    const [codeOptions, setCodeOptions] = useState<GroupedOptionsType<OptionType>>(codeOption)
+
+    const handleOpenLink = () => {
+        window.open(`https://${project?.id}.${process.env.NEXT_PUBLIC_API_URL.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "")}${project?.prefix}/${data?.endpoint}`, "_blank")
+    }
+
+    useEffect(() => {
+        setPlaceHolderHeader('{\n' +
+            '   "X-Foo-Bar": "Hello World"\n' +
+            '}')
+        setPlaceHolderResponse('{\n' +
+            '   "success": true\n' +
+            '   "message": "Successfully fetched!"\n' +
+            '   "data": {\n' +
+            '       "id": 1\n' +
+            '       "name": "Haerul Muttaqin"\n' +
+            '   }\n' +
+            '}')
+    }, []);
+
     return (
         <Form onSubmit={onHandleSubmit}>
             {({formProps, submitting}) => (
                 <Box as={"form"} {...formProps}>
                     <ContainerGrid>
+                        {
+                            project && (
+                                <Row>
+                                    <Col sm={12} md={12}>
+                                        <Box testId={"card-message-offset"}>
+                                            <SectionMessage
+                                                title="API endpoint"
+                                            >
+                                                <p>
+                                                    https://<Code>{project?.id}</Code>.{process.env.NEXT_PUBLIC_API_URL.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "")}<Code>{project?.prefix}/</Code>:<Code>{data?.endpoint}</Code><IconButton
+                                                    onClick={handleOpenLink} icon={LinkExternalIcon} appearance={'subtle'}
+                                                    label="Link"/>
+                                                </p>
+                                            </SectionMessage>
+                                        </Box>
+                                    </Col>
+                                </Row>
+                            )
+                        }
                         <Row>
                             <Col sm={12} md={6}>
                                 <ContainerForm>
                                     <Field
                                         aria-required={true}
-                                        name="name"
+                                        name="endpoint"
                                         label="Endpoint"
-                                        defaultValue={data?.name}
+                                        defaultValue={data?.endpoint}
+                                        isDisabled={type === 'view'}
                                         isRequired
                                     >
                                         {({fieldProps, error}) => (
@@ -48,7 +92,7 @@ const MockForm: FC<MockFormProps> = (
                                                 <TextField {...fieldProps} type={"text"}
                                                            elemBeforeInput={<Box xcss={xcss({
                                                                paddingInlineStart: "space.150",
-                                                               color: "color.text.subtle"
+                                                               color: "color.text.disabled"
                                                            })}>{project?.prefix}</Box>}
                                                            placeholder="Input endpoint"/>
                                                 {error && (
@@ -60,15 +104,16 @@ const MockForm: FC<MockFormProps> = (
                                         )}
                                     </Field>
                                     <Field
-                                        name="desc"
-                                        label="Description"
-                                        defaultValue={data?.desc}
+                                        name="name"
+                                        label="Name or Label"
+                                        defaultValue={data?.name}
+                                        isDisabled={type === 'view'}
                                         isRequired
                                     >
                                         {({fieldProps, error}) => (
                                             <Fragment>
                                                 <TextField {...fieldProps} type={"text"}
-                                                           placeholder="Input description"/>
+                                                           placeholder="Input name or label"/>
                                                 {error && (
                                                     <ErrorMessage>
                                                         {error}
@@ -98,9 +143,10 @@ const MockForm: FC<MockFormProps> = (
                                             <Col sm={12} md={6}>
                                                 <Field<ValueType<OptionType>>
                                                     label="Method"
-                                                    name="var_column"
-                                                    id="var_column"
-                                                    // defaultValue={codes.find((it) => it.value == data?.var_column) as any}
+                                                    name="method"
+                                                    id="method"
+                                                    isDisabled={type === 'view'}
+                                                    defaultValue={methodOptions.find((it: any) => it.value == data?.method) as any || methodOptions[0]}
                                                     aria-required={true}
                                                     isRequired
                                                 >
@@ -109,19 +155,23 @@ const MockForm: FC<MockFormProps> = (
                                                             <Select
                                                                 id={`${id}-select`}
                                                                 isSearchable={true}
-                                                                // options={variables as any}
-                                                                // isLoading={loadingFilterVariable}
+                                                                options={methodOptions as any}
                                                                 {...rest}
                                                             />
                                                             {error && <ErrorMessage>{error}</ErrorMessage>}
                                                         </Fragment>
                                                     )}
                                                 </Field>
-                                                <Field<ValueType<OptionType>>
+                                                <Field<ValueType<GroupedOptionsType<OptionType>>>
                                                     label="Code"
-                                                    name="var_column"
-                                                    id="var_column"
-                                                    // defaultValue={codes.find((it) => it.value == data?.var_column) as any}
+                                                    name="code"
+                                                    id="code"
+                                                    isDisabled={type === 'view'}
+                                                    defaultValue={codeOptions.filter((group: any) => group.options.some((item: any) => item.value === data?.code))?.find((it: any) => it.value == data?.method) as any || {
+                                                        value: '200',
+                                                        label: '200 - OK',
+                                                        highlight: true
+                                                    }}
                                                     aria-required={true}
                                                     isRequired
                                                 >
@@ -130,8 +180,7 @@ const MockForm: FC<MockFormProps> = (
                                                             <Select
                                                                 id={`${id}-select`}
                                                                 isSearchable={true}
-                                                                // options={variables as any}
-                                                                // isLoading={loadingFilterVariable}
+                                                                options={codeOptions as any}
                                                                 {...rest}
                                                             />
                                                             {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -144,14 +193,16 @@ const MockForm: FC<MockFormProps> = (
                                                     <Field
                                                         name="header"
                                                         label="HTTP Headers"
-                                                        defaultValue={data?.desc}
+                                                        isDisabled={type === 'view'}
+                                                        defaultValue={data?.header}
                                                     >
                                                         {({fieldProps, error}: any) => (
                                                             <Fragment>
-                                                                <TextArea isMonospaced minimumRows={10} placeholder="{
-                                                                &quot;X-Foo-Bar&quot;: &quot;Hello World&quot;
-                                                                }" {...fieldProps} />
-                                                                <HelperMessage>Customize the HTTP headers sent in the response. Define the headers as a JSON object.</HelperMessage>
+                                                                <TextArea isMonospaced minimumRows={5}
+                                                                          placeholder={placeHolderHeader} {...fieldProps} />
+                                                                <HelperMessage>Customize the HTTP headers sent in the
+                                                                    response. Define the headers as a JSON
+                                                                    object.</HelperMessage>
                                                                 {error && (
                                                                     <ErrorMessage>
                                                                         {error}
@@ -163,16 +214,16 @@ const MockForm: FC<MockFormProps> = (
                                                 </Box>
                                                 <Box xcss={xcss({marginRight: "space.200"})}>
                                                     <Field
-                                                        name="header"
+                                                        name="response"
                                                         label="HTTP Response Body "
-                                                        defaultValue={data?.desc}
+                                                        isDisabled={type === 'view'}
+                                                        defaultValue={data?.response}
                                                         isRequired
                                                     >
                                                         {({fieldProps, error}: any) => (
                                                             <Fragment>
-                                                                <TextArea isMonospaced minimumRows={10} placeholder="{
-                                                                &quot;X-Foo-Bar&quot;: &quot;Hello World&quot;
-                                                                }" {...fieldProps} />
+                                                                <TextArea isMonospaced minimumRows={10}
+                                                                          placeholder={placeHolderResponse} {...fieldProps} />
                                                                 {error && (
                                                                     <ErrorMessage>
                                                                         {error}
@@ -181,38 +232,46 @@ const MockForm: FC<MockFormProps> = (
                                                             </Fragment>
                                                         )}
                                                     </Field>
-                                                    <Field
-                                                        label="Activate Status"
-                                                        name="is_active"
-                                                        defaultValue={parseInt(data?.is_active as any) || 1 as number}
-                                                    >
-                                                        {({fieldProps: {value, ...others}}) => (
-                                                            <Toggle
-                                                                isChecked={!!value}
-                                                                {...others}
-                                                                id="toggle-large"
-                                                                size="large"/>
-                                                        )}
-                                                    </Field>
                                                 </Box>
                                             </Col>
                                         </Row>
                                     </Box>
+                                    <Field
+                                        label="Project Status"
+                                        name="is_active"
+                                        isDisabled={type === 'view'}
+                                        defaultValue={data?.is_active ? parseInt(data?.is_active) : 1}
+                                    >
+                                        {({fieldProps: {value, ...others}}) => (
+                                            <Toggle
+                                                isChecked={!!value}
+                                                {...others}
+                                                id="toggle-large"
+                                                size="large"/>
+                                        )}
+                                    </Field>
                                 </ContainerForm>
                             </Col>
                             <Col md={12}>
                                 <Box xcss={xcss({paddingBottom: "space.400"})}>
                                     <FormFooter align={"start"}>
-                                        <ButtonGroup>
-                                            <LoadingButton
-                                                appearance="primary"
-                                                type="submit"
-                                                isLoading={submitting}
-                                            >
-                                                {type == "edit" ? "Update Change" : "Submit Endpoint"}
-                                            </LoadingButton>
-                                            <Button onClick={onHandleCancel}>Cancel</Button>
-                                        </ButtonGroup>
+                                        {
+                                            type === 'view' ?
+                                                <ButtonGroup>
+                                                    <Button onClick={onHandleCancel}>Cancel</Button>
+                                                </ButtonGroup>
+                                                :
+                                                <ButtonGroup>
+                                                    <LoadingButton
+                                                        appearance="primary"
+                                                        type="submit"
+                                                        isLoading={submitting}
+                                                    >
+                                                        {type == "edit" ? "Update Change" : "Submit Endpoint"}
+                                                    </LoadingButton>
+                                                    <Button onClick={onHandleCancel}>Cancel</Button>
+                                                </ButtonGroup>
+                                        }
                                     </FormFooter>
                                 </Box>
                             </Col>

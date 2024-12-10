@@ -7,7 +7,8 @@ interface MockProps {
     name: string
     desc: string
     endpoint: string
-    content: string
+    method: string
+    response: string
     header: string
     body: string
     code: string
@@ -32,14 +33,15 @@ interface MockFormProps {
 
 interface MockPayloadProps {
     name: string
-    desc: string
+    desc?: string
     endpoint: string
-    content: string
-    header: string
-    body: string
+    method: string
+    response: string
+    header?: string
+    body?: string
     code: string
-    charset: string
-    content_type: string
+    charset?: string
+    content_type?: string
     is_active?: string
     expired_at?: string
     created_at?: string

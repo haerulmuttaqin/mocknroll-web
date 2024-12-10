@@ -6,7 +6,7 @@ interface ProjectProps {
     name: string
     key: string
     prefix: string
-    is_active?: number
+    is_active?: string
     created_at?: string
     updated_at?: string
     sid?: string

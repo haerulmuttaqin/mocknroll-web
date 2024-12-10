@@ -27,6 +27,10 @@ import Auth from "@protected/auth";
 import {useTranslation} from "next-i18next";
 import Link from "next/link";
 import {useFetchProject, useFetchProjects} from "@pages/projects/data/remote";
+import SectionMessage from "@atlaskit/section-message";
+import {Code} from "@atlaskit/code";
+import {useFetchMocks} from "@pages/mocks/data/remote";
+import {MockProps} from "@api/data/interfaces/mock";
 
 const Layout = dynamic(
     () => import('@component/Layout'),
@@ -42,7 +46,7 @@ const ViewProject: NextPage = () => {
         {value: 1, label: "Active"},
         {value: 0, label: "Inactive"},
     ])
-    const [filterType, setFilterType] = useState<number>(1)
+    const [filterType, setFilterType] = useState<string>("1")
     const [filterQuery, setFilterQuery] = useState<string>("")
     const [shouldBeDelete, setShouldBeDelete] = useState<ProjectProps | undefined>()
     const onFilterQueryChange = (e: any) => {
@@ -53,11 +57,11 @@ const ViewProject: NextPage = () => {
     const closeModalDelete = useCallback(() => setIsOpenAlertDelete(false), []);
 
     const {
-        data: dataProject,
-        isLoading: isLoadingProject,
-        mutate: mutateProject,
-        error: errorProject
-    } = useFetchProject(pid as string, sid as string)
+        data: dataMocks,
+        isLoading: isLoadingMocks,
+        mutate: mutateMocks,
+        error: errorMocks
+    } = useFetchMocks(pid as string, sid as string)
 
     const {
         data: dataProjects,
@@ -83,7 +87,7 @@ const ViewProject: NextPage = () => {
                     );
                 } else {
                     setShouldBeDelete(undefined)
-                    mutateProject()
+                    mutateMocks()
                     dispatch(
                         showFlag({
                             success: true,
@@ -105,13 +109,13 @@ const ViewProject: NextPage = () => {
             })
     }
     const handleClickNew = () => {
-        router.push("/projects/create")
+        router.push(`/mocks/create/?pid=${pid}&sid=${sid}&idx=${idx}`)
     }
-    const handleOnShow = (project_id: string, sid?: string, idx?: number) => {
-        router.push(`/projects/${project_id}?action=edit&sid=${sid}&idx=${idx}`)
+    const handleOnShow = (mid: string, pid: string, sid: string, idx: number) => {
+        router.push(`/mocks/${mid}?action=view&pid=${pid}&sid=${sid}&idx=${idx}`)
     }
-    const handleOnEdit = (project_id: string, sid?: string, idx?: number) => {
-        router.push(`/projects/${project_id}?action=edit&sid=${sid}&idx=${idx}`)
+    const handleOnEdit = (mid: string, pid: string, sid: string, idx: number) => {
+        router.push(`/mocks/${mid}?action=edit&pid=${pid}&sid=${sid}&idx=${idx}`)
     }
     const handleOpenModalDelete = (params: ProjectProps) => {
         setShouldBeDelete(params)
@@ -122,11 +126,11 @@ const ViewProject: NextPage = () => {
     }
 
     useEffect(() => {
-        mutateProject()
+        mutateMocks()
     }, []);
 
     useEffect(() => {
-        if ((dataProjects == undefined) && errorProject) {
+        if ((dataProjects == undefined) && errorMocks) {
             dispatch(
                 showFlag({
                     success: false,
@@ -140,23 +144,23 @@ const ViewProject: NextPage = () => {
     const head = {
         cells: [
             {
-                key: 'id',
-                content: 'Project Id',
+                key: 'method',
+                content: 'Method',
+                isSortable: true,
+            },
+            {
+                key: 'endpoint',
+                content: 'Endpoint',
                 isSortable: true,
             },
             {
                 key: 'name',
-                content: 'Project Name',
+                content: 'Name',
                 isSortable: true,
             },
             {
-                key: 'prefix',
-                content: 'Prefix',
-                isSortable: true,
-            },
-            {
-                key: 'is_active',
-                content: 'Status',
+                key: 'code',
+                content: 'Code',
                 isSortable: true,
             },
             {
@@ -167,42 +171,47 @@ const ViewProject: NextPage = () => {
         ],
     };
 
-    const dataWithFilterQuery = (filterQuery == "" ? dataProjects : filterByValue(dataProjects, filterQuery))
-    const dataWithFilterType = (filterType == 1 ? dataWithFilterQuery : dataWithFilterQuery.filter((filter: ProjectProps) => filter.is_active == filterType))
+    const dataWithFilterQuery = (filterQuery == "" ? dataMocks : filterByValue(dataMocks, filterQuery))
+    const dataWithFilterType = (filterType == "1" ? dataWithFilterQuery : dataWithFilterQuery.filter((filter: ProjectProps) => filter.is_active == filterType))
     const rows = dataWithFilterType?.map(
-        (row: ProjectProps, index: number) => ({
+        (row: MockProps, index: number) => ({
             key: `row-${index}-${row.id}`,
             isHighlighted: false,
             cells: [
                 {
-                    key: row.id,
+                    key: row.method,
                     content: (
-                        <Link href={`/projects/${row.id}?action=edit&sid=${row.sid}&idx=${row.idx}`}>{row.id}</Link>
-                    )
-                },
-                {
-                    key: createKey(row.name?.toString()),
-                    content: (
-                        <Tooltip content={row.name}>
+                        <Tooltip content={row.endpoint}>
                             {(tooltipProps) => (
                                 <Box {...tooltipProps} xcss={xcss({color: "color.text", cursor: "pointer"})}
-                                     onClick={() => handleOnShow(row.id, row.sid, row.idx)}>
-                                    {row.name}
+                                     onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>
+                                    <Lozenge
+                                        appearance={"success"}>{row.method}</Lozenge>
                                 </Box>
                             )}
                         </Tooltip>
                     ),
                 },
                 {
-                    key: row.prefix,
-                    content: row.prefix
+                    key: createKey(row.endpoint?.toString()),
+                    content: (
+                        <Tooltip content={row.endpoint}>
+                            {(tooltipProps) => (
+                                <Box {...tooltipProps} xcss={xcss({color: "color.text", cursor: "pointer"})}
+                                     onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>
+                                    <Code>{row.endpoint}</Code>
+                                </Box>
+                            )}
+                        </Tooltip>
+                    ),
                 },
                 {
-                    key: row.is_active,
-                    content: (
-                        <Lozenge
-                            appearance={row.is_active == 1 ? "success" : "removed"}>{row.is_active == 1 ? "active" : "inactive"}</Lozenge>
-                    ),
+                    key: row.name,
+                    content: row.name
+                },
+                {
+                    key: row.code,
+                    content: row.code
                 },
                 {
                     key: 'MoreDropdown',
@@ -214,8 +223,9 @@ const ViewProject: NextPage = () => {
                             )}
                             label={`More about ${row.name}`}>
                             <DropdownItemGroup>
-                                <DropdownItem onClick={() => handleOnShow(row.id, row.sid, row.idx)}>View</DropdownItem>
-                                <DropdownItem onClick={() => handleOnEdit(row.id, row.sid, row.idx)}>Edit</DropdownItem>
+                                <DropdownItem onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>View</DropdownItem>
+                                <DropdownItem
+                                    onClick={() => handleOnEdit(row.id, row.pid, row.sid, row.idx)}>Edit</DropdownItem>
                                 <DropdownItem
                                     onClick={() => handleOpenModalDelete(row)}>Delete</DropdownItem>
                             </DropdownItemGroup>
@@ -232,7 +242,8 @@ const ViewProject: NextPage = () => {
             title="Project Endpoints"
             isSideNavOpen={true}
             isAdmin={true}
-            sidebarList={[]}
+            sidebarList={dataMocks}
+            loadingSidebar={isLoadingMocks}
             renderAction={
                 <ButtonGroup label="Content actions">
                     <Button appearance="primary" onClick={handleClickNew}>{t("create_new_endpoint")}</Button>
@@ -279,7 +290,7 @@ const ViewProject: NextPage = () => {
                     rows={rows}
                     rowsPerPage={10}
                     defaultPage={1}
-                    isLoading={isLoadingProjects}
+                    isLoading={isLoadingMocks}
                     loadingSpinnerSize="large"
                 />
             </ContentWrapper>

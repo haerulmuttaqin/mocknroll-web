@@ -58,10 +58,9 @@ const MenuProject = ({data}: any) => {
         error: errorProject
     } = useFetchProjects()
 
-    const handleChangeProject = (company: any) => {
-        secureLocalStorage.setItem("company", JSON.stringify(company))
-        secureLocalStorage.setItem("company_id", company.company_id as any)
-        router.reload()
+    const handleChangeProject = (project: any) => {
+        if (project.id == pid) return;
+        window.location.href = `/mocks/?pid=${project.id}&sid=${project.sid}&idx=${project.idx}`
     }
 
     const handleGoToManageProject = () => {
@@ -111,11 +110,9 @@ const SideNav = ({
                      onClick
                  }: SideNavContentProps) => {
     const router = useRouter()
-    const user = JSON.parse(secureLocalStorage.getItem("user") as string || `{"user_role": "user"}`)
     const [userRole, serUserRole] = useState<string>("admin")
-    const regionId = useNextQueryParam('region_id', 2)
     const {t} = useTranslation(['common'])
-    const {pid, sid, idx} = router.query
+    const {mock_id, pid, sid, idx} = router.query
     const {
         data: dataProjects,
         isLoading: isLoadingProjects,
@@ -140,24 +137,6 @@ const SideNav = ({
         return;
     };
 
-    const navigateToArea = (e: any, route: string) => {
-        e.preventDefault()
-        if (onClick) {
-            onClick()
-        }
-        router.replace(route)
-        return;
-    };
-
-    const navigateToZone = (e: any, route: string) => {
-        e.preventDefault()
-        if (onClick) {
-            onClick()
-        }
-        router.replace(`/zone/${regionId}/${route}/default`)
-        return;
-    };
-
     const navigateToCreateNewMock = (e: any, route: string) => {
         e.preventDefault()
         router.push(`/mocks/${route}/?pid=${pid}&sid=${sid}&idx=${idx}`)
@@ -170,6 +149,12 @@ const SideNav = ({
         return;
     };
 
+    const navigateToDetailMock = (e: any, mid: string, pid: string, sid: string, idx: number) => {
+        e.preventDefault()
+        router.push(`/mocks/${mid}?action=view&pid=${pid}&sid=${sid}&idx=${idx}`)
+        return;
+    }
+
     const checkUrl = (value: string) => {
         return value?.toLowerCase() === pathname
     }
@@ -178,12 +163,8 @@ const SideNav = ({
         return value?.toLowerCase() === pathnameSub
     }
 
-    const checkRegionUrl = (value: string) => {
-        return value?.toLowerCase() === pathnameRegion
-    }
-
-    const checkAreaUrl = (value: string) => {
-        return value?.toLowerCase() === pathnameArea
+    const checkMockUrl = (value: string) => {
+        return value?.toLowerCase() === mock_id
     }
 
     const currentPath = () => (router.pathname.split('/').length == 3 || router.pathname.split('/').length == 4) ? [router.pathname.split("/")[1]] : []
@@ -200,6 +181,10 @@ const SideNav = ({
             setProjectSelected(dataProjects?.find((x: any) => x.id == pid))
         }
     }, [isLoadingProjects])
+
+    useEffect(() => {
+        console.log(menuList)
+    }, [menuList]);
 
     return (
         <LeftSidebar
@@ -234,7 +219,7 @@ const SideNav = ({
             }
         >
             {
-                (isLoadingProjects || (loading && !menuList)) && (
+                (isLoadingProjects || loading) && (
                     <Box id={"sidebar-loading"}>
                         <NavigationContent>
                             <NavigationHeader>
@@ -345,7 +330,7 @@ const SideNav = ({
                                             iconAfter={isOpenProject ? ChevronUpIcon : ChevronDownIcon}
                                             onClick={() => setIsOpenProject(!isOpenProject)}
                                         >
-                                            {projectSelected?.name}
+                                            {projectSelected?.name || "Selected Project"}
                                         </Button>
                                     )}/>
                                 {/*<ButtonItem*/}
@@ -376,8 +361,8 @@ const SideNav = ({
                                                     <ButtonItem
                                                         id={menu.id}
                                                         key={`${i}-${menu.name}`}
-                                                        isSelected={checkRegionUrl(menu.id)}
-                                                        onClick={e => navigateToArea(e, menu.id)}>
+                                                        isSelected={checkMockUrl(menu.id)}
+                                                        onClick={e => navigateToDetailMock(e, menu.id, menu.pid, menu.sid, menu.idx)}>
                                                         &nbsp;{menu.name}
                                                     </ButtonItem>
                                                 )

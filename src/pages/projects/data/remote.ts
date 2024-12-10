@@ -1,6 +1,5 @@
 import useSWR from "swr";
-import {getProjects} from "@api/data/services/project";
-import { getProject } from "@api/data/services/mock";
+import {getProject, getProjects} from "@api/data/services/project";
 
 export const useFetchProjects = () => useSWR(
     ['project'],

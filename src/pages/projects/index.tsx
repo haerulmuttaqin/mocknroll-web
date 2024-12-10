@@ -41,7 +41,7 @@ const Projects: NextPage = () => {
         {value: 1, label: "Active"},
         {value: 0, label: "Inactive"},
     ])
-    const [filterType, setFilterType] = useState<number>(1)
+    const [filterType, setFilterType] = useState<string>("1")
     const [filterQuery, setFilterQuery] = useState<string>("")
     const [shouldBeDelete, setShouldBeDelete] = useState<ProjectProps | undefined>()
     const onFilterQueryChange = (e: any) => {
@@ -160,7 +160,7 @@ const Projects: NextPage = () => {
     };
 
     const dataWithFilterQuery = (filterQuery == "" ? dataProjects : filterByValue(dataProjects, filterQuery))
-    const dataWithFilterType = (filterType == 1 ? dataWithFilterQuery : dataWithFilterQuery.filter((filter: ProjectProps) => filter.is_active == filterType))
+    const dataWithFilterType = (filterType == "1" ? dataWithFilterQuery : dataWithFilterQuery?.filter((filter: ProjectProps) => filter?.is_active == filterType))
     const rows = dataWithFilterType?.map(
         (row: ProjectProps, index: number) => ({
             key: `row-${index}-${row.id}`,
@@ -193,7 +193,7 @@ const Projects: NextPage = () => {
                     key: row.is_active,
                     content: (
                         <Lozenge
-                            appearance={row.is_active == 1 ? "success" : "removed"}>{row.is_active == 1 ? "active" : "inactive"}</Lozenge>
+                            appearance={row.is_active == "1" ? "success" : "removed"}>{row.is_active == "1" ? "active" : "inactive"}</Lozenge>
                     ),
                 },
                 {
