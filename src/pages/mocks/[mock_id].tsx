@@ -8,7 +8,7 @@ import MockForm from './form';
 import {useDispatch} from "react-redux";
 import {showFlag} from '@store/actions/show-flag';
 import ContentWrapper from "@component/Layout/common/content-wrapper";
-import {useFetchProject, useFetchProjects} from "@pages/projects/data/remote";
+import {useFetchProject} from "@pages/projects/data/remote";
 import {addMock, getMock, updateMock} from "@api/data/services/mock";
 import {MockPayloadProps} from "@api/data/interfaces/mock";
 import {useFetchMocks} from "@pages/mocks/data/remote";
@@ -55,7 +55,7 @@ const Mock: NextPage = () => {
             pid: pid,
             is_active: params.is_active ? "1" : "0",
         }
-        await updateMock(mock_id as string, pid as string, sid as string, idx as any, payload)
+        await updateMock(mock_id as string, pid as string, sid as string, idx as any, payload as any)
             .then((res) => {
                 if (!res.success) {
                     dispatch(
@@ -99,7 +99,7 @@ const Mock: NextPage = () => {
             pid: pid,
             is_active: params.is_active ? "1" : "0",
         }
-        await addMock(payload)
+        await addMock(payload as any)
             .then((res) => {
                 if (!res.success) {
                     dispatch(
@@ -171,8 +171,8 @@ const Mock: NextPage = () => {
     return (
         <FlagsProvider>
             <Layout
-                title={loading ? null : action == "edit" ? "Edit Endpoint" : action === "view" ? mockData?.name : "Create Endpoint"}
-                description={loading ? null : action === "view" && mockData?.endpoint}
+                title={loading ? undefined : action == "edit" ? "Edit Endpoint" : action === "view" ? mockData?.name : "Create Endpoint"}
+                description={loading ? undefined : action === "view" ? mockData?.endpoint : undefined}
                 isSideNavOpen={true}
                 isAdmin={true}
                 sidebarList={dataMocks}

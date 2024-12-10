@@ -16,7 +16,7 @@ import {useDispatch} from "react-redux";
 import Modal, {ModalBody, ModalFooter, ModalHeader, ModalTitle, ModalTransition,} from '@atlaskit/modal-dialog';
 import Tooltip from "@atlaskit/tooltip";
 import {OptionProps} from "@api/data/interfaces";
-import {deleteProject, getProjects} from "@api/data/services/project";
+import {deleteProject} from "@api/data/services/project";
 import DropdownMenu, {DropdownItem, DropdownItemGroup} from "@atlaskit/dropdown-menu";
 import MoreIcon from "@atlaskit/icon/glyph/more";
 import {ProjectProps} from "@api/data/interfaces/project";
@@ -25,10 +25,7 @@ import {filterFlexItemStyle} from "@styles/styles";
 import ContentWrapper from "@component/Layout/common/content-wrapper";
 import Auth from "@protected/auth";
 import {useTranslation} from "next-i18next";
-import Link from "next/link";
-import {useFetchProject, useFetchProjects} from "@pages/projects/data/remote";
-import SectionMessage from "@atlaskit/section-message";
-import {Code} from "@atlaskit/code";
+import {useFetchProjects} from "@pages/projects/data/remote";
 import {useFetchMocks} from "@pages/mocks/data/remote";
 import {MockProps} from "@api/data/interfaces/mock";
 
@@ -48,7 +45,7 @@ const ViewProject: NextPage = () => {
     ])
     const [filterType, setFilterType] = useState<string>("1")
     const [filterQuery, setFilterQuery] = useState<string>("")
-    const [shouldBeDelete, setShouldBeDelete] = useState<ProjectProps | undefined>()
+    const [shouldBeDelete, setShouldBeDelete] = useState<MockProps | undefined>()
     const onFilterQueryChange = (e: any) => {
         setFilterQuery(e.target.value)
     }
@@ -111,13 +108,13 @@ const ViewProject: NextPage = () => {
     const handleClickNew = () => {
         router.push(`/mocks/create/?pid=${pid}&sid=${sid}&idx=${idx}`)
     }
-    const handleOnShow = (mid: string, pid: string, sid: string, idx: number) => {
+    const handleOnShow = (mid: string, pid?: string, sid?: string, idx?: number) => {
         router.push(`/mocks/${mid}?action=view&pid=${pid}&sid=${sid}&idx=${idx}`)
     }
-    const handleOnEdit = (mid: string, pid: string, sid: string, idx: number) => {
+    const handleOnEdit = (mid: string, pid?: string, sid?: string, idx?: number) => {
         router.push(`/mocks/${mid}?action=edit&pid=${pid}&sid=${sid}&idx=${idx}`)
     }
-    const handleOpenModalDelete = (params: ProjectProps) => {
+    const handleOpenModalDelete = (params: MockProps) => {
         setShouldBeDelete(params)
         openModalDelete()
     }
@@ -199,7 +196,7 @@ const ViewProject: NextPage = () => {
                             {(tooltipProps) => (
                                 <Box {...tooltipProps} xcss={xcss({color: "color.text", cursor: "pointer"})}
                                      onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>
-                                    <Code>{row.endpoint}</Code>
+                                    <pre>{row.endpoint}</pre>
                                 </Box>
                             )}
                         </Tooltip>
@@ -223,7 +220,8 @@ const ViewProject: NextPage = () => {
                             )}
                             label={`More about ${row.name}`}>
                             <DropdownItemGroup>
-                                <DropdownItem onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>View</DropdownItem>
+                                <DropdownItem
+                                    onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>View</DropdownItem>
                                 <DropdownItem
                                     onClick={() => handleOnEdit(row.id, row.pid, row.sid, row.idx)}>Edit</DropdownItem>
                                 <DropdownItem

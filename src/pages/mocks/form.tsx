@@ -1,6 +1,6 @@
 import React, {FC, Fragment, useEffect, useState} from "react";
 import Form, {ErrorMessage, Field, FormFooter, HelperMessage} from '@atlaskit/form';
-import {Box, xcss} from '@atlaskit/primitives';
+import {Box, xcss, Text} from '@atlaskit/primitives';
 import ContainerGrid from "@component/ContainerGrid";
 import {Col, Row} from "react-grid-system";
 import ContainerForm from "@component/ContainerForm";
@@ -14,9 +14,9 @@ import {OptionType, ValueType} from "@atlaskit/select/types";
 import {Code} from '@atlaskit/code';
 import Select, {GroupedOptionsType} from "@atlaskit/select";
 import LinkExternalIcon from '@atlaskit/icon/core/link-external';
-import SectionMessage from '@atlaskit/section-message';
 import TextArea from "@atlaskit/textarea";
 import {codeOption, methodOption} from "@pages/mocks/data/props";
+import {useUserId, useUserRole} from "@utils/hooks";
 
 const MockForm: FC<MockFormProps> = (
     {
@@ -29,13 +29,14 @@ const MockForm: FC<MockFormProps> = (
     }
 ) => {
 
+    const userId = useUserId()
     const [placeHolderHeader, setPlaceHolderHeader] = useState("")
     const [placeHolderResponse, setPlaceHolderResponse] = useState("")
     const [methodOptions, setMethodOptions] = useState<OptionType[]>(methodOption)
     const [codeOptions, setCodeOptions] = useState<GroupedOptionsType<OptionType>>(codeOption)
 
     const handleOpenLink = () => {
-        window.open(`https://${project?.id}.${process.env.NEXT_PUBLIC_API_URL.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "")}${project?.prefix}/${data?.endpoint}`, "_blank")
+        window.open(`https://${project?.id}.${process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "")}${project?.prefix}/${data?.endpoint}`, "_blank")
     }
 
     useEffect(() => {
@@ -57,71 +58,85 @@ const MockForm: FC<MockFormProps> = (
             {({formProps, submitting}) => (
                 <Box as={"form"} {...formProps}>
                     <ContainerGrid>
-                        {
-                            project && (
-                                <Row>
-                                    <Col sm={12} md={12}>
-                                        <Box testId={"card-message-offset"}>
-                                            <SectionMessage
-                                                title="API endpoint"
-                                            >
-                                                <p>
-                                                    https://<Code>{project?.id}</Code>.{process.env.NEXT_PUBLIC_API_URL.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "")}<Code>{project?.prefix}/</Code>:<Code>{data?.endpoint}</Code><IconButton
-                                                    onClick={handleOpenLink} icon={LinkExternalIcon} appearance={'subtle'}
-                                                    label="Link"/>
-                                                </p>
-                                            </SectionMessage>
-                                        </Box>
-                                    </Col>
-                                </Row>
-                            )
-                        }
                         <Row>
-                            <Col sm={12} md={6}>
+                            <Col sm={12} md={12}>
                                 <ContainerForm>
-                                    <Field
-                                        aria-required={true}
-                                        name="endpoint"
-                                        label="Endpoint"
-                                        defaultValue={data?.endpoint}
-                                        isDisabled={type === 'view'}
-                                        isRequired
-                                    >
-                                        {({fieldProps, error}) => (
-                                            <Fragment>
-                                                <TextField {...fieldProps} type={"text"}
-                                                           elemBeforeInput={<Box xcss={xcss({
-                                                               paddingInlineStart: "space.150",
-                                                               color: "color.text.disabled"
-                                                           })}>{project?.prefix}</Box>}
-                                                           placeholder="Input endpoint"/>
-                                                {error && (
-                                                    <ErrorMessage>
-                                                        {error}
-                                                    </ErrorMessage>
-                                                )}
-                                            </Fragment>
-                                        )}
-                                    </Field>
-                                    <Field
-                                        name="name"
-                                        label="Name or Label"
-                                        defaultValue={data?.name}
-                                        isDisabled={type === 'view'}
-                                        isRequired
-                                    >
-                                        {({fieldProps, error}) => (
-                                            <Fragment>
-                                                <TextField {...fieldProps} type={"text"}
-                                                           placeholder="Input name or label"/>
-                                                {error && (
-                                                    <ErrorMessage>
-                                                        {error}
-                                                    </ErrorMessage>
-                                                )}
-                                            </Fragment>
-                                        )}
-                                    </Field>
+                                    <Box testId={"card-offset"} xcss={xcss({
+                                        // backgroundColor: "elevation.surface.raised",
+                                        borderRadius: "border.radius.100",
+                                        outlineColor: "color.border",
+                                        outlineWidth: "border.width",
+                                        outlineStyle: "solid",
+                                        paddingBottom: "space.200",
+                                        paddingInlineStart: "space.200",
+                                        marginTop: "space.200"
+                                    })}>
+                                        <Row>
+                                            <Col sm={12} md={12}>
+                                                {
+                                                    project && (
+                                                        <Box testId={"card-message-offset"} xcss={xcss({marginTop: "space.150"})}>
+                                                            <Text as={"strong"}>
+                                                                <code>https://<Box as={"span"}>{userId || ""}-{project?.id as string || ""}</Box>
+                                                                .{process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "")}{project?.prefix}/:{data?.endpoint || 'endpoint'}</code>
+                                                                {
+                                                                    data?.endpoint ? <IconButton
+                                                                        onClick={handleOpenLink} icon={LinkExternalIcon}
+                                                                        appearance={'subtle'}
+                                                                        label="Link"/> : null
+                                                                }
+                                                            </Text>
+                                                        </Box>
+                                                    )
+                                                }
+                                            </Col>
+                                            <Col sm={12} md={6}>
+                                                <Field
+                                                    aria-required={true}
+                                                    name="endpoint"
+                                                    label="Endpoint"
+                                                    defaultValue={data?.endpoint}
+                                                    isDisabled={type === 'view'}
+                                                    isRequired
+                                                >
+                                                    {({fieldProps, error}) => (
+                                                        <Fragment>
+                                                            <TextField {...fieldProps} type={"text"}
+                                                                       elemBeforeInput={<Box xcss={xcss({
+                                                                           paddingInlineStart: "space.150",
+                                                                           color: "color.text.disabled"
+                                                                       })}>{project?.prefix}</Box>}
+                                                                       placeholder="Input endpoint"/>
+                                                            {error && (
+                                                                <ErrorMessage>
+                                                                    {error}
+                                                                </ErrorMessage>
+                                                            )}
+                                                        </Fragment>
+                                                    )}
+                                                </Field>
+                                                <Field
+                                                    name="name"
+                                                    label="Name or Label"
+                                                    defaultValue={data?.name}
+                                                    isDisabled={type === 'view'}
+                                                    isRequired
+                                                >
+                                                    {({fieldProps, error}) => (
+                                                        <Fragment>
+                                                            <TextField {...fieldProps} type={"text"}
+                                                                       placeholder="Input name or label"/>
+                                                            {error && (
+                                                                <ErrorMessage>
+                                                                    {error}
+                                                                </ErrorMessage>
+                                                            )}
+                                                        </Fragment>
+                                                    )}
+                                                </Field>
+                                            </Col>
+                                        </Row>
+                                    </Box>
                                 </ContainerForm>
                             </Col>
                             <Col sm={12} md={12}>
@@ -136,7 +151,6 @@ const MockForm: FC<MockFormProps> = (
                                         outlineStyle: "solid",
                                         paddingBottom: "space.200",
                                         paddingInlineStart: "space.200",
-                                        paddingBlockEnd: "space.200",
                                         marginTop: "space.200"
                                     })}>
                                         <Row>

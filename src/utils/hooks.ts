@@ -22,6 +22,25 @@ export const useUserRole = () => {
     return storedValue;
 };
 
+export const useUserId = () => {
+    const [storedValue, setStoredValue] = useState(() => {
+        try {
+            const user = JSON.parse(secureLocalStorage.getItem("user") as string || `{"id": "0"}`)
+            return user.id
+        } catch (error) {
+            console.error('Error retrieving data from local storage user:', error);
+            return 0
+        }
+    });
+
+    useEffect(() => {
+        const user = JSON.parse(secureLocalStorage.getItem("user") as string || `{"id": "0"}`)
+        setStoredValue(user.id)
+    }, []);
+
+    return storedValue;
+};
+
 export const useCompany = () => {
     const [storedValue, setStoredValue] = useState(() => {
         try {
