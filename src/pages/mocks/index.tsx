@@ -16,7 +16,6 @@ import {useDispatch} from "react-redux";
 import Modal, {ModalBody, ModalFooter, ModalHeader, ModalTitle, ModalTransition,} from '@atlaskit/modal-dialog';
 import Tooltip from "@atlaskit/tooltip";
 import {OptionProps} from "@api/data/interfaces";
-import {deleteProject} from "@api/data/services/project";
 import DropdownMenu, {DropdownItem, DropdownItemGroup} from "@atlaskit/dropdown-menu";
 import MoreIcon from "@atlaskit/icon/glyph/more";
 import {ProjectProps} from "@api/data/interfaces/project";
@@ -28,6 +27,7 @@ import {useTranslation} from "next-i18next";
 import {useFetchProjects} from "@pages/projects/data/remote";
 import {useFetchMocks} from "@pages/mocks/data/remote";
 import {MockProps} from "@api/data/interfaces/mock";
+import {deleteMock} from "@api/data/services/mock";
 
 const Layout = dynamic(
     () => import('@component/Layout'),
@@ -72,7 +72,7 @@ const ViewProject: NextPage = () => {
     }
     const doDelete = async (params: ProjectProps) => {
         closeModalDelete()
-        await deleteProject(params.id as string, params.sid as string, params.idx as any)
+        await deleteMock(pid as string, sid as string, params.idx as any, params.id as string)
             .then((res: any) => {
                 if (!res.success) {
                     dispatch(

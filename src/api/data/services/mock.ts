@@ -52,11 +52,11 @@ export const updateMock = async (mid: string, pid: string, sid: string, idx: num
     }
 };
 
-export const deleteProject = async (id: string, sid: string, idx: number): Promise<BaseResponse> => {
+export const deleteMock = async (pid: string, sid: string, idx: number, mid: string): Promise<BaseResponse> => {
     try {
         const {data} = await api({
             method: "DELETE",
-            url: `projects/${sid}/${idx}/${id}`,
+            url: `mocks/${pid}/${sid}/${idx}/${mid}`,
         })
         if (data) {
             return data

@@ -36,7 +36,7 @@ const MockForm: FC<MockFormProps> = (
     const [codeOptions, setCodeOptions] = useState<GroupedOptionsType<OptionType>>(codeOption)
 
     const handleOpenLink = () => {
-        window.open(`https://${project?.id}.${process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "")}${project?.prefix}/${data?.endpoint}`, "_blank")
+        window?.open(`https://${project?.id}.${process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "")}${project?.prefix}/${data?.endpoint}`, "_blank")
     }
 
     useEffect(() => {
@@ -181,7 +181,7 @@ const MockForm: FC<MockFormProps> = (
                                                     name="code"
                                                     id="code"
                                                     isDisabled={type === 'view'}
-                                                    defaultValue={codeOptions.filter((group: any) => group.options.some((item: any) => item.value === data?.code))?.find((it: any) => it.value == data?.method) as any || {
+                                                    defaultValue={codeOptions.filter((group: any) => group.options.some((item: any) => item.value === data?.code))[0].options?.find((it: any) => it.value == parseInt(data?.code)) as any || {
                                                         value: '200',
                                                         label: '200 - OK',
                                                         highlight: true

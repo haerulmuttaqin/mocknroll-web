@@ -182,10 +182,6 @@ const SideNav = ({
         }
     }, [isLoadingProjects])
 
-    useEffect(() => {
-        console.log(menuList)
-    }, [menuList]);
-
     return (
         <LeftSidebar
             id={isMobile ? "left-sidebar-mobile" : "left-sidebar"}
