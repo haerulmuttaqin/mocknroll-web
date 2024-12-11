@@ -197,7 +197,7 @@ const ViewProject: NextPage = () => {
                             {(tooltipProps) => (
                                 <Box {...tooltipProps} xcss={xcss({color: "color.text", cursor: "pointer"})}
                                      onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>
-                                    <Code onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{row.endpoint}</Code>
+                                    <Code onPointerEnterCapture={()=>{}} onPointerLeaveCapture={()=>{}}>{row.endpoint}</Code>
                                 </Box>
                             )}
                         </Tooltip>
