@@ -36,7 +36,7 @@ const MockForm: FC<MockFormProps> = (
     const [codeOptions, setCodeOptions] = useState<GroupedOptionsType<OptionType>>(codeOption)
 
     const handleOpenLink = () => {
-        window?.open(`https://${project?.id}.${process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "")}${project?.prefix}/${data?.endpoint}`, "_blank")
+        window?.open(`${window.location.origin.split("//")[0]}//${userId}-${project?.id}.${process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "").replaceAll("apiv1", "")}${project?.prefix}/${data?.endpoint}`, "_blank")
     }
 
     useEffect(() => {
@@ -77,8 +77,8 @@ const MockForm: FC<MockFormProps> = (
                                                     project && (
                                                         <Box testId={"card-message-offset"} xcss={xcss({marginTop: "space.150"})}>
                                                             <Text as={"strong"}>
-                                                                <code>https://<Box as={"span"}>{userId || ""}-{project?.id as string || ""}</Box>
-                                                                .{process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "")}{project?.prefix}/:{data?.endpoint || 'endpoint'}</code>
+                                                                <code>{`${window.location.origin.split("//")[0]}//`}<Box as={"span"}>{userId || ""}-{project?.id as string || ""}</Box>
+                                                                .{process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "").replaceAll("apiv1", "")}{project?.prefix}/{data?.endpoint == null ? ":" : ""}{data?.endpoint || 'endpoint'}</code>
                                                                 {
                                                                     data?.endpoint ? <IconButton
                                                                         onClick={handleOpenLink} icon={LinkExternalIcon}
@@ -181,7 +181,7 @@ const MockForm: FC<MockFormProps> = (
                                                     name="code"
                                                     id="code"
                                                     isDisabled={type === 'view'}
-                                                    defaultValue={codeOptions.filter((group: any) => group.options.some((item: any) => item.value === data?.code))[0].options?.find((it: any) => it.value == parseInt(data?.code)) as any || {
+                                                    defaultValue={codeOptions.filter((group: any) => group.options.some((item: any) => item.value === data?.code))[0]?.options?.find((it: any) => it.value == parseInt(data?.code)) as any || {
                                                         value: '200',
                                                         label: '200 - OK',
                                                         highlight: true

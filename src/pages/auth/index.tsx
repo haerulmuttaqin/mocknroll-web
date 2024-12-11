@@ -126,7 +126,7 @@ const Auth: NextPage = () => {
         </Flex>
     );
     else if (status === 'authenticated') {
-        if (secureLocalStorage.getItem("is_login") == false) {
+        if (!secureLocalStorage.getItem("is_login")) {
             onAuth()
         }
     }

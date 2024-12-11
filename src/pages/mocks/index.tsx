@@ -28,6 +28,7 @@ import {useFetchProjects} from "@pages/projects/data/remote";
 import {useFetchMocks} from "@pages/mocks/data/remote";
 import {MockProps} from "@api/data/interfaces/mock";
 import {deleteMock} from "@api/data/services/mock";
+import {Code} from "@atlaskit/code";
 
 const Layout = dynamic(
     () => import('@component/Layout'),
@@ -196,7 +197,7 @@ const ViewProject: NextPage = () => {
                             {(tooltipProps) => (
                                 <Box {...tooltipProps} xcss={xcss({color: "color.text", cursor: "pointer"})}
                                      onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>
-                                    <pre>{row.endpoint}</pre>
+                                    <Code onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{row.endpoint}</Code>
                                 </Box>
                             )}
                         </Tooltip>

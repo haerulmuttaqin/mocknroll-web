@@ -5,7 +5,7 @@ import secureLocalStorage from "react-secure-storage";
 
 const AppThemeProvider = ({children}: any) => {
     return <AppProvider
-        defaultColorMode={(secureLocalStorage.getItem("color_mode") || "dark") as any}>{children}</AppProvider>
+        defaultColorMode={(secureLocalStorage.getItem("color_mode") || "light") as any}>{children}</AppProvider>
 }
 
 export default AppThemeProvider
