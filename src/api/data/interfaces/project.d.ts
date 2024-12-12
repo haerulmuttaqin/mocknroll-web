@@ -10,6 +10,7 @@ interface ProjectProps {
     created_at?: string
     updated_at?: string
     sid?: string
+    dns?: string
 }
 
 interface ProjectFormProps {

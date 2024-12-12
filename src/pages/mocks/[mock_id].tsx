@@ -88,6 +88,7 @@ const Mock: NextPage = () => {
     }
 
     const postMockData = async (params: any) => {
+        let errors = {}
         const payload = {
             name: params.name,
             endpoint: params.endpoint,
@@ -102,6 +103,11 @@ const Mock: NextPage = () => {
         await addMock(payload as any)
             .then((res) => {
                 if (!res.success) {
+                    if (res.errors) {
+                        errors = res.errors
+                    } else {
+                        errors = {}
+                    }
                     dispatch(
                         showFlag({
                             success: false,
@@ -129,6 +135,7 @@ const Mock: NextPage = () => {
                     }) as any
                 );
             })
+        return errors
     }
 
     const getMockById = async (mid: string, pid: string, sid: string) => {

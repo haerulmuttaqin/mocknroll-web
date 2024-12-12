@@ -75,10 +75,18 @@ const MockForm: FC<MockFormProps> = (
                                             <Col sm={12} md={12}>
                                                 {
                                                     project && (
-                                                        <Box testId={"card-message-offset"} xcss={xcss({marginTop: "space.150"})}>
+                                                        <Box testId={"card-message-offset"}
+                                                             xcss={xcss({marginTop: "space.150"})}>
                                                             <Text as={"strong"}>
-                                                                <code>{`${window.location.origin.split("//")[0]}//`}<Box as={"span"}>{userId || ""}-{project?.id as string || ""}</Box>
-                                                                .{process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "").replaceAll("apiv1", "")}{project?.prefix}/{data?.endpoint == null ? ":" : ""}{data?.endpoint || 'endpoint'}</code>
+                                                                <code><Code
+                                                                    onPointerEnterCapture={() => {
+                                                                    }} onPointerLeaveCapture={() => {
+                                                                }}>{`${window.location.origin.split("//")[0]}//`}</Code>{userId || ""}-{project?.id as string || ""}
+                                                                    .<Code
+                                                                        onPointerEnterCapture={() => {
+                                                                        }} onPointerLeaveCapture={() => {
+                                                                    }}>{process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "").replaceAll("apiv1", "")}{project?.prefix}/</Code>{data?.endpoint == null ? ":" : ""}{data?.endpoint || 'endpoint'}
+                                                                </code>
                                                                 {
                                                                     data?.endpoint ? <IconButton
                                                                         onClick={handleOpenLink} icon={LinkExternalIcon}

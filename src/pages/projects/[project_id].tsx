@@ -70,7 +70,8 @@ const Project: NextPage = () => {
             })
     }
 
-    const postDataBillingConf = async (params: any) => {
+    const postProjectData = async (params: any) => {
+        let errors = {}
         const payload = {
             name: params.name,
             prefix: params.prefix,
@@ -86,12 +87,17 @@ const Project: NextPage = () => {
                             message: res.message
                         }) as any
                     );
+                    if (res.errors) {
+                        errors = res.errors
+                    } else {
+                        errors = {}
+                    }
                 } else {
                     dispatch(
                         showFlag({
                             success: true,
                             title: "Successfully saved",
-                            message: "The project has been successfully saved!",
+                            message: "The project has been successfully created!",
                             goBack: true
                         }) as any
                     )
@@ -106,6 +112,7 @@ const Project: NextPage = () => {
                     }) as any
                 );
             })
+        return errors
     }
 
     const getProjectById = async (project_id: string, sheet_id: string) => {
@@ -159,7 +166,7 @@ const Project: NextPage = () => {
                                 setData={setProjectData}
                                 type={action as any || project_id}
                                 onHandleCancel={handleCancel}
-                                onHandleSubmit={action == "edit" ? updateProjectData : postDataBillingConf}
+                                onHandleSubmit={action == "edit" ? updateProjectData : postProjectData}
                             />
                     }
                 </ContentWrapper>

@@ -279,8 +279,8 @@ const ViewProject: NextPage = () => {
                 <DynamicTable
                     emptyView={
                         <EmptyState
-                            header="No Project Yet"
-                            description="Create new project now!"
+                            header="No Endpoint Yet"
+                            description="Create new endpoint now!"
                             headingLevel={3}
                             imageUrl={"../assets/images/empty_x.svg"}
                         />

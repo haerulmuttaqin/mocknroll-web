@@ -30,6 +30,11 @@ export const addProject = async (payload: ProjectPayloadProps): Promise<BaseResp
             return {success: false, message: "An error occurred"}
         }
     } catch (err: any) {
+        if (err.response?.data != undefined) {
+            return err.response?.data
+        } else if (err.response?.errors != undefined) {
+            return err.response?.errors
+        }
         return {success: false, message: err.message}
     }
 };
@@ -47,15 +52,20 @@ export const updateProject = async (id: string, sid: string, idx: number, payloa
             return {success: false, message: "An error occurred"}
         }
     } catch (err: any) {
+        if (err.response?.data != undefined) {
+            return err.response?.data
+        } else if (err.response?.errors != undefined) {
+            return err.response?.errors
+        }
         return {success: false, message: err.message}
     }
 };
 
-export const deleteProject = async (id: string, sid: string, idx: number): Promise<BaseResponse> => {
+export const deleteProject = async (dns: string, sid: string, idx: number): Promise<BaseResponse> => {
     try {
         const {data} = await api({
             method: "DELETE",
-            url: `projects/${sid}/${idx}/${id}`,
+            url: `projects/${sid}/${idx}/${dns}`,
         })
         if (data) {
             return data
@@ -63,6 +73,11 @@ export const deleteProject = async (id: string, sid: string, idx: number): Promi
             return {success: false, message: "An error occurred"}
         }
     } catch (err: any) {
+        if (err.response?.data != undefined) {
+            return err.response?.data
+        } else if (err.response?.errors != undefined) {
+            return err.response?.errors
+        }
         return {success: false, message: err.message}
     }
 };

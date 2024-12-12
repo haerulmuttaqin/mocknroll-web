@@ -63,7 +63,7 @@ const Projects: NextPage = () => {
     }
     const doDelete = async (params: ProjectProps) => {
         closeModalDelete()
-        await deleteProject(params.id as string, params.sid as string, params.idx as any)
+        await deleteProject(params.dns as string, params.sid as string, params.idx as any)
             .then((res: any) => {
                 if (!res.success) {
                     dispatch(

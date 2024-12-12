@@ -31,6 +31,11 @@ export const addMock = async (payload: MockPayloadProps): Promise<BaseResponse> 
             return {success: false, message: "An error occurred"}
         }
     } catch (err: any) {
+        if (err.response?.data != undefined) {
+            return err.response?.data
+        } else if (err.response?.errors != undefined) {
+            return err.response?.errors
+        }
         return {success: false, message: err.message}
     }
 };
@@ -48,6 +53,11 @@ export const updateMock = async (mid: string, pid: string, sid: string, idx: num
             return {success: false, message: "An error occurred"}
         }
     } catch (err: any) {
+        if (err.response?.data != undefined) {
+            return err.response?.data
+        } else if (err.response?.errors != undefined) {
+            return err.response?.errors
+        }
         return {success: false, message: err.message}
     }
 };
@@ -64,6 +74,11 @@ export const deleteMock = async (pid: string, sid: string, idx: number, mid: str
             return {success: false, message: "An error occurred"}
         }
     } catch (err: any) {
+        if (err.response?.data != undefined) {
+            return err.response?.data
+        } else if (err.response?.errors != undefined) {
+            return err.response?.errors
+        }
         return {success: false, message: err.message}
     }
 };

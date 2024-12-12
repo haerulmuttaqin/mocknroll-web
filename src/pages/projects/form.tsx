@@ -36,6 +36,7 @@ const ProjectForm: FC<ProjectFormProps> = (
                                         name="name"
                                         label="Project Name"
                                         defaultValue={data?.name}
+                                        isDisabled={submitting}
                                         isRequired
                                     >
                                         {({fieldProps, error}) => (
@@ -55,6 +56,7 @@ const ProjectForm: FC<ProjectFormProps> = (
                                         name="prefix"
                                         label="Prefix"
                                         defaultValue={data?.prefix}
+                                        isDisabled={submitting}
                                         isRequired
                                     >
                                         {({fieldProps, error}) => (
@@ -72,6 +74,7 @@ const ProjectForm: FC<ProjectFormProps> = (
                                     <Field
                                         label="Project Status"
                                         name="is_active"
+                                        isDisabled={submitting}
                                         defaultValue={data?.is_active ? parseInt(data?.is_active) : 1}
                                     >
                                         {({fieldProps: {value, ...others}}) => (
@@ -95,7 +98,7 @@ const ProjectForm: FC<ProjectFormProps> = (
                                             >
                                                 {type == "edit" ? "Update Change" : "Create Project"}
                                             </LoadingButton>
-                                            <Button onClick={onHandleCancel}>Cancel</Button>
+                                            <Button isDisabled={submitting} onClick={onHandleCancel}>Cancel</Button>
                                         </ButtonGroup>
                                     </FormFooter>
                                 </Box>
