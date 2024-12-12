@@ -16,7 +16,6 @@ import {useDispatch} from "react-redux";
 import Modal, {ModalBody, ModalFooter, ModalHeader, ModalTitle, ModalTransition,} from '@atlaskit/modal-dialog';
 import Tooltip from "@atlaskit/tooltip";
 import {OptionProps} from "@api/data/interfaces";
-import {deleteProject, getProjects} from "@api/data/services/project";
 import DropdownMenu, {DropdownItem, DropdownItemGroup} from "@atlaskit/dropdown-menu";
 import MoreIcon from "@atlaskit/icon/glyph/more";
 import {ProjectProps} from "@api/data/interfaces/project";
@@ -25,25 +24,29 @@ import {filterFlexItemStyle} from "@styles/styles";
 import ContentWrapper from "@component/Layout/common/content-wrapper";
 import Auth from "@protected/auth";
 import {useTranslation} from "next-i18next";
-import Link from "next/link";
 import {useFetchProjects} from "@pages/projects/data/remote";
+import {useFetchMocks} from "@pages/mocks/data/remote";
+import {MockProps} from "@api/data/interfaces/mock";
+import {deleteMock} from "@api/data/services/mock";
+import {Code} from "@atlaskit/code";
 
 const Layout = dynamic(
     () => import('@component/Layout'),
     {ssr: false}
 )
 
-const Projects: NextPage = () => {
+const ViewProject: NextPage = () => {
     const {t} = useTranslation(["common"])
     const dispatch = useDispatch();
     const router = useRouter()
+    const {mid, pid, sid, idx, action} = router.query
     const [statusActive, setConfigTypes] = useState<OptionProps[]>([
         {value: 1, label: "Active"},
         {value: 0, label: "Inactive"},
     ])
     const [filterType, setFilterType] = useState<string>("1")
     const [filterQuery, setFilterQuery] = useState<string>("")
-    const [shouldBeDelete, setShouldBeDelete] = useState<ProjectProps | undefined>()
+    const [shouldBeDelete, setShouldBeDelete] = useState<MockProps | undefined>()
     const onFilterQueryChange = (e: any) => {
         setFilterQuery(e.target.value)
     }
@@ -52,10 +55,17 @@ const Projects: NextPage = () => {
     const closeModalDelete = useCallback(() => setIsOpenAlertDelete(false), []);
 
     const {
+        data: dataMocks,
+        isLoading: isLoadingMocks,
+        mutate: mutateMocks,
+        error: errorMocks
+    } = useFetchMocks(pid as string, sid as string)
+
+    const {
         data: dataProjects,
         isLoading: isLoadingProjects,
-        mutate: mutateProject,
-        error: errorProject
+        mutate: mutateProjects,
+        error: errorProjects
     } = useFetchProjects()
 
     const onFilterTypeChange = (option: any) => {
@@ -63,7 +73,7 @@ const Projects: NextPage = () => {
     }
     const doDelete = async (params: ProjectProps) => {
         closeModalDelete()
-        await deleteProject(params.dns as string, params.sid as string, params.idx as any)
+        await deleteMock(pid as string, sid as string, params.idx as any, params.id as string)
             .then((res: any) => {
                 if (!res.success) {
                     dispatch(
@@ -75,7 +85,7 @@ const Projects: NextPage = () => {
                     );
                 } else {
                     setShouldBeDelete(undefined)
-                    mutateProject()
+                    mutateMocks()
                     dispatch(
                         showFlag({
                             success: true,
@@ -97,15 +107,15 @@ const Projects: NextPage = () => {
             })
     }
     const handleClickNew = () => {
-        router.push("/projects/create")
+        router.push(`/mocks/create/?pid=${pid}&sid=${sid}&idx=${idx}`)
     }
-    const handleOnShow = (project_id: string, sid?: string, idx?: number) => {
-        router.push(`/project?id=${project_id}&sid=${sid}&idx=${idx}`)
+    const handleOnShow = (mid: string, pid?: string, sid?: string, idx?: number) => {
+        router.push(`/mocks/${mid}?action=view&pid=${pid}&sid=${sid}&idx=${idx}`)
     }
-    const handleOnEdit = (project_id: string, sid?: string, idx?: number) => {
-        router.push(`/projects/${project_id}?action=edit&sid=${sid}&idx=${idx}`)
+    const handleOnEdit = (mid: string, pid?: string, sid?: string, idx?: number) => {
+        router.push(`/mocks/${mid}?action=edit&pid=${pid}&sid=${sid}&idx=${idx}`)
     }
-    const handleOpenModalDelete = (params: ProjectProps) => {
+    const handleOpenModalDelete = (params: MockProps) => {
         setShouldBeDelete(params)
         openModalDelete()
     }
@@ -114,11 +124,11 @@ const Projects: NextPage = () => {
     }
 
     useEffect(() => {
-        mutateProject()
+        mutateMocks()
     }, []);
 
     useEffect(() => {
-        if ((dataProjects == undefined) && errorProject) {
+        if ((dataProjects == undefined) && errorMocks) {
             dispatch(
                 showFlag({
                     success: false,
@@ -132,23 +142,23 @@ const Projects: NextPage = () => {
     const head = {
         cells: [
             {
-                key: 'id',
-                content: 'Project Id',
+                key: 'method',
+                content: 'Method',
+                isSortable: true,
+            },
+            {
+                key: 'endpoint',
+                content: 'Endpoint',
                 isSortable: true,
             },
             {
                 key: 'name',
-                content: 'Project Name',
+                content: 'Name',
                 isSortable: true,
             },
             {
-                key: 'prefix',
-                content: 'Prefix',
-                isSortable: true,
-            },
-            {
-                key: 'is_active',
-                content: 'Status',
+                key: 'code',
+                content: 'Code',
                 isSortable: true,
             },
             {
@@ -159,42 +169,47 @@ const Projects: NextPage = () => {
         ],
     };
 
-    const dataWithFilterQuery = (filterQuery == "" ? dataProjects : filterByValue(dataProjects, filterQuery))
-    const dataWithFilterType = (filterType == "1" ? dataWithFilterQuery : dataWithFilterQuery?.filter((filter: ProjectProps) => filter?.is_active == filterType))
+    const dataWithFilterQuery = (filterQuery == "" ? dataMocks : filterByValue(dataMocks, filterQuery))
+    const dataWithFilterType = (filterType == "1" ? dataWithFilterQuery : dataWithFilterQuery.filter((filter: ProjectProps) => filter.is_active == filterType))
     const rows = dataWithFilterType?.map(
-        (row: ProjectProps, index: number) => ({
+        (row: MockProps, index: number) => ({
             key: `row-${index}-${row.id}`,
             isHighlighted: false,
             cells: [
                 {
-                    key: row.id,
+                    key: row.method,
                     content: (
-                        <Link href={`/mocks?pid=${row.id}&sid=${row.sid}&idx=${row.idx}`}>{row.id}</Link>
-                    )
-                },
-                {
-                    key: createKey(row.name?.toString()),
-                    content: (
-                        <Tooltip content={row.name}>
+                        <Tooltip content={row.endpoint}>
                             {(tooltipProps) => (
                                 <Box {...tooltipProps} xcss={xcss({color: "color.text", cursor: "pointer"})}
-                                     onClick={() => handleOnShow(row.id, row.sid)}>
-                                    {row.name}
+                                     onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>
+                                    <Lozenge
+                                        appearance={"success"}>{row.method}</Lozenge>
                                 </Box>
                             )}
                         </Tooltip>
                     ),
                 },
                 {
-                    key: row.prefix,
-                    content: row.prefix
+                    key: createKey(row.endpoint?.toString()),
+                    content: (
+                        <Tooltip content={row.endpoint}>
+                            {(tooltipProps) => (
+                                <Box {...tooltipProps} xcss={xcss({color: "color.text", cursor: "pointer"})}
+                                     onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>
+                                    <Code onPointerEnterCapture={()=>{}} onPointerLeaveCapture={()=>{}}>{row.endpoint}</Code>
+                                </Box>
+                            )}
+                        </Tooltip>
+                    ),
                 },
                 {
-                    key: row.is_active,
-                    content: (
-                        <Lozenge
-                            appearance={row.is_active == "1" ? "success" : "removed"}>{row.is_active == "1" ? "active" : "inactive"}</Lozenge>
-                    ),
+                    key: row.name,
+                    content: row.name
+                },
+                {
+                    key: row.code,
+                    content: row.code
                 },
                 {
                     key: 'MoreDropdown',
@@ -206,8 +221,10 @@ const Projects: NextPage = () => {
                             )}
                             label={`More about ${row.name}`}>
                             <DropdownItemGroup>
-                                <DropdownItem onClick={() => handleOnShow(row.id, row.sid, row.idx)}>View</DropdownItem>
-                                <DropdownItem onClick={() => handleOnEdit(row.id, row.sid, row.idx)}>Edit</DropdownItem>
+                                <DropdownItem
+                                    onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>View</DropdownItem>
+                                <DropdownItem
+                                    onClick={() => handleOnEdit(row.id, row.pid, row.sid, row.idx)}>Edit</DropdownItem>
                                 <DropdownItem
                                     onClick={() => handleOpenModalDelete(row)}>Delete</DropdownItem>
                             </DropdownItemGroup>
@@ -221,10 +238,14 @@ const Projects: NextPage = () => {
 
     return (
         <Layout
-            title="Mock N' Roll Project"
+            title="Project Endpoints"
+            isSideNavOpen={true}
+            isAdmin={true}
+            sidebarList={dataMocks}
+            loadingSidebar={isLoadingMocks}
             renderAction={
                 <ButtonGroup label="Content actions">
-                    <Button appearance="primary" onClick={handleClickNew}>{t("create_new_project")}</Button>
+                    <Button appearance="primary" onClick={handleClickNew}>{t("create_new_endpoint")}</Button>
                 </ButtonGroup>
             }
             renderBottomBar={
@@ -258,8 +279,8 @@ const Projects: NextPage = () => {
                 <DynamicTable
                     emptyView={
                         <EmptyState
-                            header="No Project Yet"
-                            description="Create new project now!"
+                            header="No Endpoint Yet"
+                            description="Create new endpoint now!"
                             headingLevel={3}
                             imageUrl={"../assets/images/empty_x.svg"}
                         />
@@ -268,7 +289,7 @@ const Projects: NextPage = () => {
                     rows={rows}
                     rowsPerPage={10}
                     defaultPage={1}
-                    isLoading={isLoadingProjects}
+                    isLoading={isLoadingMocks}
                     loadingSpinnerSize="large"
                 />
             </ContentWrapper>
@@ -305,4 +326,4 @@ const Projects: NextPage = () => {
     );
 };
 
-export default Auth(Projects);
+export default Auth(ViewProject);

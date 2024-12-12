@@ -43,7 +43,6 @@ const ProfilePopupMenu = () => {
         setColorMode(selectedValue as ColorMode)
         secureLocalStorage.setItem("color_mode", selectedValue)
         setUser(JSON.parse(secureLocalStorage.getItem("user") as string))
-        console.log(selectedLang)
     }, [selectedValue])
 
     const handleProfileSetting = () => {

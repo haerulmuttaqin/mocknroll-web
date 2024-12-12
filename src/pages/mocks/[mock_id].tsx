@@ -4,41 +4,58 @@ import dynamic from 'next/dynamic';
 import {FlagsProvider} from '@atlaskit/flag';
 import {useRouter} from 'next/router';
 import SpinnerLoading from '@component/Spinner';
-import {addProject, updateProject, getProject} from "@api/data/services/project";
-import ProjectForm from './form';
-import {ProjectPayloadProps} from '@api/data/interfaces/project';
+import MockForm from './form';
 import {useDispatch} from "react-redux";
 import {showFlag} from '@store/actions/show-flag';
 import ContentWrapper from "@component/Layout/common/content-wrapper";
+import {useFetchProject} from "@pages/projects/data/remote";
+import {addMock, getMock, updateMock} from "@api/data/services/mock";
+import {MockPayloadProps} from "@api/data/interfaces/mock";
+import {useFetchMocks} from "@pages/mocks/data/remote";
 
 const Layout = dynamic(
     () => import('@component/Layout'),
     {ssr: false}
 )
 
-const Project: NextPage = () => {
+const Mock: NextPage = () => {
     const router = useRouter()
-    const {project_id, sid, idx, action} = router.query
+    const {mock_id, pid, sid, idx, action} = router.query
     const [loading, setLoading] = useState<boolean>(action == "edit");
-    const [projectData, setProjectData] = useState<ProjectPayloadProps>();
+    const [mockData, setMockData] = useState<MockPayloadProps>();
     const dispatch = useDispatch();
+
+    const {
+        data: dataProject,
+        isLoading: isLoadingProject,
+        mutate: mutateProject,
+        error: errorProject
+    } = useFetchProject(pid as string, sid as string)
+
+    const {
+        data: dataMocks,
+        isLoading: isLoadingMocks,
+        mutate: mutateMocks,
+        error: errorMocks
+    } = useFetchMocks(pid as string, sid as string)
 
     const handleCancel = () => {
         router.back()
     }
 
-    const updateProjectData = async (params: any) => {
+    const updateMockData = async (params: any) => {
         const payload = {
-            id: params.id,
             name: params.name,
-            key: params.key,
-            prefix: params.prefix,
+            endpoint: params.endpoint,
+            method: params.method.value,
+            response: params.response,
+            header: params.header,
+            code: params.code.value,
+            sid: sid,
+            pid: pid,
             is_active: params.is_active ? "1" : "0",
-            created_at: params.created_at,
-            updated_at: params.updated_at,
-            sid: params.sid
         }
-        await updateProject(project_id as string, sid as string, idx as any, payload)
+        await updateMock(mock_id as string, pid as string, sid as string, idx as any, payload as any)
             .then((res) => {
                 if (!res.success) {
                     dispatch(
@@ -53,7 +70,7 @@ const Project: NextPage = () => {
                         showFlag({
                             success: true,
                             title: "Successfully Updated",
-                            message: "The project has been successfully updated!",
+                            message: "The endpoint has been successfully updated!",
                             goBack: true
                         }) as any
                     )
@@ -70,16 +87,27 @@ const Project: NextPage = () => {
             })
     }
 
-    const postProjectData = async (params: any) => {
+    const postMockData = async (params: any) => {
         let errors = {}
         const payload = {
             name: params.name,
-            prefix: params.prefix,
+            endpoint: params.endpoint,
+            method: params.method.value,
+            response: params.response,
+            header: params.header,
+            code: params.code.value,
+            sid: sid,
+            pid: pid,
             is_active: params.is_active ? "1" : "0",
         }
-        await addProject(payload)
+        await addMock(payload as any)
             .then((res) => {
                 if (!res.success) {
+                    if (res.errors) {
+                        errors = res.errors
+                    } else {
+                        errors = {}
+                    }
                     dispatch(
                         showFlag({
                             success: false,
@@ -87,17 +115,12 @@ const Project: NextPage = () => {
                             message: res.message
                         }) as any
                     );
-                    if (res.errors) {
-                        errors = res.errors
-                    } else {
-                        errors = {}
-                    }
                 } else {
                     dispatch(
                         showFlag({
                             success: true,
                             title: "Successfully saved",
-                            message: "The project has been successfully created!",
+                            message: "The endpoint has been successfully saved!",
                             goBack: true
                         }) as any
                     )
@@ -115,13 +138,13 @@ const Project: NextPage = () => {
         return errors
     }
 
-    const getProjectById = async (project_id: string, sheet_id: string) => {
+    const getMockById = async (mid: string, pid: string, sid: string) => {
         setLoading(true)
         try {
-            const {data} = await getProject(project_id, sheet_id)
+            const {data} = await getMock(mid, pid, sid)
             setLoading(false)
             if (data?.data != null) {
-                setProjectData(data.data)
+                setMockData(data.data)
             } else {
                 dispatch(
                     showFlag({
@@ -147,26 +170,31 @@ const Project: NextPage = () => {
 
     useEffect(() => {
         if (router.isReady && action != undefined) {
-            getProjectById(project_id as string, sid as string)
+            getMockById(mock_id as string, pid as string, sid as string)
         }
-    }, [router.isReady])
+    }, [router.isReady, mock_id])
 
 
     return (
         <FlagsProvider>
             <Layout
-                title={action == "edit" ? "Edit Project" : "Create Project"}
+                title={loading ? undefined : action == "edit" ? "Edit Endpoint" : action === "view" ? mockData?.name : "Create Endpoint"}
+                description={loading ? undefined : action === "view" ? mockData?.endpoint : undefined}
+                isSideNavOpen={true}
+                isAdmin={true}
+                sidebarList={dataMocks}
             >
                 <ContentWrapper>
                     {
-                        loading
+                        loading || isLoadingProject
                             ? <SpinnerLoading size={"large"}/>
-                            : <ProjectForm
-                                data={projectData as any}
-                                setData={setProjectData}
-                                type={action as any || project_id}
+                            : <MockForm
+                                project={dataProject}
+                                data={mockData as any}
+                                setData={setMockData}
+                                type={action as any || mock_id}
                                 onHandleCancel={handleCancel}
-                                onHandleSubmit={action == "edit" ? updateProjectData : postProjectData}
+                                onHandleSubmit={action == "edit" ? updateMockData : postMockData}
                             />
                     }
                 </ContentWrapper>
@@ -175,4 +203,4 @@ const Project: NextPage = () => {
     );
 };
 
-export default Project;
+export default Mock;

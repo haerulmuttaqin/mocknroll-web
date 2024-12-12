@@ -1,14 +1,7 @@
 "use client";
 import React, {FC, Fragment, useEffect, useState} from 'react';
 import {Content, LeftSidebarState, Main, PageLayout, TopNavigation,} from '@atlaskit/page-layout';
-import {
-    AppSwitcher,
-    AtlassianNavigation,
-    Help,
-    IconButton,
-    PrimaryButton,
-    SignIn
-} from "@atlaskit/atlassian-navigation";
+import {AppSwitcher, AtlassianNavigation, PrimaryButton, SignIn} from "@atlaskit/atlassian-navigation";
 import {NavigationProvider} from "@atlaskit/navigation-next";
 import SideNav from "@component/SideNav";
 import MobileNavigation from "@component/SideNav/Mobile";
@@ -27,7 +20,6 @@ import secureLocalStorage from "react-secure-storage";
 import Tooltip from "@atlaskit/tooltip";
 import DefaultProfile from "@component/Profile";
 import {useSession} from "next-auth/react";
-import Auth from '@protected/auth';
 import {LinkButton} from "@atlaskit/button/new";
 
 const AtlassianProductHome = () => (
@@ -132,27 +124,27 @@ const Layout: FC<LayoutProps> = (
     });
 
     const openHome = () => {
-        router.push("/main")
+        router.replace("/")
     }
 
     const openProject = () => {
-        router.push("/projects")
+        router.replace("/projects")
     }
 
     const openApiDoc = () => {
-        router.push("https://vid-thumb-api.hae.my.id/")
+        router.push(`${process.env.NEXT_PUBLIC_PAGE_URL}/docs`)
     }
 
     const openAbout = () => {
-        router.push("https://vid-thumb-api.hae.my.id/")
+        router.push(`${process.env.NEXT_PUBLIC_PAGE_URL}/about`)
     }
 
     return (
         <FlagsProvider>
             <Head>
-                <title>{`${title || "Video Thumbnail API"}`}</title>
-                <meta property="og:title" content={`ATCS - ${title || "CCTV Indonesia"}`} key="title"/>
-                <meta property="og:url" content={window?.location?.href as string || "https://api-atcs.pasbe.id/"}/>
+                <title>{`${title || process.env.NEXT_PUBLIC_APP_NAME}`}</title>
+                <meta property="og:title" content={`${process.env.NEXT_PUBLIC_APP_NAME} - ${title}`} key="title"/>
+                <meta property="og:url" content={window?.location?.href as string || process.env.NEXT_PUBLIC_PAGE_URL}/>
                 <meta name="robots" content="index, follow"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
                 <meta charSet="UTF-8"/>
@@ -212,7 +204,8 @@ const Layout: FC<LayoutProps> = (
                             }
                             <Content>
                                 {isSideNavOpen &&
-                                    <SideNav menuList={sidebarList} title={sidebarTitle} loading={loadingSidebar}/>}
+                                    <SideNav isAdmin={isAdmin} menuList={sidebarList} title={sidebarTitle}
+                                             loading={loadingSidebar}/>}
                                 <Main>
                                     <BaseContent
                                         isSideNavOpen={isSideNavOpen}

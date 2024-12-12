@@ -1,6 +1,6 @@
 import {ProjectFormProps} from "@api/data/interfaces/project";
 import React, {FC, Fragment} from "react";
-import Form, {ErrorMessage, Field, FormFooter} from '@atlaskit/form';
+import Form, {ErrorMessage, Field, FormFooter, HelperMessage} from '@atlaskit/form';
 import {Box, xcss} from '@atlaskit/primitives';
 import ContainerGrid from "@component/ContainerGrid";
 import {Col, Row} from "react-grid-system";
@@ -9,6 +9,8 @@ import TextField from '@atlaskit/textfield';
 import {ButtonGroup, LoadingButton} from "@atlaskit/button";
 import Button from '@atlaskit/button/new';
 import Toggle from '@atlaskit/toggle';
+import SectionMessage from "@atlaskit/section-message";
+import {Code} from "@atlaskit/code";
 
 
 const ProjectForm: FC<ProjectFormProps> = (
@@ -34,6 +36,7 @@ const ProjectForm: FC<ProjectFormProps> = (
                                         name="name"
                                         label="Project Name"
                                         defaultValue={data?.name}
+                                        isDisabled={submitting}
                                         isRequired
                                     >
                                         {({fieldProps, error}) => (
@@ -53,11 +56,13 @@ const ProjectForm: FC<ProjectFormProps> = (
                                         name="prefix"
                                         label="Prefix"
                                         defaultValue={data?.prefix}
+                                        isDisabled={submitting}
                                         isRequired
                                     >
                                         {({fieldProps, error}) => (
                                             <Fragment>
                                                 <TextField {...fieldProps} type={"text"} placeholder="/api/v1"/>
+                                                <HelperMessage>Add API prefix to all endpoints in this project.</HelperMessage>
                                                 {error && (
                                                     <ErrorMessage>
                                                         {error}
@@ -69,7 +74,8 @@ const ProjectForm: FC<ProjectFormProps> = (
                                     <Field
                                         label="Project Status"
                                         name="is_active"
-                                        defaultValue={data?.is_active || 1}
+                                        isDisabled={submitting}
+                                        defaultValue={data?.is_active ? parseInt(data?.is_active) : 1}
                                     >
                                         {({fieldProps: {value, ...others}}) => (
                                             <Toggle
@@ -92,7 +98,7 @@ const ProjectForm: FC<ProjectFormProps> = (
                                             >
                                                 {type == "edit" ? "Update Change" : "Create Project"}
                                             </LoadingButton>
-                                            <Button onClick={onHandleCancel}>Cancel</Button>
+                                            <Button isDisabled={submitting} onClick={onHandleCancel}>Cancel</Button>
                                         </ButtonGroup>
                                     </FormFooter>
                                 </Box>

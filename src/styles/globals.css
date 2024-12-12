@@ -211,3 +211,15 @@ div[class*="-ActionsWrapper"] {
     display: inline-flex;
     margin-block-start: 0;
 }
+
+#sidebar-loading {
+    margin-top: -60px;
+}
+
+/*[data-testid="card-offset"] {*/
+/*    margin-left: -18px !important;*/
+/*}*/
+/*[data-testid="card-message-offset"] {*/
+/*    margin-left: -18px !important;*/
+/*    margin-bottom: 20px !important;*/
+/*}*/

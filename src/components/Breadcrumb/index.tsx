@@ -25,7 +25,7 @@ const AppBreadcrumb = ({capitalizeLinks}: BreadcrumbProps) => {
     const router = useRouter()
 
     const paths = usePathname()
-    const pathNames = paths.split('/').filter(path => path)
+    const pathNames = paths?.split('/').filter(path => path)
 
     const handleClick = (href: string) => {
         router.push(href)
@@ -37,7 +37,7 @@ const AppBreadcrumb = ({capitalizeLinks}: BreadcrumbProps) => {
         <Breadcrumbs>
             <BreadcrumbsItem text="" iconBefore={<HomeIcon size="small" label={"home"} />} key="ATCS" onClick={() => handleClick("/")}/>
             {
-                pathNames.map((link, index) => {
+                pathNames?.map((link, index) => {
                     let href = `/${pathNames.slice(0, index + 1).join('/')}`
                     let itemLink = capitalizeLinks ? link[0].toUpperCase() + link.slice(1, link.length) : link
                     if (isNumeric(itemLink) && action == "edit") {

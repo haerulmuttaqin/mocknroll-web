@@ -27,6 +27,7 @@ export const actionSignIn = async (data: SignInProps): Promise<BaseResponse> => 
             secureLocalStorage.setItem("user", JSON.stringify(data?.data))
             return {success: true, message: "Login Successfully"}
         } else {
+            secureLocalStorage.setItem("is_login", false)
             return {success: false, message: "An error occurred"}
         }
     } catch (err: any) {

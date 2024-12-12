@@ -1,6 +1,6 @@
 'use client'
 /** @jsxImportSource @emotion/react */
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {NextPage} from "next";
 import dynamic from "next/dynamic";
 import {FlagsProvider} from "@atlaskit/flag";
@@ -9,17 +9,17 @@ import Grid, {GridItem} from "@atlaskit/grid";
 import Heading from "@atlaskit/heading";
 import ContentWrapper from "@component/Layout/common/content-wrapper";
 import {useTranslation} from "next-i18next";
-import {useSession} from "next-auth/react";
+import {signOut, useSession} from "next-auth/react";
 import Button from "@atlaskit/button/new";
 import {cardBasicStyle, cardStyle} from "@component/Common/style-util";
 import {SpinnerWrapper} from "@atlaskit/media-ui/modalSpinner";
 import SpinnerLoading from "@component/Spinner";
 import {useRouter} from "next/router";
-import secureLocalStorage from "react-secure-storage";
 import {actionSignIn} from "@api/data/services/auth";
 import {useDispatch} from "react-redux";
 import {showFlag} from '@store/actions/show-flag';
 import CheckAuth from '@protected/check-auth';
+import secureLocalStorage from "react-secure-storage";
 
 const Layout = dynamic(
     () => import('@component/Layout'),
@@ -69,7 +69,6 @@ const GithubSVG = () => (
 const Auth: NextPage = () => {
     const {t} = useTranslation(['common'])
     const dispatch = useDispatch();
-    const router = useRouter()
     const {data: session, status} = useSession();
 
     const popupCenter = (url: string, title: string) => {
@@ -111,7 +110,7 @@ const Auth: NextPage = () => {
                 if (!res.success) {
                     showError(res)
                 } else {
-                    router.push("/projects")
+                    window.location.href = window.location.protocol + "//" + window.location.host + "/projects"
                 }
             })
             .catch((err) => {
@@ -127,14 +126,16 @@ const Auth: NextPage = () => {
         </Flex>
     );
     else if (status === 'authenticated') {
-        onAuth()
+        if (!secureLocalStorage.getItem("is_login")) {
+            onAuth()
+        }
     }
 
     const showError = (err: any) => {
         dispatch(
             showFlag({
                 success: false,
-                title: "Login failed, " + err || "An error occurred!",
+                title: "Login failed",
                 message: err.message
             }) as any
         );
