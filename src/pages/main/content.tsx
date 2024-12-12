@@ -1,13 +1,11 @@
 import React, {FC, Fragment, useState} from 'react';
 
 import {Box, xcss} from "@atlaskit/primitives";
-import {useTranslation} from "next-i18next";
 import {showFlag} from "@/store/actions/show-flag";
 import {useDispatch} from "react-redux";
 import Grid from "@atlaskit/grid";
 
-const Content: FC<any> = (props) => {
-    const {t} = useTranslation(['common'])
+const Content: FC<any> = () => {
     const dispatch = useDispatch()
     const [thumbnail, setThumbnail] = useState<string>("")
 
