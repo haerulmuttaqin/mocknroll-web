@@ -234,3 +234,35 @@ div[class*="-ActionsWrapper"] {
 #landing-body {
     font-family: "Charlie Text", -apple-system, "BlinkMacSystemFont", "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif;
 }
+
+.gradient-bottom {
+    height: 400px;
+    margin-top: -350px;
+    background-image: linear-gradient(180deg, rgba(228, 245, 240, 0) 70.19%, rgba(179, 245, 255, 0.28) 102.77%);
+    background-repeat: no-repeat;
+}
+
+.terminal {
+    background-image: url("http://localhost:3001/assets/images/terminal.gif");
+    background-size: contain;
+    position: absolute;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+}
+
+#terminal-container {
+    display: inline-block;
+    overflow: hidden;
+    /*height: 420px;*/
+}
+
+#terminal-container #image__card-terminal {
+    display: block;
+    transition: transform .2s;
+}
+
+#container__card-terminal #image__card-terminal {
+    transform: scale(1.041) translateY(-10px) translateX(-1px);
+}

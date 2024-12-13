@@ -36,8 +36,8 @@ const LandingPageLayout: FC<LandingPageLayoutProps> = (
     return (
         <Box id={'landing-body'}>
             <Head>
-                <title>{`${process.env.NEXT_PUBLIC_APP_NAME} ${title || ''}`}</title>
-                <meta property="og:title" content={`${process.env.NEXT_PUBLIC_APP_NAME} ${title || ''}`}
+                <title>{`${process.env.NEXT_PUBLIC_APP_NAME} - ${title || ''}`}</title>
+                <meta property="og:title" content={`${process.env.NEXT_PUBLIC_APP_NAME} - ${title || ''}`}
                       key="title"/>
             </Head>
             <NavigationProvider initialUIController={{isResizeDisabled: true}}>
