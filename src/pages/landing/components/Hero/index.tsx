@@ -16,13 +16,13 @@ const LandingPageHero = () => {
             })}>
                 <ContentWrapper>
                     <Box xcss={xcss({
-                        paddingTop: "space.1000",
+                        paddingTop: "space.800",
                         paddingBottom: "space.1000",
                         textAlign: "center"
                     })}>
-                        <Heading level={"h900"}>
+                        <div className={"heading"} style={{fontSize: "35px", fontWeight: "500", letterSpacing: "-0.03em"}}>
                             Build a world class developer experience
-                        </Heading>
+                        </div>
                         <Box xcss={xcss({paddingTop: "space.100"})}>
                             <Text size={"large"}>
                                 Create your ultimate developer experience in days, not months, with easy onboarding and
@@ -30,7 +30,7 @@ const LandingPageHero = () => {
                                 maintenance costs.
                             </Text>
                         </Box>
-                        <Box xcss={xcss({paddingTop: "space.400", textAlign: "center"})}>
+                        <Box xcss={xcss({paddingTop: "space.400", textAlign: "center", marginBottom: "space.200"})}>
                             <Button appearance="primary">Create Project Now</Button>
                             &nbsp;
                             &nbsp;

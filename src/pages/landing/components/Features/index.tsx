@@ -2,12 +2,10 @@
 
 import {Box, Stack, xcss, Text, Flex} from "@atlaskit/primitives"
 import Heading from "@atlaskit/heading";
-import Button from "@atlaskit/button/new";
 import ContainerGrid from "@components/ContainerGrid";
 import {Col, Row} from "react-grid-system";
-import ContentWrapper from "@component/Layout/common/content-wrapper";
-import Image from "next/image";
-import {useState} from "react";
+import Image from "@atlaskit/image";
+import LandingWrapper from "@pages/landing/components/Layout/landing-wrapper";
 
 const cardStyle = xcss({
     margin: "space.100",
@@ -33,17 +31,17 @@ interface FeatureProps {
 const features: FeatureProps[] = [
     {
         title: "Free & Unlimited",
-        desc: "Mocky is free to use, no ads, no hidden subscriptions or service limits. Your mocks will be available forever",
+        desc: "Mock N' Roll is free to use, no ads, no hidden subscriptions or service limits. Your mocks will be available forever",
         image: "https://wac-cdn-bfldr.atlassian.com/K3MHR9G8/at/mk553cskk88f65k68cbsk353/Icon-Checkmark.svg"
     },
     {
         title: "Developer Friendly",
-        desc: "Mocky is compatible with JS, Mobile and Server applications, featuring CORS, JSONP and GZIP responses. No authentication, just call it!",
+        desc: "Mock N' Roll is compatible with JS, Mobile and Server applications, featuring CORS, JSONP and GZIP responses. No authentication, just call it!",
         image: "https://wac-cdn-bfldr.atlassian.com/K3MHR9G8/at/gb5s8vfb4rvbmpf8nncg2h/Icon-Certification.svg"
     },
     {
         title: "Total control",
-        desc: "New in Mocky, you can now update or delete your mocks at any time. The next release will go further and offer you request inspector.",
+        desc: "New in Mock N' Roll, you can now update or delete your mocks at any time. The next release will go further and offer you request inspector.",
         image: "https://wac-cdn-bfldr.atlassian.com/K3MHR9G8/at/2qmscb2qr53mwvhxm9rw6spk/Icon-Chat.svg"
     },
     {
@@ -56,45 +54,33 @@ const features: FeatureProps[] = [
 const LandingFeatures = () => {
 
     return (
-        <div style={{marginTop: "-100px"}}>
-            <ContentWrapper>
+        <div style={{marginTop: "100px"}}>
+            <LandingWrapper>
                 <ContainerGrid>
                     <Row>
-                        {
-                            features.map((item: FeatureProps, index: number) =>
-                                <Col key={`${item.title}-${index}`} sm={12} md={6} lg={3} xl={3} xxl={2}>
-                                    <Box xcss={cardStyle}>
-                                        <div style={{minHeight: "16rem", overflow: "hidden"}}>
-                                            <Box
-                                                xcss={xcss({
-                                                    paddingTop: "space.150",
-                                                    paddingLeft: "space.200",
-                                                    paddingRight: "space.200",
-                                                    paddingBottom: "space.300",
-                                                })}
-                                            >
-                                                <Stack space="space.200">
-                                                    <Image
-                                                        src={item.image}
-                                                        alt={""} width={70} height={70}/>
-                                                    <Heading level={"h600"}>
-                                                        {item.title}
-                                                    </Heading>
-                                                    <Stack space="space.100" grow="fill">
-                                                        <Text size={"medium"}>
-                                                            {item.desc}
-                                                        </Text>
-                                                    </Stack>
-                                                </Stack>
-                                            </Box>
-                                        </div>
-                                    </Box>
-                                </Col>
-                            )
-                        }
+                        <Col sm={12} md={4} lg={4}>
+                            <br/>
+                            <br/>
+                            <Heading level={"h800"}>
+                                Get Your Custom Endpoint
+                            </Heading>
+                            <br/>
+                            <Stack space="space.100" grow="fill">
+                                <Text size={"medium"}>
+                                    Unlock the power of tailored solutions with our Custom Endpoint service. Easily
+                                    create and manage endpoints that fit your unique requirements, ensuring seamless
+                                    integration and optimal performance for your applications. Elevate your capabilities
+                                    and streamline your workflow with precision-engineered endpoints designed just for
+                                    you
+                                </Text>
+                            </Stack>
+                        </Col>
+                        <Col sm={12} md={8} lg={8}>
+                            <Image src={"./assets/images/Catalog_Activity.webp"} alt={"Custom Endpoint"}/>
+                        </Col>
                     </Row>
                 </ContainerGrid>
-            </ContentWrapper>
+            </LandingWrapper>
         </div>
     )
 }

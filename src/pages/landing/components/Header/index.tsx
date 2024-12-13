@@ -12,7 +12,7 @@ import {LinkButton} from "@atlaskit/button/new";
 import secureLocalStorage from "react-secure-storage";
 import {Box, Inline, media, Text, xcss} from "@atlaskit/primitives";
 import Link from "next/link";
-import Heading from "@atlaskit/heading";
+import '@/styles/landing.module.css'
 
 const navStyle = xcss({
     borderBottomWidth: "1px",
@@ -23,7 +23,7 @@ const navStyle = xcss({
 
 const navContainerStyle = xcss({
     height: "auto",
-    width: "1200px",
+    width: "80rem",
     maxWidth: "100%",
     left: "space.0",
     right: "space.0",
@@ -54,7 +54,7 @@ const LandingPageNavigation = () => {
                 <AtlassianNavigation
                     label="site"
                     primaryItems={[
-                        <PrimaryButton key={0}><span style={{fontSize: "18px", fontWeight: "bold"}}>🤘 Mock N&apos; Roll</span></PrimaryButton>,
+                        <PrimaryButton key={0}><span className={'charlie-text'} style={{fontSize: "18px", fontWeight: "600"}}>🤘 Mock N&apos; Roll</span></PrimaryButton>,
                         <PrimaryButton key={1}>About</PrimaryButton>,
                     ]}
                     renderProductHome={AtlassianProductHome}
