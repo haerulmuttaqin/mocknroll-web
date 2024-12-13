@@ -2,7 +2,6 @@ import {Box, media, Text, xcss} from '@atlaskit/primitives';
 import {LayoutProps} from "@component/Layout/layout";
 import React, {FC, useEffect} from "react";
 import PageHeader from "@atlaskit/page-header";
-import BreadcrumbList from "../Breadcrumb";
 import {useDispatch, useSelector} from "react-redux";
 import {useFlags} from '@atlaskit/flag';
 import SuccessIcon from "@atlaskit/icon/glyph/check-circle";
@@ -109,7 +108,6 @@ const LandingPageContent: FC<LayoutProps> = (
                 (
                     shouldShowBreadcrumbs ?
                         <PageHeader
-                            breadcrumbs={BreadcrumbList()}
                             actions={renderAction}
                             bottomBar={renderBottomBar}
                         >
