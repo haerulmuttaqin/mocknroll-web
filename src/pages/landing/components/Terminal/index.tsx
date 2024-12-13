@@ -1,12 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
-import {Box, Stack, xcss, Text, Flex} from "@atlaskit/primitives"
+import {Box, xcss} from "@atlaskit/primitives"
 import Heading from "@atlaskit/heading";
-import ContainerGrid from "@components/ContainerGrid";
-import {Col, Row} from "react-grid-system";
 import Image from "@atlaskit/image";
 import LandingWrapper from "@pages/landing/components/Layout/landing-wrapper";
-import {ImageContainer, TerminalContainer} from "@component/ContainerImage";
+import {TerminalContainer} from "@component/ContainerImage";
 
 const cardStyle = xcss({
     margin: "space.100",
