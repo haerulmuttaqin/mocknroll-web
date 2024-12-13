@@ -41,3 +41,9 @@ export interface LayoutCommonProps {
 interface ModulePermissionProps {
 
 }
+
+export interface LandingPageLayoutProps {
+    children: ReactNode;
+    title: string;
+    description?: string;
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="22px" viewBox="0 0 23 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M6.17405626,11.2954373 C5.83096075,10.9231663 5.25104161,10.8995149 4.87877062,11.2426104 C4.50649963,11.5857059 4.48284823,12.1656251 4.82594374,12.537896 L8.13704488,16.1305601 C8.62978096,16.612804 9.36325093,16.612804 9.818543,16.1575119 C9.87469198,16.1023812 9.87469198,16.1023812 10.1524373,15.8292436 C10.4224383,15.5636696 10.7232861,15.2675935 11.0472722,14.9485436 C11.9729796,14.0369401 12.8987017,13.1238183 13.7628074,12.2693684 L13.7997731,12.2328144 C15.3349909,10.7146342 16.5003438,9.55501093 17.1526182,8.89371369 C17.5081314,8.53328263 17.5041447,7.95289509 17.1437137,7.59738184 C16.7832826,7.24186858 16.2028951,7.24585525 15.8473818,7.60628631 C15.2022284,8.26036417 14.0404757,9.41640495 12.5106643,10.9292387 L12.473749,10.9657429 C11.6106413,11.819206 10.6857775,12.7314811 9.76089912,13.6422682 C9.49468434,13.9044269 9.2441095,14.151057 9.01346421,14.377969 L6.17405626,11.2954373 Z" id="path-1"></path>
+    </defs>
+    <g id="Bundles-Final" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Jira-Bundle---States" transform="translate(-701.000000, -407.000000)">
+            <g id="Group" transform="translate(701.311608, 407.000000)">
+                <circle id="Oval" fill="#0052CC" cx="11" cy="11" r="11"></circle>
+                <g id="global/check" transform="translate(0.125000, 0.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Page-1" fill="#54E70A" fill-rule="nonzero" xlink:href="#path-1"></use>
+                    <g id="Neutral-/-N000" mask="url(#mask-2)" fill="#FFFFFF" fill-rule="evenodd">
+                        <polygon id="N0" points="0 22 22 22 22 0 0 0"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

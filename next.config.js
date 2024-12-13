@@ -34,6 +34,18 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
+                hostname: 'wac-cdn-bfldr.atlassian.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'wac-cdn.atlassian.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
                 hostname: 'lh3.googleusercontent.com',
                 port: '',
                 pathname: '/a/**',
