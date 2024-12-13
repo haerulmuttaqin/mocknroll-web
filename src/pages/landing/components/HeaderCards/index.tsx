@@ -15,10 +15,11 @@ const cardStyle = xcss({
     margin: "space.100",
     backgroundColor: "elevation.surface.raised",
     boxShadow: "elevation.shadow.raised",
-    borderRadius: "border.radius.100",
+    borderRadius: "border.radius.200",
     transition: "200ms",
     ":hover": {
         backgroundColor: "elevation.surface.hovered",
+        boxShadow: "elevation.shadow.overlay",
         cursor: "pointer",
     },
     ':active': {
@@ -58,7 +59,7 @@ const features: FeatureProps[] = [
 const LandingHeaderCards = () => {
 
     return (
-        <div style={{marginTop: "-100px"}}>
+        <div style={{marginTop: "-160px"}}>
             <LandingWrapper>
                 <ContainerGrid>
                     <Row>

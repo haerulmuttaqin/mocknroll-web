@@ -18,3 +18,16 @@ export const ImageContainer: FC<ImageContainerProps> = ({children, noBorder}) =>
     }
     return <Box id={"image-container"} xcss={boxStyles}>{children}</Box>;
 };
+
+
+export const TerminalContainer: FC<ImageContainerProps> = ({children}) => {
+    let boxStyles = xcss({
+        width: "100%",
+        textAlign: "center",
+        borderWidth: "border.width",
+        borderColor: "color.border",
+        borderRadius: "border.radius.200",
+        borderStyle: "solid"
+    });
+    return <Box id={"terminal-container"} xcss={boxStyles}>{children}</Box>;
+};

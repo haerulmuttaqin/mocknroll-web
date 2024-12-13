@@ -41,7 +41,7 @@ const AtlassianProductHome = () => (
 const DefaultAppSwitcher = () => <AppSwitcher tooltip="Switch to..." href="/overviews"/>;
 const DefaultSettings = () => <Settings tooltip="Product settings"/>;
 const ButtonSignIn = () => <LinkButton appearance="primary" href="/auth">Login</LinkButton>;
-const ButtonDashboard = () => <LinkButton href="/overviews">My Dashboard</LinkButton>;
+const ButtonDashboard = () => <LinkButton href="/projects">My Projects</LinkButton>;
 
 const LandingPageNavigation = () => {
     const [isLogin, setIsLogin] = useState<boolean>()

@@ -16,7 +16,7 @@ const LandingPageHero = () => {
             })}>
                 <ContentWrapper>
                     <Box xcss={xcss({
-                        paddingTop: "space.800",
+                        paddingTop: "space.300",
                         paddingBottom: "space.1000",
                         textAlign: "center"
                     })}>
@@ -30,7 +30,7 @@ const LandingPageHero = () => {
                                 maintenance costs.
                             </Text>
                         </Box>
-                        <Box xcss={xcss({paddingTop: "space.400", textAlign: "center", marginBottom: "space.200"})}>
+                        <Box xcss={xcss({paddingTop: "space.400", textAlign: "center", marginBottom: "space.1000"})}>
                             <Button appearance="primary">Create Project Now</Button>
                             &nbsp;
                             &nbsp;

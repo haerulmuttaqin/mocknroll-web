@@ -5,6 +5,7 @@ import LandingPageHero from "@/pages/landing/components/Hero";
 import LandingHeaderCards from "@pages/landing/components/HeaderCards";
 import LandingFeatures from "@pages/landing/components/Features";
 import Footer from "@component/Footer";
+import LandingTerminal from "@pages/landing/components/Terminal";
 
 const LandingPageLayout = dynamic(
     () => import('./components/Layout/index'),
@@ -16,10 +17,8 @@ export default function LandingPage() {
         <LandingPageLayout title={"Generate your mock API"}>
             <LandingPageHero/>
             <LandingHeaderCards/>
+            <LandingTerminal />
             <LandingFeatures/>
-            <br/>
-            <br/>
-            <br/>
             <Footer/>
         </LandingPageLayout>
     );
