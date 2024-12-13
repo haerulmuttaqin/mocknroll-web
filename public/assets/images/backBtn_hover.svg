@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36" viewBox="0 0 36 36">
+  <defs>
+    <rect id="backbtn_hover-a" width="36" height="36" x="0" y="0" rx="3"/>
+    <path id="backbtn_hover-c" d="M8.41421356,11.5 L18,11.5 C18.5522847,11.5 19,11.9477153 19,12.5 C19,13.0522847 18.5522847,13.5 18,13.5 L8.41421356,13.5 L12.2071068,17.2928932 C12.5976311,17.6834175 12.5976311,18.3165825 12.2071068,18.7071068 C11.8165825,19.0976311 11.1834175,19.0976311 10.7928932,18.7071068 L5.29289322,13.2071068 C4.90236893,12.8165825 4.90236893,12.1834175 5.29289322,11.7928932 L10.7928932,6.29289322 C11.1834175,5.90236893 11.8165825,5.90236893 12.2071068,6.29289322 C12.5976311,6.68341751 12.5976311,7.31658249 12.2071068,7.70710678 L8.41421356,11.5 Z"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <mask id="backbtn_hover-b" fill="#fff">
+      <use xlink:href="#backbtn_hover-a"/>
+    </mask>
+    <use fill="#FFF" fill-opacity="0" xlink:href="#backbtn_hover-a"/>
+    <g fill="#091E42" fill-opacity=".08" mask="url(#backbtn_hover-b)">
+      <polygon points="0 36 36 36 36 0 0 0"/>
+    </g>
+    <g transform="translate(6 6)">
+      <mask id="backbtn_hover-d" fill="#fff">
+        <use xlink:href="#backbtn_hover-c"/>
+      </mask>
+      <g fill="#42526E" mask="url(#backbtn_hover-d)">
+        <polygon points="0 24 24 24 24 0 0 0"/>
+      </g>
+    </g>
+  </g>
+</svg>
