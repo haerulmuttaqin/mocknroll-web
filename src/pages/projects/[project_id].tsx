@@ -10,6 +10,7 @@ import {ProjectPayloadProps} from '@api/data/interfaces/project';
 import {useDispatch} from "react-redux";
 import {showFlag} from '@store/actions/show-flag';
 import ContentWrapper from "@component/Layout/common/content-wrapper";
+import Auth from '@protected/auth';
 
 const Layout = dynamic(
     () => import('@component/Layout'),
@@ -175,4 +176,4 @@ const Project: NextPage = () => {
     );
 };
 
-export default Project;
+export default Auth(Project);
