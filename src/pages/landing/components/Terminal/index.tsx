@@ -27,19 +27,31 @@ const LandingTerminal = () => {
         <div style={{marginTop: "40px"}}>
             <LandingWrapper>
                 <Box id={"container__card-terminal"} xcss={xcss({
-                    padding: "space.300",
+                    padding: "space.200",
                     textAlign: "center"
                 })}>
                     <TerminalContainer>
+                        <div id="bar">
+                            <Image
+                                style={{
+                                    width: "auto",
+                                    height: "70px",
+                                    marginTop: "-23px"
+                                }}
+                                src={"./assets/images/three-dots.svg"}
+                                alt={"terminal-bar"}
+                            />
+                        </div>
                         <Image
                             id="image__card-terminal"
                             style={{
                                 width: "100%",
+                                height: "100%",
                                 objectFit: "cover",
-                                objectPosition: "70% center",
-                                scale: 1.043,
+                                objectPosition: "top",
+                                backgroundColor: "#282a36"
                             }}
-                            src={"./assets/images/terminal.gif"}
+                            src={"./assets/images/demo-terminal.gif"}
                             alt={"terminal"}
                             testId="image"
                         />

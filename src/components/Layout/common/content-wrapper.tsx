@@ -3,25 +3,28 @@
 import React from 'react';
 import {css} from "@emotion/react";
 
-const breakpoints = [576, 768, 992, 1200, 2140]
+const breakpoints = [270, 576, 768, 992, 1200, 2140]
 const mediaQuery = breakpoints.map(bp => `@media (min-width: ${bp}px)`)
 const ContentWrapper = ({children}: any) => {
     return (
         <div id={"content-wrapper"} css={
             css({
                 [mediaQuery[0]]: {
-                    paddingInline: "2rem",
+                    paddingInline: "1rem",
                 },
                 [mediaQuery[1]]: {
-                    paddingInline: "4rem",
+                    paddingInline: "2rem",
                 },
                 [mediaQuery[2]]: {
-                    paddingInline: "6rem",
+                    paddingInline: "4rem",
                 },
                 [mediaQuery[3]]: {
-                    paddingInline: "8rem",
+                    paddingInline: "6rem",
                 },
                 [mediaQuery[4]]: {
+                    paddingInline: "8rem",
+                },
+                [mediaQuery[5]]: {
                     paddingInline: "11rem",
                 },
             })

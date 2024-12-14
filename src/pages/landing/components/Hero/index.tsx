@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
 
 import {Box, Stack, xcss, Text, Flex} from "@atlaskit/primitives"
-import Heading from "@atlaskit/heading";
 import Button from "@atlaskit/button/new";
-import ContentWrapper from "@component/Layout/common/content-wrapper";
+import LandingWrapper from "@pages/landing/components/Layout/landing-wrapper";
+import {useRouter} from "next/router";
 
 const LandingPageHero = () => {
+    const router = useRouter()
     return (
         <>
             <Box xcss={xcss({
@@ -14,7 +15,7 @@ const LandingPageHero = () => {
                 backgroundSize: "cover",
                 backgroundImage: 'url("./assets/images/bg-hero.svg")'
             })}>
-                <ContentWrapper>
+                <LandingWrapper>
                     <Box xcss={xcss({
                         paddingTop: "space.300",
                         paddingBottom: "space.1000",
@@ -31,13 +32,13 @@ const LandingPageHero = () => {
                             </Text>
                         </Box>
                         <Box xcss={xcss({paddingTop: "space.400", textAlign: "center", marginBottom: "space.1000"})}>
-                            <Button appearance="primary">Create Project Now</Button>
+                            <Button onClick={()=>router.push("/projects/create")} appearance="primary">Create Project Now</Button>
                             &nbsp;
                             &nbsp;
-                            <Button appearance="subtle">Sign Up</Button>
+                            <Button onClick={()=>router.push("/auth")} appearance="subtle">Sign Up</Button>
                         </Box>
                     </Box>
-                </ContentWrapper>
+                </LandingWrapper>
             </Box>
         </>
     )
