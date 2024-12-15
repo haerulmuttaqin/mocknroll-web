@@ -1,6 +1,6 @@
 'use client'
 /** @jsxImportSource @emotion/react */
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import type {NextPage} from "next";
 import dynamic from "next/dynamic";
 import {FlagsProvider} from "@atlaskit/flag";
@@ -69,6 +69,7 @@ const GithubSVG = () => (
 const Auth: NextPage = () => {
     const {t} = useTranslation(['common'])
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const {data: session, status} = useSession();
 
     const popupCenter = (url: string, title: string) => {
@@ -99,6 +100,7 @@ const Auth: NextPage = () => {
     };
 
     const onAuth = async () => {
+        setIsLoading(true)
         const payload = {
             email: session?.user?.email as string,
             name: session?.user?.name as string,
@@ -107,6 +109,7 @@ const Auth: NextPage = () => {
         }
         await actionSignIn(payload)
             .then((res) => {
+                setIsLoading(false)
                 if (!res.success) {
                     showError(res)
                 } else {
@@ -114,11 +117,12 @@ const Auth: NextPage = () => {
                 }
             })
             .catch((err) => {
+                setIsLoading(false)
                 showError(err)
             })
     };
 
-    if (status === 'loading') return (
+    if (status === 'loading' || isLoading) return (
         <Flex>
             <SpinnerWrapper>
                 <SpinnerLoading size={"large"}/>
@@ -159,9 +163,12 @@ const Auth: NextPage = () => {
                                     })}>
                                         <Flex direction={"column"} gap={"space.100"} justifyContent={"center"}>
                                             <Heading level="h800">
-                                                Mock N Roll
+                                                <span className={'charlie-text'}
+                                                      style={{
+                                                          marginInlineEnd: "20px"
+                                                      }}>🤘 Mock N&apos; Roll</span>
                                             </Heading>
-                                            <Text>Sign In to continue</Text>
+                                            <Text>Sign in to continue managing your magic Mocks API.</Text>
                                             <br/>
                                             <Button
                                                 onClick={() => popupCenter("/google-signin", "Google Sign In")}>
