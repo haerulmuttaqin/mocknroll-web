@@ -269,6 +269,7 @@ div[class*="-ActionsWrapper"] {
     font-size: 40px;
     text-align: center;
 }
+
 #bar {
     width: 100%;
     height: 25px;
@@ -282,6 +283,21 @@ div[class*="-ActionsWrapper"] {
     border-top-left-radius: 5px;
     text-align: left;
 }
+
+#bar-night {
+    width: 100%;
+    height: 25px;
+    background-color: #282a36;
+    margin: 0 auto;
+    font-family: monospace;
+    padding: inherit;
+    float: none;
+    padding-inline-start: 10px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    text-align: left;
+}
+
 #red {
     background-color: #E94B35;
     border-radius: 100%;
@@ -290,8 +306,9 @@ div[class*="-ActionsWrapper"] {
     margin: 0 auto;
     left: -210px;
     bottom: -20%;
-    position:relative;
+    position: relative;
 }
+
 #yellow {
     background-color: #f0f000;
     border-radius: 100%;
@@ -300,9 +317,10 @@ div[class*="-ActionsWrapper"] {
     margin: 0 auto;
     left: -190px;
     bottom: 40%;
-    position:relative;
+    position: relative;
     display: block;
 }
+
 #green {
     background-color: #1AAF5C;
     border-radius: 100%;
@@ -311,9 +329,10 @@ div[class*="-ActionsWrapper"] {
     margin: 0 auto;
     left: -170px;
     bottom: 99%;
-    position:relative;
+    position: relative;
     display: block;
 }
+
 #screen {
     background-color: #33485E;
     width: 750px;
@@ -326,3 +345,46 @@ div[class*="-ActionsWrapper"] {
 /*#container__card-terminal #image__card-terminal {*/
 /*    transform: scale(1.1) translateY(-10px) translateX(-1px);*/
 /*}*/
+
+.cm-editor {
+    border-radius: 3px;
+}
+
+.json-editor-light > .cm-editor {
+    background-color: #FAFBFC !important;
+}
+
+.json-editor-light {
+    border-color: #b6bfcb !important;
+    border-width: 1px !important;
+    border-radius: 3px !important;
+    border-style: solid !important;
+}
+
+.json-editor-light > .cm-focused {
+    border-color: #1D7AFC !important;
+    border-width: 1px !important;
+    border-radius: 3px !important;
+    border-style: solid !important;
+    outline: 1px #1D7AFC solid !important;
+}
+
+.json-editor-night > div.cm-editor {
+    background-color: #22272b !important;
+}
+
+.json-editor-night {
+    background-color: #FAFBFC !important;
+    border-color: #55616e !important;
+    border-width: 1px !important;
+    border-radius: 3px !important;
+    border-style: solid !important;
+}
+
+.json-editor-night > .cm-focused {
+    border-color: #85B8FF !important;
+    border-width: 1px !important;
+    border-radius: 3px !important;
+    border-style: solid !important;
+    outline: 1px #85B8FF solid !important;
+}

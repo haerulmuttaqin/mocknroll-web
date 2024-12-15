@@ -1,5 +1,6 @@
 import React, {FC} from "react";
 import {Box, xcss} from "@atlaskit/primitives";
+import {useColorMode} from "@atlaskit/app-provider";
 
 export const ImageContainer: FC<ImageContainerProps> = ({children, noBorder}) => {
     let boxStyles = xcss({

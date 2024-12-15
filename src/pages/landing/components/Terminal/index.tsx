@@ -6,6 +6,7 @@ import Image from "@atlaskit/image";
 import LandingWrapper from "@pages/landing/components/Layout/landing-wrapper";
 import {TerminalContainer} from "@component/ContainerImage";
 import {Hidden} from "react-grid-system";
+import {useColorMode} from "@atlaskit/app-provider";
 
 const cardStyle = xcss({
     margin: "space.100",
@@ -23,7 +24,7 @@ const cardStyle = xcss({
 })
 
 const LandingTerminal = () => {
-
+    const colorMode = useColorMode()
     return (
         <div style={{marginTop: "40px"}}>
             <LandingWrapper>
@@ -33,7 +34,7 @@ const LandingTerminal = () => {
                 })}>
                     <Hidden xs sm>
                         <TerminalContainer>
-                            <div id="bar">
+                            <div id={colorMode == "light" ? "bar" : "bar-night"}>
                                 <Image
                                     style={{
                                         width: "auto",

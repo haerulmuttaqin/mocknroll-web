@@ -27,6 +27,7 @@ import Auth from "@protected/auth";
 import {useTranslation} from "next-i18next";
 import Link from "next/link";
 import {useFetchProjects} from "@pages/projects/data/remote";
+import {Code} from "@atlaskit/code";
 
 const Layout = dynamic(
     () => import('@component/Layout'),
@@ -187,7 +188,7 @@ const Projects: NextPage = () => {
                 },
                 {
                     key: row.prefix,
-                    content: row.prefix
+                    content: <Code onPointerEnterCapture={()=>{}} onPointerLeaveCapture={()=>{}}>{row.prefix}</Code>
                 },
                 {
                     key: row.is_active,
