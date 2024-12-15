@@ -7,9 +7,11 @@ import {Col, Hidden, Row} from "react-grid-system";
 import Image from "@atlaskit/image";
 import LandingWrapper from "@pages/landing/components/Layout/landing-wrapper";
 import Button from "@atlaskit/button/new";
+import {useRouter} from "next/router";
 
 
 const LandingSubFeatures = () => {
+    const router = useRouter()
     return (
         <div id={"sub-features"} style={
             {
@@ -37,7 +39,7 @@ const LandingSubFeatures = () => {
                     </Box>
                     <br/>
                     <br/>
-                    <Button onClick={() => router.push("/projects/create")} appearance="primary">Craete FREE Mock Now</Button>
+                    <Button onClick={() => router.push("/projects/create")} appearance="primary">Create FREE Mock Now</Button>
                 </Box>
             </LandingWrapper>
         </div>
