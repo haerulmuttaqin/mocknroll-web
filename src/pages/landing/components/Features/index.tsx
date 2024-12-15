@@ -3,32 +3,22 @@
 import {Box, Stack, xcss, Text, Flex} from "@atlaskit/primitives"
 import Heading from "@atlaskit/heading";
 import ContainerGrid from "@components/ContainerGrid";
-import {Col, Row} from "react-grid-system";
+import {Col, Hidden, Row} from "react-grid-system";
 import Image from "@atlaskit/image";
 import LandingWrapper from "@pages/landing/components/Layout/landing-wrapper";
 
-const cardStyle = xcss({
-    margin: "space.100",
-    backgroundColor: "elevation.surface.raised",
-    boxShadow: "elevation.shadow.raised",
-    borderRadius: "border.radius.100",
-    transition: "200ms",
-    ":hover": {
-        backgroundColor: "elevation.surface.hovered",
-        cursor: "pointer",
-    },
-    ':active': {
-        backgroundColor: "elevation.surface.pressed",
-    },
-})
 
 const LandingFeatures = () => {
-
     return (
-        <div style={{marginTop: "100px"}}>
+        <div id={"features"} style={{marginTop: "50px"}}>
             <LandingWrapper>
                 <ContainerGrid>
                     <Row>
+                        <Col sm={12} md={12} lg={12}>
+                            <Hidden xs sm>
+                                <br/><br/>
+                            </Hidden>
+                        </Col>
                         <Col sm={12} md={4} lg={4}>
                             <Box paddingInlineStart={"space.100"} paddingInlineEnd={"space.300"}>
                                 <br/>
@@ -47,6 +37,8 @@ const LandingFeatures = () => {
                                         for you
                                     </Text>
                                 </Stack>
+                                <br/>
+                                <br/>
                             </Box>
                         </Col>
                         <Col sm={12} md={8} lg={8}>
@@ -55,10 +47,14 @@ const LandingFeatures = () => {
                     </Row>
                     <Row>
                         <Col sm={12} lg={12}>
-                            <Box paddingBlock={"space.600"}></Box>
+                            <Hidden xs sm>
+                                <Box paddingBlock={"space.600"}></Box>
+                            </Hidden>
                         </Col>
                         <Col sm={12} md={8} lg={8}>
-                            <Image src={"./assets/images/create-project.png"} alt={"Custom Endpoint"}/>
+                            <Hidden xs sm>
+                                <Image src={"./assets/images/create-project.png"} alt={"Custom Endpoint"}/>
+                            </Hidden>
                         </Col>
                         <Col sm={12} md={4} lg={4}>
                             <Box paddingInlineStart={"space.100"} paddingInlineEnd={"space.300"}>
@@ -75,7 +71,14 @@ const LandingFeatures = () => {
                                         progress tracking, ensuring unparalleled productivity and success.
                                     </Text>
                                 </Stack>
+                                <br/>
+                                <br/>
                             </Box>
+                        </Col>
+                        <Col sm={12} md={8} lg={8}>
+                            <Hidden md lg xl>
+                                <Image src={"./assets/images/create-project.png"} alt={"Custom Endpoint"}/>
+                            </Hidden>
                         </Col>
                     </Row>
                 </ContainerGrid>

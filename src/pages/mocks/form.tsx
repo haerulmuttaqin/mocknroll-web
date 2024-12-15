@@ -99,49 +99,51 @@ const MockForm: FC<MockFormProps> = (
                                                 }
                                             </Col>
                                             <Col sm={12} md={6}>
-                                                <Field
-                                                    aria-required={true}
-                                                    name="endpoint"
-                                                    label="Endpoint"
-                                                    defaultValue={data?.endpoint}
-                                                    isDisabled={type === 'view'}
-                                                    isRequired
-                                                >
-                                                    {({fieldProps, error}) => (
-                                                        <Fragment>
-                                                            <TextField {...fieldProps} type={"text"}
-                                                                       elemBeforeInput={<Box xcss={xcss({
-                                                                           paddingInlineStart: "space.150",
-                                                                           color: "color.text.disabled"
-                                                                       })}>{project?.prefix}</Box>}
-                                                                       placeholder="Input endpoint"/>
-                                                            {error && (
-                                                                <ErrorMessage>
-                                                                    {error}
-                                                                </ErrorMessage>
-                                                            )}
-                                                        </Fragment>
-                                                    )}
-                                                </Field>
-                                                <Field
-                                                    name="name"
-                                                    label="Name or Label"
-                                                    defaultValue={data?.name}
-                                                    isDisabled={type === 'view'}
-                                                    isRequired
-                                                >
-                                                    {({fieldProps, error}) => (
-                                                        <Fragment>
-                                                            <TextField {...fieldProps} type={"text"}
-                                                                       placeholder="Input name or label"/>
-                                                            {error && (
-                                                                <ErrorMessage>
-                                                                    {error}
-                                                                </ErrorMessage>
-                                                            )}
-                                                        </Fragment>
-                                                    )}
-                                                </Field>
+                                                <Box xcss={xcss({marginRight: "space.200"})}>
+                                                    <Field
+                                                        aria-required={true}
+                                                        name="endpoint"
+                                                        label="Endpoint"
+                                                        defaultValue={data?.endpoint}
+                                                        isDisabled={type === 'view'}
+                                                        isRequired
+                                                    >
+                                                        {({fieldProps, error}) => (
+                                                            <Fragment>
+                                                                <TextField {...fieldProps} type={"text"}
+                                                                           elemBeforeInput={<Box xcss={xcss({
+                                                                               paddingInlineStart: "space.150",
+                                                                               color: "color.text.disabled"
+                                                                           })}>{project?.prefix}</Box>}
+                                                                           placeholder="Input endpoint"/>
+                                                                {error && (
+                                                                    <ErrorMessage>
+                                                                        {error}
+                                                                    </ErrorMessage>
+                                                                )}
+                                                            </Fragment>
+                                                        )}
+                                                    </Field>
+                                                    <Field
+                                                        name="name"
+                                                        label="Name or Label"
+                                                        defaultValue={data?.name}
+                                                        isDisabled={type === 'view'}
+                                                        isRequired
+                                                    >
+                                                        {({fieldProps, error}) => (
+                                                            <Fragment>
+                                                                <TextField {...fieldProps} type={"text"}
+                                                                           placeholder="Input name or label"/>
+                                                                {error && (
+                                                                    <ErrorMessage>
+                                                                        {error}
+                                                                    </ErrorMessage>
+                                                                )}
+                                                            </Fragment>
+                                                        )}
+                                                    </Field>
+                                                </Box>
                                             </Col>
                                         </Row>
                                     </Box>
@@ -163,52 +165,54 @@ const MockForm: FC<MockFormProps> = (
                                     })}>
                                         <Row>
                                             <Col sm={12} md={6}>
-                                                <Field<ValueType<OptionType>>
-                                                    label="Method"
-                                                    name="method"
-                                                    id="method"
-                                                    isDisabled={type === 'view'}
-                                                    defaultValue={methodOptions.find((it: any) => it.value == data?.method) as any || methodOptions[0]}
-                                                    aria-required={true}
-                                                    isRequired
-                                                >
-                                                    {({fieldProps: {id, ...rest}, error}) => (
-                                                        <Fragment>
-                                                            <Select
-                                                                id={`${id}-select`}
-                                                                isSearchable={true}
-                                                                options={methodOptions as any}
-                                                                {...rest}
-                                                            />
-                                                            {error && <ErrorMessage>{error}</ErrorMessage>}
-                                                        </Fragment>
-                                                    )}
-                                                </Field>
-                                                <Field<ValueType<GroupedOptionsType<OptionType>>>
-                                                    label="Code"
-                                                    name="code"
-                                                    id="code"
-                                                    isDisabled={type === 'view'}
-                                                    defaultValue={codeOptions.filter((group: any) => group.options.some((item: any) => item.value === data?.code))[0]?.options?.find((it: any) => it.value == parseInt(data?.code)) as any || {
-                                                        value: '200',
-                                                        label: '200 - OK',
-                                                        highlight: true
-                                                    }}
-                                                    aria-required={true}
-                                                    isRequired
-                                                >
-                                                    {({fieldProps: {id, ...rest}, error}) => (
-                                                        <Fragment>
-                                                            <Select
-                                                                id={`${id}-select`}
-                                                                isSearchable={true}
-                                                                options={codeOptions as any}
-                                                                {...rest}
-                                                            />
-                                                            {error && <ErrorMessage>{error}</ErrorMessage>}
-                                                        </Fragment>
-                                                    )}
-                                                </Field>
+                                                <Box xcss={xcss({marginRight: "space.200"})}>
+                                                    <Field<ValueType<OptionType>>
+                                                        label="Method"
+                                                        name="method"
+                                                        id="method"
+                                                        isDisabled={type === 'view'}
+                                                        defaultValue={methodOptions.find((it: any) => it.value == data?.method) as any || methodOptions[0]}
+                                                        aria-required={true}
+                                                        isRequired
+                                                    >
+                                                        {({fieldProps: {id, ...rest}, error}) => (
+                                                            <Fragment>
+                                                                <Select
+                                                                    id={`${id}-select`}
+                                                                    isSearchable={true}
+                                                                    options={methodOptions as any}
+                                                                    {...rest}
+                                                                />
+                                                                {error && <ErrorMessage>{error}</ErrorMessage>}
+                                                            </Fragment>
+                                                        )}
+                                                    </Field>
+                                                    <Field<ValueType<GroupedOptionsType<OptionType>>>
+                                                        label="Code"
+                                                        name="code"
+                                                        id="code"
+                                                        isDisabled={type === 'view'}
+                                                        defaultValue={codeOptions.filter((group: any) => group.options.some((item: any) => item.value === data?.code))[0]?.options?.find((it: any) => it.value == parseInt(data?.code)) as any || {
+                                                            value: '200',
+                                                            label: '200 - OK',
+                                                            highlight: true
+                                                        }}
+                                                        aria-required={true}
+                                                        isRequired
+                                                    >
+                                                        {({fieldProps: {id, ...rest}, error}) => (
+                                                            <Fragment>
+                                                                <Select
+                                                                    id={`${id}-select`}
+                                                                    isSearchable={true}
+                                                                    options={codeOptions as any}
+                                                                    {...rest}
+                                                                />
+                                                                {error && <ErrorMessage>{error}</ErrorMessage>}
+                                                            </Fragment>
+                                                        )}
+                                                    </Field>
+                                                </Box>
                                             </Col>
                                             <Col sm={12} md={12}>
                                                 <Box xcss={xcss({marginRight: "space.200"})}>

@@ -1,18 +1,24 @@
 /** @jsxImportSource @emotion/react */
 import React, {useEffect, useState} from 'react';
-import Image from "@atlaskit/image";
-import {
-    AppSwitcher,
-    AtlassianNavigation,
-    PrimaryButton,
-    PrimaryDropdownButton,
-    Settings
-} from "@atlaskit/atlassian-navigation";
-import {LinkButton} from "@atlaskit/button/new";
+import {AtlassianNavigation, PrimaryButton} from "@atlaskit/atlassian-navigation";
+import {IconButton} from "@atlaskit/button/new";
 import secureLocalStorage from "react-secure-storage";
-import {Box, Inline, media, Text, xcss} from "@atlaskit/primitives";
+import {Box, xcss} from "@atlaskit/primitives";
 import Link from "next/link";
 import '@/styles/landing.module.css'
+import DefaultProfile from "@component/Profile";
+import {ButtonItem, MenuGroup, Section} from "@atlaskit/menu";
+import ChevronRightIcon from "@atlaskit/icon/glyph/chevron-right";
+import {PopupSelect} from "@atlaskit/select";
+import useThemeSwitcher from "@component/Profile/content/ThemeSwither/useThemeSwithcer";
+import {useSetColorMode} from "@atlaskit/app-provider";
+import {useTranslation} from "next-i18next";
+import Popup from "@atlaskit/popup";
+import LangOptionSmall from "@component/LangOption/small";
+import {useSession} from "next-auth/react";
+import {router} from "next/client";
+import MenuIcon from '@atlaskit/icon/core/menu';
+import {ColorMode} from '@atlaskit/app-provider/theme-provider';
 
 const navStyle = xcss({
     borderBottomWidth: "1px",
@@ -34,14 +40,128 @@ const navContainerStyle = xcss({
 
 const AtlassianProductHome = () => (
     <Link href={"/"}>
-        {/*<Image src={"./assets/images/logo.svg"} width={50} height={50} alt="Logo"/>*/}
+        <span className={'charlie-text'}
+              style={{fontSize: "18px", fontWeight: "600", marginInlineEnd: "20px"}}>🤘 Mock N&apos; Roll</span>
     </Link>
 );
 
-const DefaultAppSwitcher = () => <AppSwitcher tooltip="Switch to..." href="/overviews"/>;
-const DefaultSettings = () => <Settings tooltip="Product settings"/>;
-const ButtonSignIn = () => <LinkButton appearance="primary" href="/auth">Login</LinkButton>;
-const ButtonDashboard = () => <LinkButton href="/projects">My Projects</LinkButton>;
+const ButtonSignIn = () => {
+    const {t, i18n} = useTranslation(['common'])
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const {data, status} = useSession()
+    const {options, selectedValue} = useThemeSwitcher();
+    const setColorMode = useSetColorMode();
+    const [isOpenLang, setIsOpenLang] = useState(false);
+    const [selectedLang, setSelectedLang] = useState<string>(secureLocalStorage.getItem("lang") as string || "en");
+
+    const onClick = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const onClose = () => {
+        setIsOpen(false);
+    };
+
+    const onChangeLang = (value: string) => {
+        const option = value || "id";
+        setSelectedLang(option)
+    };
+
+    const handleSignIn = () => {
+        router.push("/auth")
+    }
+
+    useEffect(() => {
+        i18n.changeLanguage(selectedLang)
+        secureLocalStorage.setItem("lang", selectedLang)
+    }, [selectedLang]);
+
+    useEffect(() => {
+        setColorMode(selectedValue as ColorMode)
+        secureLocalStorage.setItem("color_mode", selectedValue)
+    }, [selectedValue])
+
+    return (
+        <Popup
+            isOpen={isOpen}
+            onClose={onClose}
+            placement="bottom-end"
+            content={() => (
+                <MenuGroup>
+                    <Section title={"Account"}>
+                        <ButtonItem onClick={handleSignIn}>
+                            Sign In
+                        </ButtonItem>
+                    </Section>
+                    <Section title={t("setting")} hasSeparator>
+                        <Popup
+                            isOpen={isOpenLang}
+                            placement="left-start"
+                            onClose={() => setIsOpenLang(false)}
+                            content={() =>
+                                (
+                                    <Box onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+                                        <Section title={t("lang_setting_desc")}>
+                                            <ButtonItem isSelected={selectedLang === 'id'}
+                                                        onClick={() => onChangeLang("id")}><LangOptionSmall
+                                                optionType={'id'}>{t("lang_id")}</LangOptionSmall></ButtonItem>
+                                            <ButtonItem isSelected={selectedLang === 'en'}
+                                                        onClick={() => onChangeLang("en")}><LangOptionSmall
+                                                optionType={'en'}>{t("lang_en")}</LangOptionSmall></ButtonItem>
+                                        </Section>
+                                    </Box>
+                                )
+                            }
+                            trigger={(triggerProps) => (
+                                <ButtonItem
+                                    {...triggerProps}
+                                    isSelected={isOpenLang}
+                                    onClick={() => setIsOpenLang(!isOpenLang)}
+                                    iconAfter={<ChevronRightIcon label="select language"/>}
+                                >
+                                    {t("lang")}
+                                </ButtonItem>
+                            )}
+                        />
+                        <PopupSelect
+                            options={options}
+                            popperProps={{
+                                placement: "left-start",
+                                modifiers: [{name: "offset", options: {offset: [-8, 5]}}]
+                            }}
+                            defaultValue={options.filter((o) => o.isSelected)}
+                            closeMenuOnSelect={true}
+                            onChange={(option) => {
+                                if (option) {
+                                    option.onClick();
+                                }
+                            }}
+                            formatOptionLabel={(option) => option.item}
+                            target={({isOpen, ...triggerProps}) => (
+                                <ButtonItem
+                                    isSelected={isOpen}
+                                    iconAfter={<ChevronRightIcon label="select theme"/>}
+                                    {...triggerProps}>
+                                    {t("theme")}
+                                </ButtonItem>
+                            )}
+                        />
+                    </Section>
+                </MenuGroup>
+            )}
+            trigger={(triggerProps) => (
+                <IconButton
+                    onClick={onClick}
+                    appearance="subtle"
+                    icon={MenuIcon}
+                    isSelected={isOpen}
+                    label={"More"}
+                    {...triggerProps}
+                />
+            )}
+        />
+    )
+};
 
 const LandingPageNavigation = () => {
     const [isLogin, setIsLogin] = useState<boolean>()
@@ -54,12 +174,11 @@ const LandingPageNavigation = () => {
                 <AtlassianNavigation
                     label="site"
                     primaryItems={[
-                        <PrimaryButton key={0}><span className={'charlie-text'} style={{fontSize: "18px", fontWeight: "600"}}>🤘 Mock N&apos; Roll</span></PrimaryButton>,
+                        <PrimaryButton key={0}>Features</PrimaryButton>,
                         <PrimaryButton key={1}>About</PrimaryButton>,
                     ]}
                     renderProductHome={AtlassianProductHome}
-                    renderSettings={isLogin ? DefaultSettings : undefined}
-                    renderSignIn={isLogin != undefined ? (isLogin ? ButtonDashboard : ButtonSignIn) : ButtonSignIn}
+                    renderSignIn={isLogin != undefined ? (isLogin ? DefaultProfile : ButtonSignIn) : ButtonSignIn}
                 />
             </Box>
         </Box>

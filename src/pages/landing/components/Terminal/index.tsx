@@ -5,6 +5,7 @@ import Heading from "@atlaskit/heading";
 import Image from "@atlaskit/image";
 import LandingWrapper from "@pages/landing/components/Layout/landing-wrapper";
 import {TerminalContainer} from "@component/ContainerImage";
+import {Hidden} from "react-grid-system";
 
 const cardStyle = xcss({
     margin: "space.100",
@@ -30,32 +31,34 @@ const LandingTerminal = () => {
                     padding: "space.200",
                     textAlign: "center"
                 })}>
-                    <TerminalContainer>
-                        <div id="bar">
+                    <Hidden xs sm>
+                        <TerminalContainer>
+                            <div id="bar">
+                                <Image
+                                    style={{
+                                        width: "auto",
+                                        height: "70px",
+                                        marginTop: "-23px"
+                                    }}
+                                    src={"./assets/images/three-dots.svg"}
+                                    alt={"terminal-bar"}
+                                />
+                            </div>
                             <Image
+                                id="image__card-terminal"
                                 style={{
-                                    width: "auto",
-                                    height: "70px",
-                                    marginTop: "-23px"
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                    objectPosition: "top",
+                                    backgroundColor: "#282a36"
                                 }}
-                                src={"./assets/images/three-dots.svg"}
-                                alt={"terminal-bar"}
+                                src={"./assets/images/demo-terminal.gif"}
+                                alt={"terminal"}
+                                testId="image"
                             />
-                        </div>
-                        <Image
-                            id="image__card-terminal"
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                                objectFit: "cover",
-                                objectPosition: "top",
-                                backgroundColor: "#282a36"
-                            }}
-                            src={"./assets/images/demo-terminal.gif"}
-                            alt={"terminal"}
-                            testId="image"
-                        />
-                    </TerminalContainer>
+                        </TerminalContainer>
+                    </Hidden>
                     <br/>
                     <br/>
                     <Heading level={"h800"}>
