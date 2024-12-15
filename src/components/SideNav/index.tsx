@@ -192,6 +192,7 @@ const SideNav = ({
             resizeGrabAreaLabel="Resize"
             resizeButtonLabel="Current"
             valueTextLabel="Width"
+            shouldPersistWidth
             overrides={
                 {
                     ResizeButton: {

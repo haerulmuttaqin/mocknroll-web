@@ -1,6 +1,6 @@
 import React, {FC, Fragment, useEffect, useState} from "react";
 import Form, {ErrorMessage, Field, FormFooter, HelperMessage} from '@atlaskit/form';
-import {Box, xcss, Text} from '@atlaskit/primitives';
+import {Box, Text, xcss} from '@atlaskit/primitives';
 import ContainerGrid from "@component/ContainerGrid";
 import {Col, Row} from "react-grid-system";
 import ContainerForm from "@component/ContainerForm";
@@ -14,9 +14,12 @@ import {OptionType, ValueType} from "@atlaskit/select/types";
 import {Code} from '@atlaskit/code';
 import Select, {GroupedOptionsType} from "@atlaskit/select";
 import LinkExternalIcon from '@atlaskit/icon/core/link-external';
-import TextArea from "@atlaskit/textarea";
 import {codeOption, methodOption} from "@pages/mocks/data/props";
-import {useUserId, useUserRole} from "@utils/hooks";
+import {useUserId} from "@utils/hooks";
+import ReactCodeMirror from "@uiw/react-codemirror";
+import {json} from "@codemirror/lang-json";
+import {useColorMode} from "@atlaskit/app-provider";
+import {useRouter} from "next/router";
 
 const MockForm: FC<MockFormProps> = (
     {
@@ -30,6 +33,9 @@ const MockForm: FC<MockFormProps> = (
 ) => {
 
     const userId = useUserId()
+    const router = useRouter()
+    const {sid, idx} = router.query
+    const colorMode = useColorMode()
     const [placeHolderHeader, setPlaceHolderHeader] = useState("")
     const [placeHolderResponse, setPlaceHolderResponse] = useState("")
     const [methodOptions, setMethodOptions] = useState<OptionType[]>(methodOption)
@@ -37,6 +43,10 @@ const MockForm: FC<MockFormProps> = (
 
     const handleOpenLink = () => {
         window?.open(`${window.location.origin.split("//")[0]}//${userId}-${project?.id}.${process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "").replaceAll("apiv1", "")}${project?.prefix}/${data?.endpoint}`, "_blank")
+    }
+
+    const handleOnEdit = () => {
+        router.push(`/mocks/${data.id}?action=edit&pid=${project.id}&sid=${sid}&idx=${idx}`)
     }
 
     useEffect(() => {
@@ -96,6 +106,20 @@ const MockForm: FC<MockFormProps> = (
                                                             </Text>
                                                         </Box>
                                                     )
+                                                }
+                                                {
+                                                    type == "view" ?
+                                                        <Box>
+                                                            <Text size={"medium"}>Generate:</Text>
+                                                            <ButtonGroup>
+                                                                <Button appearance={"subtle"} isDisabled={true}>Postman
+                                                                    Collection</Button>
+                                                                <Button appearance={"subtle"} isDisabled={true}>View In
+                                                                    Swagger</Button>
+                                                            </ButtonGroup>
+                                                            <Text size={"small"}>(soon)</Text>
+                                                            <br/><br/>
+                                                        </Box> : null
                                                 }
                                             </Col>
                                             <Col sm={12} md={6}>
@@ -224,8 +248,17 @@ const MockForm: FC<MockFormProps> = (
                                                     >
                                                         {({fieldProps, error}: any) => (
                                                             <Fragment>
-                                                                <TextArea isMonospaced minimumRows={5}
-                                                                          placeholder={placeHolderHeader} {...fieldProps} />
+                                                                <ReactCodeMirror
+                                                                    {...fieldProps}
+                                                                    className={colorMode == 'light' ? "json-editor-light" : "json-editor-night"}
+                                                                    theme={colorMode}
+                                                                    extensions={[json()]}
+                                                                    minHeight={"100px"}
+                                                                    maxHeight={"400px"}
+                                                                    placeholder={placeHolderHeader}
+                                                                    editable={type != "view"}
+                                                                    readOnly={type == "view"}
+                                                                />
                                                                 <HelperMessage>Customize the HTTP headers sent in the
                                                                     response. Define the headers as a JSON
                                                                     object.</HelperMessage>
@@ -248,8 +281,17 @@ const MockForm: FC<MockFormProps> = (
                                                     >
                                                         {({fieldProps, error}: any) => (
                                                             <Fragment>
-                                                                <TextArea isMonospaced minimumRows={10}
-                                                                          placeholder={placeHolderResponse} {...fieldProps} />
+                                                                <ReactCodeMirror
+                                                                    {...fieldProps}
+                                                                    className={colorMode == 'light' ? "json-editor-light" : "json-editor-night"}
+                                                                    theme={colorMode}
+                                                                    extensions={[json()]}
+                                                                    minHeight={"200px"}
+                                                                    maxHeight={"700px"}
+                                                                    placeholder={placeHolderResponse}
+                                                                    editable={type != "view"}
+                                                                    readOnly={type == "view"}
+                                                                />
                                                                 {error && (
                                                                     <ErrorMessage>
                                                                         {error}
@@ -284,7 +326,8 @@ const MockForm: FC<MockFormProps> = (
                                         {
                                             type === 'view' ?
                                                 <ButtonGroup>
-                                                    <Button onClick={onHandleCancel}>Cancel</Button>
+                                                    <Button appearance={"warning"} onClick={handleOnEdit}>Edit Endpoint</Button>
+                                                    <Button onClick={onHandleCancel}>Back to Endpoint List</Button>
                                                 </ButtonGroup>
                                                 :
                                                 <ButtonGroup>
@@ -293,7 +336,7 @@ const MockForm: FC<MockFormProps> = (
                                                         type="submit"
                                                         isLoading={submitting}
                                                     >
-                                                        {type == "edit" ? "Update Change" : "Submit Endpoint"}
+                                                        {type == "edit" ? "Save Change" : "Submit Endpoint"}
                                                     </LoadingButton>
                                                     <Button onClick={onHandleCancel}>Cancel</Button>
                                                 </ButtonGroup>

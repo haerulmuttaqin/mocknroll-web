@@ -4,9 +4,24 @@ import {Box, Stack, xcss, Text, Flex} from "@atlaskit/primitives"
 import Button from "@atlaskit/button/new";
 import LandingWrapper from "@pages/landing/components/Layout/landing-wrapper";
 import {useRouter} from "next/router";
+import {useEffect, useState} from "react";
+import secureLocalStorage from "react-secure-storage";
 
 const LandingPageHero = () => {
     const router = useRouter()
+    const [isLogin, setIsLogin] = useState<boolean>()
+
+    const handleSignUp = () => {
+        if (isLogin) {
+            router.push("/projects")
+        } else {
+            router.push("/auth")
+        }
+    }
+
+    useEffect(() => {
+        setIsLogin(secureLocalStorage.getItem("is_login") as any)
+    }, []);
     return (
         <>
             <Box xcss={xcss({
@@ -38,7 +53,7 @@ const LandingPageHero = () => {
                                 Now</Button>
                             &nbsp;
                             &nbsp;
-                            <Button onClick={() => router.push("/auth")} appearance="subtle">Sign Up</Button>
+                            <Button onClick={handleSignUp} appearance="subtle">{isLogin ? "Go to My Project" : "Sign Up"}</Button>
                         </Box>
                     </Box>
                 </LandingWrapper>

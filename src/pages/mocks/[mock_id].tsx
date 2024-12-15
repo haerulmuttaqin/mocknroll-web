@@ -21,7 +21,7 @@ const Layout = dynamic(
 const Mock: NextPage = () => {
     const router = useRouter()
     const {mock_id, pid, sid, idx, action} = router.query
-    const [loading, setLoading] = useState<boolean>(action == "edit");
+    const [loading, setLoading] = useState<boolean>(action != undefined);
     const [mockData, setMockData] = useState<MockPayloadProps>();
     const dispatch = useDispatch();
 
@@ -179,7 +179,7 @@ const Mock: NextPage = () => {
         <FlagsProvider>
             <Layout
                 title={loading ? undefined : action == "edit" ? "Edit Endpoint" : action === "view" ? mockData?.name : "Create Endpoint"}
-                description={loading ? undefined : action === "view" ? mockData?.endpoint : undefined}
+                description={loading ? undefined : action === "view" ? `Endpoint url: ${dataProject?.prefix}/${mockData?.endpoint}` : undefined}
                 isSideNavOpen={true}
                 isAdmin={true}
                 sidebarList={dataMocks}

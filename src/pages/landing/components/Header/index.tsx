@@ -15,10 +15,9 @@ import {useSetColorMode} from "@atlaskit/app-provider";
 import {useTranslation} from "next-i18next";
 import Popup from "@atlaskit/popup";
 import LangOptionSmall from "@component/LangOption/small";
-import {useSession} from "next-auth/react";
-import {router} from "next/client";
 import MenuIcon from '@atlaskit/icon/core/menu';
 import {ColorMode} from '@atlaskit/app-provider/theme-provider';
+import {useRouter} from "next/router";
 
 const navStyle = xcss({
     borderBottomWidth: "1px",
@@ -47,8 +46,8 @@ const AtlassianProductHome = () => (
 
 const ButtonSignIn = () => {
     const {t, i18n} = useTranslation(['common'])
+    const router = useRouter()
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const {data, status} = useSession()
     const {options, selectedValue} = useThemeSwitcher();
     const setColorMode = useSetColorMode();
     const [isOpenLang, setIsOpenLang] = useState(false);
