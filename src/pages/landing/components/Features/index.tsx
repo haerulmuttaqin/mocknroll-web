@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import {Box, Stack, xcss, Text, Flex} from "@atlaskit/primitives"
+import {Box, Stack, Text} from "@atlaskit/primitives"
 import Heading from "@atlaskit/heading";
 import ContainerGrid from "@components/ContainerGrid";
 import {Col, Hidden, Row} from "react-grid-system";

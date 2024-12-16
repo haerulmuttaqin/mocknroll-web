@@ -4,7 +4,7 @@ import {
     ButtonItem,
     Header,
     LoadingItems,
-    NavigationContent, NavigationFooter,
+    NavigationContent,
     NavigationHeader,
     NestableNavigationContent,
     NestingItem,
@@ -18,11 +18,8 @@ import {mainMenu} from "@/resources/main-menu";
 import {useRouter} from "next/router";
 import secureLocalStorage from "react-secure-storage";
 import {SideNavContentProps} from "@component/SideNav/sidenav";
-import {useNextQueryParam} from "@/utils/hooks";
-import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle'
 import {useTranslation} from "next-i18next";
-import Image from "@atlaskit/image";
-import {Box, Inline, Stack, xcss} from "@atlaskit/primitives";
+import {Box, xcss} from "@atlaskit/primitives";
 import Popup from "@atlaskit/popup";
 import Button from "@atlaskit/button/new";
 import ChevronUpIcon from "@atlaskit/icon/utility/chevron-up";
@@ -30,7 +27,6 @@ import ChevronDownIcon from "@atlaskit/icon/utility/chevron-down";
 import ProjectIcon from '@atlaskit/icon/core/project';
 
 import {ButtonItem as ButtonItemMenu, MenuGroup, Section as SectionMenu} from '@atlaskit/menu';
-import {adminMenu} from "@resources/admin-menu";
 import {useFetchProjects} from "@pages/projects/data/remote";
 import {ProjectProps} from "@api/data/interfaces/project";
 import AddIcon from '@atlaskit/icon/glyph/add';
@@ -123,8 +119,6 @@ const SideNav = ({
 
     const pathname = router.pathname.split('/')[1]?.toLowerCase()
     const pathnameSub = router.pathname.split('/')[2]?.toLowerCase()
-    const pathnameRegion = useNextQueryParam("region_id")
-    const pathnameArea = useNextQueryParam("area_id", 3)
 
     const [isOpenProject, setIsOpenProject] = useState(false);
     const [projects, setProjects] = useState<any>(JSON.parse(secureLocalStorage.getItem("companies") as string))

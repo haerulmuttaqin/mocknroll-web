@@ -388,3 +388,7 @@ div[class*="-ActionsWrapper"] {
     border-style: solid !important;
     outline: 1px #85B8FF solid !important;
 }
+
+.charlie-text {
+    font-family: "Charlie Text", -apple-system, "BlinkMacSystemFont", "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif;
+}

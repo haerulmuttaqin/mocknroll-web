@@ -1,4 +1,4 @@
-import {Box, media, Text, xcss} from '@atlaskit/primitives';
+import {Box, Text} from '@atlaskit/primitives';
 import {LayoutProps} from "@component/Layout/layout";
 import React, {FC, useEffect} from "react";
 import PageHeader from "@atlaskit/page-header";
@@ -13,15 +13,6 @@ import {resetFlag, showFlag as showFlagWithResetBack} from "@/store/actions/show
 import {useRouter} from "next/router";
 import Footer from "@component/Footer";
 import ContentWrapper from "@component/Layout/common/content-wrapper";
-
-const containerStyles = xcss({
-    paddingLeft: "space.250",
-    paddingRight: "space.250",
-    [media.above.sm]: {
-        paddingLeft: "space.400",
-        paddingRight: "space.400",
-    },
-});
 
 const BaseContent: FC<LayoutProps> = (
     {
