@@ -21,7 +21,7 @@ const LandingPageLayout: FC<LandingPageLayoutProps> = (
                 <title>{`${process.env.NEXT_PUBLIC_APP_NAME} - ${title || ''}`}</title>
                 <meta charSet="UTF-8"/>
                 <meta property="og:title" content={`${process.env.NEXT_PUBLIC_APP_NAME}`} key="title"/>
-                <meta property="og:url" content={window?.location?.href as string || process.env.NEXT_PUBLIC_PAGE_URL}/>
+                <meta property="og:url" content={process.env.NEXT_PUBLIC_PAGE_URL}/>
                 <meta property="og:description" content="Streamline your development workflow! Our platform offers instant mock API creation, real-time testing, and seamless integration" />
                 <meta property="og:keywords" content="Mock API, API Generator FREE, Free Mock API" />
                 <meta property="og:image" content="https://mocknroll.me/mocknroll.webp" />
