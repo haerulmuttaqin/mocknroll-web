@@ -8,7 +8,7 @@ type SideNavContentProps = {
     isAdmin?: boolean;
     isOpen?: boolean;
     isMobile?: boolean;
-    menuList?: ProjectProps | MockProps | any;
+    menuList?: ProjectProps | MockProps[] | any;
     loading?: boolean;
     title?: string;
     onClick?: () => void;

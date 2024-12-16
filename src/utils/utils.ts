@@ -1,4 +1,5 @@
 import secureLocalStorage from "react-secure-storage";
+import {MockProps} from "@api/data/interfaces/mock";
 
 export const createKey = (input?: string) => input ? input.replace(/^(the|a|an)/, '').replace(/\s/g, '') : input;
 
@@ -99,4 +100,22 @@ export const getImageCache = (key: string) => {
         return ""
     }
     return cachedData[1];
+}
+
+export const getMethodType = (method: string) => {
+    switch (method) {
+        case "GET":
+            return "success"
+        case "POST":
+            return "moved"
+        case "PUT":
+            return "inprogress"
+        case "PATCH":
+            return "new"
+        case "DELETE":
+            return "removed"
+        default:
+            return "default"
+
+    }
 }

@@ -9,7 +9,7 @@ import SearchIcon from '@atlaskit/icon/glyph/search'
 import {useRouter} from "next/router";
 import Select from "@atlaskit/select";
 import DynamicTable from "@atlaskit/dynamic-table";
-import {createKey, filterByValue} from "@utils/utils";
+import {createKey, filterByValue, getMethodType} from "@utils/utils";
 import EmptyState from "@atlaskit/empty-state";
 import {showFlag} from "@store/actions/show-flag";
 import {useDispatch} from "react-redux";
@@ -184,7 +184,7 @@ const ViewProject: NextPage = () => {
                                 <Box {...tooltipProps} xcss={xcss({color: "color.text", cursor: "pointer"})}
                                      onClick={() => handleOnShow(row.id, row.pid, row.sid, row.idx)}>
                                     <Lozenge
-                                        appearance={"success"}>{row.method}</Lozenge>
+                                        appearance={getMethodType(row.method)}>{row.method}</Lozenge>
                                 </Box>
                             )}
                         </Tooltip>

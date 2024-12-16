@@ -1,5 +1,5 @@
 import React, {FC, Fragment, useEffect, useState} from "react";
-import Form, {ErrorMessage, Field, FormFooter, HelperMessage} from '@atlaskit/form';
+import Form, {ErrorMessage, Field, FormFooter, HelperMessage, Label} from '@atlaskit/form';
 import {Box, Text, xcss} from '@atlaskit/primitives';
 import ContainerGrid from "@component/ContainerGrid";
 import {Col, Row} from "react-grid-system";
@@ -20,6 +20,8 @@ import ReactCodeMirror from "@uiw/react-codemirror";
 import {json} from "@codemirror/lang-json";
 import {useColorMode} from "@atlaskit/app-provider";
 import {useRouter} from "next/router";
+import {getMethodType} from "@utils/utils";
+import Lozenge from "@atlaskit/lozenge";
 
 const MockForm: FC<MockFormProps> = (
     {
@@ -49,6 +51,10 @@ const MockForm: FC<MockFormProps> = (
         router.push(`/mocks/${data.id}?action=edit&pid=${project.id}&sid=${sid}&idx=${idx}`)
     }
 
+    const onHandleBackToList = () => {
+        router.replace(`/mocks/?pid=${project.id}&sid=${sid}&idx=${idx}`)
+    }
+
     useEffect(() => {
         setPlaceHolderHeader('{\n' +
             '   "X-Foo-Bar": "Hello World"\n' +
@@ -61,6 +67,7 @@ const MockForm: FC<MockFormProps> = (
             '       "name": "Haerul Muttaqin"\n' +
             '   }\n' +
             '}')
+        console.log(data?.header)
     }, []);
 
     return (
@@ -110,63 +117,87 @@ const MockForm: FC<MockFormProps> = (
                                                 {
                                                     type == "view" ?
                                                         <Box>
-                                                            <Text size={"medium"}>Generate:</Text>
+                                                            <Text size={"medium"}>Generate:{" "}</Text>
                                                             <ButtonGroup>
                                                                 <Button appearance={"subtle"} isDisabled={true}>Postman
                                                                     Collection</Button>
                                                                 <Button appearance={"subtle"} isDisabled={true}>View In
                                                                     Swagger</Button>
                                                             </ButtonGroup>
-                                                            <Text size={"small"}>(soon)</Text>
+                                                            <Text size={"medium"}><i>(soon)</i></Text>
                                                             <br/><br/>
                                                         </Box> : null
                                                 }
                                             </Col>
                                             <Col sm={12} md={6}>
                                                 <Box xcss={xcss({marginRight: "space.200"})}>
-                                                    <Field
-                                                        aria-required={true}
-                                                        name="endpoint"
-                                                        label="Endpoint"
-                                                        defaultValue={data?.endpoint}
-                                                        isDisabled={type === 'view'}
-                                                        isRequired
-                                                    >
-                                                        {({fieldProps, error}) => (
-                                                            <Fragment>
-                                                                <TextField {...fieldProps} type={"text"}
-                                                                           elemBeforeInput={<Box xcss={xcss({
-                                                                               paddingInlineStart: "space.150",
-                                                                               color: "color.text.disabled"
-                                                                           })}>{project?.prefix}</Box>}
-                                                                           placeholder="Input endpoint"/>
-                                                                {error && (
-                                                                    <ErrorMessage>
-                                                                        {error}
-                                                                    </ErrorMessage>
+                                                    {
+                                                        type == "create" || type == "edit" ?
+
+                                                            <Field
+                                                                aria-required={true}
+                                                                name="endpoint"
+                                                                label="Endpoint"
+                                                                defaultValue={data?.endpoint}
+                                                                isDisabled={submitting}
+                                                                isRequired
+                                                            >
+                                                                {({fieldProps, error}) => (
+                                                                    <Fragment>
+                                                                        <TextField {...fieldProps} type={"text"}
+                                                                                   elemBeforeInput={<Box xcss={xcss({
+                                                                                       paddingInlineStart: "space.150",
+                                                                                       color: "color.text.disabled"
+                                                                                   })}>{project?.prefix}</Box>}
+                                                                                   placeholder="Input endpoint"/>
+                                                                        {error && (
+                                                                            <ErrorMessage>
+                                                                                {error}
+                                                                            </ErrorMessage>
+                                                                        )}
+                                                                    </Fragment>
                                                                 )}
-                                                            </Fragment>
-                                                        )}
-                                                    </Field>
-                                                    <Field
-                                                        name="name"
-                                                        label="Name or Label"
-                                                        defaultValue={data?.name}
-                                                        isDisabled={type === 'view'}
-                                                        isRequired
-                                                    >
-                                                        {({fieldProps, error}) => (
-                                                            <Fragment>
-                                                                <TextField {...fieldProps} type={"text"}
-                                                                           placeholder="Input name or label"/>
-                                                                {error && (
-                                                                    <ErrorMessage>
-                                                                        {error}
-                                                                    </ErrorMessage>
+                                                            </Field>
+                                                            :
+                                                            <Box paddingBlock={"space.100"}>
+                                                                <Label htmlFor={""}>Request Endpoint</Label>
+                                                                <Heading level={"h400"}>
+                                                                    &nbsp;<Code
+                                                                    onPointerEnterCapture={() => {
+                                                                    }} onPointerLeaveCapture={() => {
+                                                                }}>{project?.prefix}</Code>/{data?.endpoint}
+                                                                </Heading>
+                                                            </Box>
+                                                    }
+                                                    {
+                                                        type == "create" || type == "edit" ?
+                                                            <Field
+                                                                name="name"
+                                                                label="Name or Label"
+                                                                defaultValue={data?.name}
+                                                                isDisabled={submitting}
+                                                                isRequired
+                                                            >
+                                                                {({fieldProps, error}) => (
+                                                                    <Fragment>
+                                                                        <TextField {...fieldProps} type={"text"}
+                                                                                   placeholder="Input name or label"/>
+                                                                        {error && (
+                                                                            <ErrorMessage>
+                                                                                {error}
+                                                                            </ErrorMessage>
+                                                                        )}
+                                                                    </Fragment>
                                                                 )}
-                                                            </Fragment>
-                                                        )}
-                                                    </Field>
+                                                            </Field>
+                                                            :
+                                                            <Box paddingBlock={"space.100"}>
+                                                                <Label htmlFor={""}>Request Name or Label</Label>
+                                                                <Heading level={"h400"}>
+                                                                    &nbsp;{data?.name}
+                                                                </Heading>
+                                                            </Box>
+                                                    }
                                                 </Box>
                                             </Col>
                                         </Row>
@@ -190,94 +221,119 @@ const MockForm: FC<MockFormProps> = (
                                         <Row>
                                             <Col sm={12} md={6}>
                                                 <Box xcss={xcss({marginRight: "space.200"})}>
-                                                    <Field<ValueType<OptionType>>
-                                                        label="Method"
-                                                        name="method"
-                                                        id="method"
-                                                        isDisabled={type === 'view'}
-                                                        defaultValue={methodOptions.find((it: any) => it.value == data?.method) as any || methodOptions[0]}
-                                                        aria-required={true}
-                                                        isRequired
-                                                    >
-                                                        {({fieldProps: {id, ...rest}, error}) => (
-                                                            <Fragment>
-                                                                <Select
-                                                                    id={`${id}-select`}
-                                                                    isSearchable={true}
-                                                                    options={methodOptions as any}
-                                                                    {...rest}
-                                                                />
-                                                                {error && <ErrorMessage>{error}</ErrorMessage>}
-                                                            </Fragment>
-                                                        )}
-                                                    </Field>
-                                                    <Field<ValueType<GroupedOptionsType<OptionType>>>
-                                                        label="Code"
-                                                        name="code"
-                                                        id="code"
-                                                        isDisabled={type === 'view'}
-                                                        defaultValue={codeOptions.filter((group: any) => group.options.some((item: any) => item.value === data?.code))[0]?.options?.find((it: any) => it.value == parseInt(data?.code)) as any || {
-                                                            value: '200',
-                                                            label: '200 - OK',
-                                                            highlight: true
-                                                        }}
-                                                        aria-required={true}
-                                                        isRequired
-                                                    >
-                                                        {({fieldProps: {id, ...rest}, error}) => (
-                                                            <Fragment>
-                                                                <Select
-                                                                    id={`${id}-select`}
-                                                                    isSearchable={true}
-                                                                    options={codeOptions as any}
-                                                                    {...rest}
-                                                                />
-                                                                {error && <ErrorMessage>{error}</ErrorMessage>}
-                                                            </Fragment>
-                                                        )}
-                                                    </Field>
+                                                    {
+                                                        type == "create" || type == "edit" ?
+                                                            <Field<ValueType<OptionType>>
+                                                                label="Method"
+                                                                name="method"
+                                                                id="method"
+                                                                isDisabled={submitting}
+                                                                defaultValue={methodOptions.find((it: any) => it.value == data?.method) as any || methodOptions[0]}
+                                                                aria-required={true}
+                                                                isRequired
+                                                            >
+                                                                {({fieldProps: {id, ...rest}, error}) => (
+                                                                    <Fragment>
+                                                                        <Select
+                                                                            id={`${id}-select`}
+                                                                            isSearchable={true}
+                                                                            options={methodOptions as any}
+                                                                            {...rest}
+                                                                        />
+                                                                        {error && <ErrorMessage>{error}</ErrorMessage>}
+                                                                    </Fragment>
+                                                                )}
+                                                            </Field>
+                                                            :
+                                                            <Box paddingBlock={"space.100"}>
+                                                                <Label htmlFor={""}>Request Method</Label>
+                                                                <Box>
+                                                                    <Lozenge
+                                                                        appearance={getMethodType(data?.method)}>{data?.method}</Lozenge>
+                                                                </Box>
+                                                            </Box>
+                                                    }
+                                                    {
+                                                        type == "create" || type == "edit" ?
+                                                            <Field<ValueType<GroupedOptionsType<OptionType>>>
+                                                                label="Method"
+                                                                name="code"
+                                                                id="code"
+                                                                isDisabled={submitting}
+                                                                defaultValue={codeOptions.filter((group: any) => group.options.some((item: any) => item.value === data?.code))[0]?.options?.find((it: any) => it.value == parseInt(data?.code)) as any || {
+                                                                    value: '200',
+                                                                    label: '200 - OK',
+                                                                    highlight: true
+                                                                }}
+                                                                aria-required={true}
+                                                                isRequired
+                                                            >
+                                                                {({fieldProps: {id, ...rest}, error}) => (
+                                                                    <Fragment>
+                                                                        <Select
+                                                                            id={`${id}-select`}
+                                                                            isSearchable={true}
+                                                                            options={codeOptions as any}
+                                                                            {...rest}
+                                                                        />
+                                                                        {error && <ErrorMessage>{error}</ErrorMessage>}
+                                                                    </Fragment>
+                                                                )}
+                                                            </Field>
+                                                            :
+                                                            <Box paddingBlock={"space.100"}>
+                                                                <Label htmlFor={""}>Response Status Code</Label>
+                                                                <Heading level={"h400"}>
+                                                                    &nbsp;{codeOptions.filter((group: any) => group.options.some((item: any) => item.value === data?.code))[0]?.options?.find((it: any) => it.value == parseInt(data?.code))?.label as any}
+                                                                </Heading>
+                                                            </Box>
+                                                    }
                                                 </Box>
                                             </Col>
                                             <Col sm={12} md={12}>
-                                                <Box xcss={xcss({marginRight: "space.200"})}>
-                                                    <Field
-                                                        name="header"
-                                                        label="HTTP Headers"
-                                                        isDisabled={type === 'view'}
-                                                        defaultValue={data?.header}
-                                                    >
-                                                        {({fieldProps, error}: any) => (
-                                                            <Fragment>
-                                                                <ReactCodeMirror
-                                                                    {...fieldProps}
-                                                                    className={colorMode == 'light' ? "json-editor-light" : "json-editor-night"}
-                                                                    theme={colorMode}
-                                                                    extensions={[json()]}
-                                                                    minHeight={"100px"}
-                                                                    maxHeight={"400px"}
-                                                                    placeholder={placeHolderHeader}
-                                                                    editable={type != "view"}
-                                                                    readOnly={type == "view"}
-                                                                />
-                                                                <HelperMessage>Customize the HTTP headers sent in the
-                                                                    response. Define the headers as a JSON
-                                                                    object.</HelperMessage>
-                                                                {error && (
-                                                                    <ErrorMessage>
-                                                                        {error}
-                                                                    </ErrorMessage>
+                                                {
+                                                    type == "create" || type == "edit" || data?.header != "" ?
+                                                        <Box xcss={xcss({marginRight: "space.200"})}>
+                                                            <Field
+                                                                name="header"
+                                                                label="HTTP Headers"
+                                                                isDisabled={type === 'view'}
+                                                                defaultValue={data?.header}
+                                                            >
+                                                                {({fieldProps, error}: any) => (
+                                                                    <Fragment>
+                                                                        <ReactCodeMirror
+                                                                            {...fieldProps}
+                                                                            className={colorMode == 'light' ? "json-editor-light" : "json-editor-night"}
+                                                                            theme={colorMode}
+                                                                            extensions={[json()]}
+                                                                            minHeight={"100px"}
+                                                                            maxHeight={"400px"}
+                                                                            placeholder={placeHolderHeader}
+                                                                            editable={type != "view"}
+                                                                            readOnly={type == "view"}
+                                                                        />
+                                                                        <HelperMessage>Customize the HTTP headers sent
+                                                                            in the
+                                                                            response. Define the headers as a JSON
+                                                                            object.</HelperMessage>
+                                                                        {error && (
+                                                                            <ErrorMessage>
+                                                                                {error}
+                                                                            </ErrorMessage>
+                                                                        )}
+                                                                    </Fragment>
                                                                 )}
-                                                            </Fragment>
-                                                        )}
-                                                    </Field>
-                                                </Box>
+                                                            </Field>
+                                                        </Box> : null
+                                                }
                                                 <Box xcss={xcss({marginRight: "space.200"})}>
                                                     <Field
                                                         name="response"
                                                         label="HTTP Response Body "
                                                         isDisabled={type === 'view'}
                                                         defaultValue={data?.response}
-                                                        isRequired
+                                                        isRequired={type == "edit" || type == "create"}
                                                     >
                                                         {({fieldProps, error}: any) => (
                                                             <Fragment>
@@ -326,8 +382,9 @@ const MockForm: FC<MockFormProps> = (
                                         {
                                             type === 'view' ?
                                                 <ButtonGroup>
-                                                    <Button appearance={"warning"} onClick={handleOnEdit}>Edit Endpoint</Button>
-                                                    <Button onClick={onHandleCancel}>Back to Endpoint List</Button>
+                                                    <Button appearance={"warning"} onClick={handleOnEdit}>Edit
+                                                        Endpoint</Button>
+                                                    <Button onClick={onHandleBackToList}>Back to Endpoint List</Button>
                                                 </ButtonGroup>
                                                 :
                                                 <ButtonGroup>
