@@ -76,7 +76,7 @@ const LandingFeatures = () => {
                             </Box>
                         </Col>
                         <Col sm={12} md={8} lg={8}>
-                            <Hidden md lg xl>
+                            <Hidden md lg xl xxl xxxl>
                                 <Image src={"./assets/images/create-project.png"} alt={"Custom Endpoint"}/>
                             </Hidden>
                         </Col>
