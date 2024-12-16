@@ -5,7 +5,6 @@ import {showFlag} from "@/store/actions/show-flag";
 import {useDispatch} from "react-redux";
 import secureLocalStorage from "react-secure-storage";
 import {useRouter} from "next/router";
-import {signOut} from "next-auth/react";
 
 const spinnerStyles = xcss({
     display: "flex",

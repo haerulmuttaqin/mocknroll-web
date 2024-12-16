@@ -164,6 +164,14 @@ const ButtonSignIn = () => {
 
 const LandingPageNavigation = () => {
     const [isLogin, setIsLogin] = useState<boolean>()
+    const router = useRouter()
+
+    const handleFeatureClick = () => {
+    }
+    const handleAboutClick = () => {
+        router.push("/about")
+    }
+
     useEffect(() => {
         setIsLogin(secureLocalStorage.getItem("is_login") as any)
     }, []);
@@ -173,8 +181,8 @@ const LandingPageNavigation = () => {
                 <AtlassianNavigation
                     label="site"
                     primaryItems={[
-                        <PrimaryButton key={0}>Features</PrimaryButton>,
-                        <PrimaryButton key={1}>About</PrimaryButton>,
+                        <PrimaryButton key={0} onClick={handleFeatureClick}>Features</PrimaryButton>,
+                        <PrimaryButton key={1} onClick={handleAboutClick}>About</PrimaryButton>,
                     ]}
                     renderProductHome={AtlassianProductHome}
                     renderSignIn={isLogin != undefined ? (isLogin ? DefaultProfile : ButtonSignIn) : ButtonSignIn}

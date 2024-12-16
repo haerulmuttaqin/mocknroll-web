@@ -17,11 +17,8 @@ const Layout = dynamic(
     {ssr: false}
 )
 
-const Main: NextPage = () => {
+const Privacy: NextPage = () => {
     const {t} = useTranslation(['common'])
-    const refContent = useRef<HTMLDivElement>(null)
-    const colorMode = useColorMode();
-
     return (
         <FlagsProvider>
             <Layout
@@ -364,4 +361,4 @@ const Main: NextPage = () => {
     );
 };
 
-export default Main;
+export default Privacy;

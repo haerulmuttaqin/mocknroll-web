@@ -21,70 +21,16 @@ import Tooltip from "@atlaskit/tooltip";
 import DefaultProfile from "@component/Profile";
 import {useSession} from "next-auth/react";
 import {LinkButton} from "@atlaskit/button/new";
+import Link from "next/link";
 
 const AtlassianProductHome = () => (
-    <Box xcss={xcss({marginRight: "space.250"})}>
-        <Text weight={'bold'} size={'large'} color={'color.text.brand'}>
-            Mock {" "}
-        </Text>
-        <Text size={'large'} color={'color.text.brand'}>
-            N Roll
-        </Text>
-    </Box>
+    <Link href={"/"}>
+        <span className={'charlie-text'}
+              style={{fontSize: "18px", fontWeight: "600", marginInlineEnd: "20px"}}>🤘 Mock N&apos; Roll</span>
+    </Link>
 );
 
-const DefaultAppSwitcher = () => <AppSwitcher tooltip="Switch to..." href={'/'}/>;
-const DefaultLangSwitcher = () => {
-    const router = useRouter()
-    const {pathname, asPath, query, locale} = router
-    const [selected, setSelected] = useState<string>(secureLocalStorage.getItem("lang") as string || "id");
-    const {t, i18n} = useTranslation(['common'])
-
-    const submitSelected = (lang: string) => {
-        setSelected(lang)
-    }
-
-    useEffect(() => {
-        i18n.changeLanguage(selected)
-        secureLocalStorage.setItem("lang", selected)
-        router.push({pathname, query}, asPath, {locale: selected});
-    }, [selected]);
-
-    return (
-        <DropdownMenu<HTMLButtonElement>
-            trigger={({triggerRef, ...props}) => (
-                <Tooltip content={t("lang_setting_desc")}>
-                    {(tooltipProps) => (
-                        <div {...tooltipProps} >
-                            <Button appearance="subtle"{...props} ref={triggerRef}>{selected.toUpperCase()}</Button>
-                        </div>
-                    )}
-                </Tooltip>
-            )}
-            shouldRenderToParent
-        >
-            <DropdownItemRadioGroup title={t("lang")} id="actions">
-                <DropdownItemRadio
-                    id="id"
-                    onClick={() => submitSelected('id')}
-                    isSelected={selected === 'id'}
-                >
-                    {t('lang_id')}
-                </DropdownItemRadio>
-                <DropdownItemRadio
-                    id="en"
-                    onClick={() => submitSelected('en')}
-                    isSelected={selected === 'en'}
-                >
-                    {t('lang_en')}
-                </DropdownItemRadio>
-            </DropdownItemRadioGroup>
-        </DropdownMenu>
-    );
-};
 const DefaultSignIn = () => <SignIn href="/auth" tooltip="Sign in"/>;
-const ButtonProject = () => <LinkButton href="/projects">My Projects</LinkButton>;
-
 
 const Layout: FC<LayoutProps> = (
     {
@@ -107,7 +53,6 @@ const Layout: FC<LayoutProps> = (
     const {t} = useTranslation(['common'])
     const router = useRouter()
     const [wSize, setSize] = React.useState(0);
-    const activeLanguage = router.locale;
     const {data: session, status} = useSession()
 
     const updateWindowDimensions = () => {
@@ -148,6 +93,9 @@ const Layout: FC<LayoutProps> = (
                 <meta name="robots" content="index, follow"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
                 <meta charSet="UTF-8"/>
+                <link type="image/png" sizes="16x16" rel="icon" href="./assets/images/icons8-rock-emoji-16.png"/>
+                <link type="image/png" sizes="32x32" rel="icon" href="./assets/images/icons8-rock-emoji-32.png"/>
+                <link type="image/png" sizes="96x96" rel="icon" href="./assets/images/icons8-rock-emoji-96.png"/>
             </Head>
             <NavigationProvider initialUIController={{isResizeDisabled: true}}>
                 {wSize < 800 ? (
@@ -192,10 +140,7 @@ const Layout: FC<LayoutProps> = (
                                                                                            onClick={openProject}>{t('my_projects')}</PrimaryButton> : null,
                                                 <PrimaryButton key={3} onClick={openAbout}>{t('about')}</PrimaryButton>,
                                             ]}
-                                            renderAppSwitcher={DefaultAppSwitcher}
                                             renderProductHome={AtlassianProductHome}
-                                            // renderNotifications={DefaultLangSwitcher}
-                                            renderHelp={DefaultHelp}
                                             renderSettings={DefaultSettings}
                                             renderProfile={status == "authenticated" ? DefaultProfile : DefaultSignIn}
                                         />
