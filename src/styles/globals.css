@@ -392,3 +392,27 @@ div[class*="-ActionsWrapper"] {
 .charlie-text {
     font-family: "Charlie Text", -apple-system, "BlinkMacSystemFont", "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif;
 }
+
+.json-editor-night > div > div .cm-activeLine {
+    background-color: #e8e8e805 !important;
+}
+
+.json-editor-light > div > div .cm-activeLine {
+    background-color: #e8e8e844 !important;
+}
+
+.json-editor-night > div > div > div > div > .cm-activeLineGutter {
+    background-color: #353d44 !important;
+}
+
+.json-editor-light > div > div > div > div > .cm-activeLineGutter {
+    background-color: #ebf0f4 !important;
+}
+
+/*.sidebar-item {*/
+/*    padding-left: 15px !important;*/
+/*}*/
+[data-testid="sidebar-item"] > span > span {
+    width: 2.9rem !important;
+    justify-content: end !important;
+}

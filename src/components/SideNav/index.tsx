@@ -31,6 +31,8 @@ import {useFetchProjects} from "@pages/projects/data/remote";
 import {ProjectProps} from "@api/data/interfaces/project";
 import AddIcon from '@atlaskit/icon/glyph/add';
 import TasksIcon from "@atlaskit/icon/glyph/subtask";
+import Lozenge from "@atlaskit/lozenge";
+import {getMethodType} from "@utils/utils";
 
 let sideNavStyle = xcss({
     padding: "space.100",
@@ -350,11 +352,15 @@ const SideNav = ({
                                             menuList?.map((menu: any, i: number) => {
                                                 return (
                                                     <ButtonItem
+                                                        testId={"sidebar-item"}
                                                         id={menu.id}
                                                         key={`${i}-${menu.name}`}
+                                                        iconBefore={<Lozenge testId={"sidebar-item-icon"}
+                                                                             appearance={getMethodType(menu.method)}>{menu.method}</Lozenge>}
+                                                        description={`${projectSelected?.prefix || ''}/${menu.endpoint}`}
                                                         isSelected={checkMockUrl(menu.id)}
                                                         onClick={e => navigateToDetailMock(e, menu.id, menu.pid, menu.sid, menu.idx)}>
-                                                        &nbsp;{menu.name}
+                                                        {menu.name}
                                                     </ButtonItem>
                                                 )
                                             })
