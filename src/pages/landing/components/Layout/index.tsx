@@ -18,7 +18,7 @@ const LandingPageLayout: FC<LandingPageLayoutProps> = (
     return (
         <Box id={'landing-body'}>
             <Head>
-                <title>{`${process.env.NEXT_PUBLIC_APP_NAME} - ${title || ''}`}</title>
+                <title>Mock N&apos; Roll</title>
                 <meta name="author" content="Haerul Muttaqin"/>
                 <meta name="robots" content="index, follow"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
