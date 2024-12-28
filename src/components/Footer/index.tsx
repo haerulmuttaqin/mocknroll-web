@@ -52,33 +52,33 @@ const Footer = () => {
     return (
         <Box as={'footer'} xcss={footerStyles}>
             <Box as={'nav'} xcss={footerNavStyles}>
-                <p>&copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME}</p>
+                <Box as={'p'}>&copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME}</Box>
                 <Box as={'ul'} xcss={navLinksStyles} id={'nav-links'}>
-                    <li>
-                        <Anchor
-                            href="https://vid-thumb-api.hae.my.id/"
-                            target="_blank"
-                            rel="noopener"
-                            xcss={navLinkStyles}
-                        >
-                            API Docs
-                        </Anchor>
-                    </li>
-                    <li>
-                        <Anchor
-                            href={`${process.env.NEXT_PUBLIC_PAGE_URL}/privacy-policy`}
-                            target="_blank"
-                            rel="noopener"
-                            xcss={navLinkStyles}
-                        >
-                            {t('privacy')}
-                        </Anchor>
-                    </li>
-                    <li>
-                        <Anchor href="https://vid-thumb-api.hae.my.id/" xcss={navLinkStyles}>
-                            {t('about')}
-                        </Anchor>
-                    </li>
+                    {/*<Box as={'li'}>*/}
+                    {/*    <Anchor*/}
+                    {/*        href="#"*/}
+                    {/*        target="_blank"*/}
+                    {/*        rel="noopener"*/}
+                    {/*        xcss={navLinkStyles}*/}
+                    {/*    >*/}
+                    {/*        API Docs*/}
+                    {/*    </Anchor>*/}
+                    {/*</Box>*/}
+                    {/*<Box as={'li'}>*/}
+                    {/*    <Anchor*/}
+                    {/*        href={`${process.env.NEXT_PUBLIC_PAGE_URL}/privacy-policy`}*/}
+                    {/*        target="_blank"*/}
+                    {/*        rel="noopener"*/}
+                    {/*        xcss={navLinkStyles}*/}
+                    {/*    >*/}
+                    {/*        {t('privacy')}*/}
+                    {/*    </Anchor>*/}
+                    {/*</Box>*/}
+                    {/*<Box as={'li'}>*/}
+                    {/*    <Anchor href="/about" xcss={navLinkStyles}>*/}
+                    {/*        {t('about')}*/}
+                    {/*    </Anchor>*/}
+                    {/*</Box>*/}
                 </Box>
             </Box>
         </Box>

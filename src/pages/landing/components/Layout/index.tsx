@@ -1,9 +1,7 @@
-"use client";
 import React, {FC, Fragment} from 'react';
 import '@/styles/landing.module.css'
 import {Box} from '@atlaskit/primitives';
 import {Content, Main, PageLayout, TopNavigation,} from '@atlaskit/page-layout';
-import {NavigationProvider} from "@atlaskit/navigation-next";
 import {LandingPageLayoutProps} from "@component/Layout/layout";
 import Head from "next/head";
 import LandingPageNavigation from "@/pages/landing/components/Header";
@@ -51,20 +49,18 @@ const LandingPageLayout: FC<LandingPageLayoutProps> = (
                 <link type="image/png" sizes="32x32" rel="icon" href="./assets/images/icons8-rock-emoji-32.png"/>
                 <link type="image/png" sizes="96x96" rel="icon" href="./assets/images/icons8-rock-emoji-96.png"/>
             </Head>
-            <NavigationProvider initialUIController={{isResizeDisabled: true}}>
-                <Fragment>
-                    <PageLayout>
-                        <TopNavigation isFixed={true}>
-                            <LandingPageNavigation/>
-                        </TopNavigation>
-                        <Content>
-                            <Main>
-                                {children}
-                            </Main>
-                        </Content>
-                    </PageLayout>
-                </Fragment>
-            </NavigationProvider>
+            <Fragment>
+                <PageLayout>
+                    <TopNavigation isFixed={true}>
+                        <LandingPageNavigation/>
+                    </TopNavigation>
+                    <Content>
+                        <Main>
+                            {children}
+                        </Main>
+                    </Content>
+                </PageLayout>
+            </Fragment>
         </Box>
     );
 };
