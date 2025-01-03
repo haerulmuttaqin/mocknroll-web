@@ -16,7 +16,7 @@ const LandingPageLayout: FC<LandingPageLayoutProps> = (
     return (
         <Box id={'landing-body'}>
             <Head>
-                <title>Mock N&apos; Roll</title>
+                <title>Mock N&apos; Roll: Mock API Service for unparalleled Dev!</title>
                 <meta name="author" content="Haerul Muttaqin"/>
                 <meta name="robots" content="index, follow"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
