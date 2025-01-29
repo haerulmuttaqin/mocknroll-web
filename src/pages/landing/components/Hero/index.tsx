@@ -32,12 +32,23 @@ const LandingPageHero = () => {
             })}>
                 <LandingWrapper>
                     <Box xcss={xcss({
-                        paddingTop: "space.300",
+                        paddingTop: "space.100",
                         paddingBottom: "space.1000",
                         textAlign: "center"
                     })}>
+                        <a href="https://www.producthunt.com/posts/mock-n-roll?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-mock&#0045;n&#0045;roll"
+                           target="_blank" rel="noreferrer"><img
+                            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=827945&theme=neutral&t=1738168224481"
+                            alt="Mock&#0032;N&#0039;&#0032;Roll - Mock&#0032;api&#0032;service&#0032;for&#0032;unparalleled&#0032;dev&#0033; | Product Hunt"
+                            style={{width: "250px", height: "54px"}} width="250" height="54"/></a>
+
                         <div className={"heading"}
-                             style={{fontSize: "35px", fontWeight: "500", letterSpacing: "-0.03em"}}>
+                             style={{
+                                 fontSize: "35px",
+                                 fontWeight: "500",
+                                 letterSpacing: "-0.03em",
+                                 paddingTop: "60px"
+                             }}>
                             Mocks API Service for unparalleled Dev!
                         </div>
                         <Box xcss={xcss({paddingTop: "space.100"})}>
@@ -53,7 +64,8 @@ const LandingPageHero = () => {
                                 Now</Button>
                             &nbsp;
                             &nbsp;
-                            <Button onClick={handleSignUp} appearance="subtle">{isLogin ? "Go to My Project" : "Sign Up"}</Button>
+                            <Button onClick={handleSignUp}
+                                    appearance="subtle">{isLogin ? "Go to My Project" : "Sign Up"}</Button>
                         </Box>
                     </Box>
                 </LandingWrapper>
