@@ -16,7 +16,11 @@ import Select, {GroupedOptionsType} from "@atlaskit/select";
 import LinkExternalIcon from '@atlaskit/icon/core/link-external';
 import {codeOption, methodOption} from "@pages/mocks/data/props";
 import {useUserId} from "@utils/hooks";
-import ReactCodeMirror from "@uiw/react-codemirror";
+import dynamic from 'next/dynamic';
+const ReactCodeMirror = dynamic(
+    () => import('@uiw/react-codemirror').then((mod) => mod.default),
+    { ssr: false }
+);
 import {json} from "@codemirror/lang-json";
 import {useColorMode} from "@atlaskit/app-provider";
 import {useRouter} from "next/router";
