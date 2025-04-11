@@ -82,5 +82,18 @@ const nextConfig = {
             },
         ],
     },
+    transpilePackages: [
+        // Atlaskit packages using Compiled directly or transitively
+        // will need to be added here in order for Next to pick up the internal
+        // CSS imports
+        "@atlaskit/header",
+        "@atlaskit/modal-dialog",
+        "@atlaskit/dropdown-menu",
+        "@atlaskit/datetime-picker",
+        "@atlaskit/calendar",
+        "@atlaskit/tooltip",
+        "echarts",
+        "zrender",
+    ],
 }
 module.exports = nextConfig

@@ -2,7 +2,6 @@
 import React, {FC, Fragment, useEffect, useState} from 'react';
 import {Content, LeftSidebarState, Main, PageLayout, TopNavigation,} from '@atlaskit/page-layout';
 import {AppSwitcher, AtlassianNavigation, PrimaryButton, SignIn} from "@atlaskit/atlassian-navigation";
-import {NavigationProvider} from "@atlaskit/navigation-next";
 import SideNav from "@component/SideNav";
 import MobileNavigation from "@component/SideNav/Mobile";
 import {LayoutProps} from "@component/Layout/layout";
@@ -97,80 +96,78 @@ const Layout: FC<LayoutProps> = (
                 <link type="image/png" sizes="32x32" rel="icon" href="./assets/images/icons8-rock-emoji-32.png"/>
                 <link type="image/png" sizes="96x96" rel="icon" href="./assets/images/icons8-rock-emoji-96.png"/>
             </Head>
-            <NavigationProvider initialUIController={{isResizeDisabled: true}}>
-                {wSize < 800 ? (
-                    <Fragment>
-                        {isSideNavOpen && (
-                            <MobileNavigation title={title} sidebarList={sidebarList} sidebarTitle={sidebarTitle}
-                                              loadingSideBar={loadingSidebar}/>)}
-                        <Main>
-                            <BaseContent
-                                isSideNavOpen={isSideNavOpen}
-                                isAdmin={isAdmin}
-                                title={title}
-                                description={description}
-                                renderAction={renderAction}
-                                renderBottomBar={renderBottomBar}
-                                shouldShowBreadcrumbs={shouldShowBreadcrumbs}
-                                shouldShowPageHeader={shouldShowPageHeader}
-                                shouldShowFooter={shouldShowFooter}>
-                                {children}
-                            </BaseContent>
-                        </Main>
-                    </Fragment>
-                ) : (
-                    <Fragment>
-                        <PageLayout
-                            onLeftSidebarExpand={(state: LeftSidebarState) =>
-                                console.log('onExpand', state)
-                            }
-                            onLeftSidebarCollapse={(state: LeftSidebarState) =>
-                                console.log('onCollapse', state)
-                            }
-                        >
-                            {
-                                shouldShowNavBar &&
-                                (
-                                    <TopNavigation isFixed={true}>
-                                        <AtlassianNavigation
-                                            label="dashboard"
-                                            primaryItems={[
-                                                <PrimaryButton key={0} onClick={openHome}>{t('home')}</PrimaryButton>,
-                                                status == "authenticated" ? <PrimaryButton key={1}
-                                                                                           onClick={openProject}>{t('my_projects')}</PrimaryButton> : null,
-                                                <PrimaryButton key={3} onClick={openAbout}>{t('about')}</PrimaryButton>,
-                                            ]}
-                                            renderProductHome={AtlassianProductHome}
-                                            renderSettings={DefaultSettings}
-                                            renderProfile={status == "authenticated" ? DefaultProfile : DefaultSignIn}
-                                        />
-                                    </TopNavigation>
-                                )
-                            }
-                            <Content>
-                                {isSideNavOpen &&
-                                    <SideNav isAdmin={isAdmin} menuList={sidebarList} title={sidebarTitle}
-                                             loading={loadingSidebar}/>}
-                                <Main>
-                                    <BaseContent
-                                        isSideNavOpen={isSideNavOpen}
-                                        isAdmin={isAdmin}
-                                        title={title}
-                                        description={description}
-                                        renderAction={renderAction}
-                                        renderBottomBar={renderBottomBar}
-                                        shouldShowBreadcrumbs={shouldShowBreadcrumbs}
-                                        shouldShowPageHeader={shouldShowPageHeader}
-                                        shouldShowFooter={shouldShowFooter}
-                                    >
-                                        {children}
-                                    </BaseContent>
-                                </Main>
-                            </Content>
-                        </PageLayout>
-                    </Fragment>
-                )}
-            </NavigationProvider>
+            {wSize < 800 ? (
+                <Fragment>
+                    {isSideNavOpen && (
+                        <MobileNavigation title={title} sidebarList={sidebarList} sidebarTitle={sidebarTitle}
+                                          loadingSideBar={loadingSidebar}/>)}
+                    <Main>
+                        <BaseContent
+                            isSideNavOpen={isSideNavOpen}
+                            isAdmin={isAdmin}
+                            title={title}
+                            description={description}
+                            renderAction={renderAction}
+                            renderBottomBar={renderBottomBar}
+                            shouldShowBreadcrumbs={shouldShowBreadcrumbs}
+                            shouldShowPageHeader={shouldShowPageHeader}
+                            shouldShowFooter={shouldShowFooter}>
+                            {children}
+                        </BaseContent>
+                    </Main>
+                </Fragment>
+            ) : (
+                <Fragment>
+                    <PageLayout
+                        onLeftSidebarExpand={(state: LeftSidebarState) =>
+                            console.log('onExpand', state)
+                        }
+                        onLeftSidebarCollapse={(state: LeftSidebarState) =>
+                            console.log('onCollapse', state)
+                        }
+                    >
+                        {
+                            shouldShowNavBar &&
+                            (
+                                <TopNavigation isFixed={true}>
+                                    <AtlassianNavigation
+                                        label="dashboard"
+                                        primaryItems={[
+                                            <PrimaryButton key={0} onClick={openHome}>{t('home')}</PrimaryButton>,
+                                            status == "authenticated" ? <PrimaryButton key={1}
+                                                                                       onClick={openProject}>{t('my_projects')}</PrimaryButton> : null,
+                                            <PrimaryButton key={3} onClick={openAbout}>{t('about')}</PrimaryButton>,
+                                        ]}
+                                        renderProductHome={AtlassianProductHome}
+                                        renderSettings={DefaultSettings}
+                                        renderProfile={status == "authenticated" ? DefaultProfile : DefaultSignIn}
+                                    />
+                                </TopNavigation>
+                            )
+                        }
+                        <Content>
+                            {isSideNavOpen &&
+                                <SideNav isAdmin={isAdmin} menuList={sidebarList} title={sidebarTitle}
+                                         loading={loadingSidebar}/>}
+                            <Main>
+                                <BaseContent
+                                    isSideNavOpen={isSideNavOpen}
+                                    isAdmin={isAdmin}
+                                    title={title}
+                                    description={description}
+                                    renderAction={renderAction}
+                                    renderBottomBar={renderBottomBar}
+                                    shouldShowBreadcrumbs={shouldShowBreadcrumbs}
+                                    shouldShowPageHeader={shouldShowPageHeader}
+                                    shouldShowFooter={shouldShowFooter}
+                                >
+                                    {children}
+                                </BaseContent>
+                            </Main>
+                        </Content>
+                    </PageLayout>
+                </Fragment>
+            )}
         </FlagsProvider>
     );
 };

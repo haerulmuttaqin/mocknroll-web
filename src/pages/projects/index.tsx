@@ -101,7 +101,7 @@ const Projects: NextPage = () => {
         router.push("/projects/create")
     }
     const handleOnShow = (project_id: string, sid?: string, idx?: number) => {
-        router.push(`/project?id=${project_id}&sid=${sid}&idx=${idx}`)
+        router.push(`/mocks?pid=${project_id}&sid=${sid}&idx=${idx}`)
     }
     const handleOnEdit = (project_id: string, sid?: string, idx?: number) => {
         router.push(`/projects/${project_id}?action=edit&sid=${sid}&idx=${idx}`)
@@ -179,7 +179,7 @@ const Projects: NextPage = () => {
                         <Tooltip content={row.name}>
                             {(tooltipProps) => (
                                 <Box {...tooltipProps} xcss={xcss({color: "color.text", cursor: "pointer"})}
-                                     onClick={() => handleOnShow(row.id, row.sid)}>
+                                     onClick={() => handleOnShow(row.id, row.sid, row.idx)}>
                                     {row.name}
                                 </Box>
                             )}

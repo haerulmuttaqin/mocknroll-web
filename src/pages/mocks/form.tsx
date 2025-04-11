@@ -148,7 +148,7 @@ const MockForm: FC<MockFormProps> = (
                                                                                    elemBeforeInput={<Box xcss={xcss({
                                                                                        paddingInlineStart: "space.150",
                                                                                        color: "color.text.disabled"
-                                                                                   })}>{project?.prefix}</Box>}
+                                                                                   })}>{project?.prefix}/</Box>}
                                                                                    placeholder="Input endpoint"/>
                                                                         {error && (
                                                                             <ErrorMessage>
