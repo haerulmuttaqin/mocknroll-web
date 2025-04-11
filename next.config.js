@@ -20,7 +20,6 @@ const nextConfig = {
         }];
     },
     reactStrictMode: false,
-    swcMinify: true,
     pageExtensions: ['tsx'],
     i18n,
     images: {
@@ -79,6 +78,12 @@ const nextConfig = {
                 hostname: 'localhost',
                 port: '8111',
                 pathname: '/thumbnail/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'api.producthunt.com',
+                port: '',
+                pathname: '/**',
             },
         ],
     },
