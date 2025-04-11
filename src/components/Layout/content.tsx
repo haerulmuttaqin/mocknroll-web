@@ -1,4 +1,4 @@
-import {Box, Text} from '@atlaskit/primitives';
+import {Box, Text, xcss} from '@atlaskit/primitives';
 import {LayoutProps} from "@component/Layout/layout";
 import React, {FC, useEffect} from "react";
 import PageHeader from "@atlaskit/page-header";
@@ -13,6 +13,38 @@ import {resetFlag, showFlag as showFlagWithResetBack} from "@/store/actions/show
 import {useRouter} from "next/router";
 import Footer from "@component/Footer";
 import ContentWrapper from "@component/Layout/common/content-wrapper";
+import FooterNavigation from "@component/Footer/footer-nav";
+import {media} from "@atlaskit/primitives/responsive";
+
+const footerNavStyles = xcss({
+    msWrapMargin: undefined,
+    display: 'flex',
+    gap: 'space.400',
+    justifyContent: 'center',
+    textAlign: 'center',
+    color: 'color.text.subtlest',
+    font: 'font.body',
+    paddingInlineStart: 'space.1000',
+    paddingInlineEnd: 'space.1000',
+    paddingBlockStart: 'space.300',
+    paddingBlockEnd: 'space.300',
+    [media.above.xxs]: {
+        flexWrap: 'wrap',
+        gap: 'space.200',
+    },
+});
+
+const footerStyles = xcss({
+    backgroundColor: "color.background.neutral",
+    gridArea: "footer",
+    maxHeight: "50%",
+    paddingInline: "space.100",
+    paddingBlockStart: "space.300",
+    [media.above.sm]: {
+        maxHeight: "25%",
+        paddingInline: "space.300",
+    },
+});
 
 const BaseContent: FC<LayoutProps> = (
     {
@@ -127,7 +159,12 @@ const BaseContent: FC<LayoutProps> = (
                     )}
                 {children}
             </Box>
-            <Footer/>
+            <FooterNavigation/>
+            <Box as={"footer"} xcss={footerStyles}>
+                <Box as={"nav"} xcss={footerNavStyles}>
+                    <Box as={"small"}>&copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME}</Box>
+                </Box>
+            </Box>
         </div>
     );
 };

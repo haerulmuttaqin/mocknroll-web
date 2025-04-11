@@ -416,3 +416,7 @@ div[class*="-ActionsWrapper"] {
     width: 2.9rem !important;
     justify-content: end !important;
 }
+
+#empty-state-height {
+    min-height: 50vh !important;
+}
