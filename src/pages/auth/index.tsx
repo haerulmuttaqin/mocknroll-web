@@ -71,33 +71,46 @@ const Auth: NextPage = () => {
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const {data: session, status} = useSession();
+    const [githubError, setGithubError] = useState<string | null>(null);
 
     const popupCenter = (url: string, title: string) => {
-        const dualScreenLeft = window.screenLeft ?? window.screenX;
-        const dualScreenTop = window.screenTop ?? window.screenY;
+        try {
+            const dualScreenLeft = window.screenLeft ?? window.screenX;
+            const dualScreenTop = window.screenTop ?? window.screenY;
 
-        const width =
-            window.innerWidth ?? document.documentElement.clientWidth ?? screen.width;
+            const width = window.innerWidth ?? document.documentElement.clientWidth ?? screen.width;
+            const height = window.innerHeight ?? document.documentElement.clientHeight ?? screen.height;
 
-        const height =
-            window.innerHeight ??
-            document.documentElement.clientHeight ??
-            screen.height;
+            const systemZoom = width / window.screen.availWidth;
+            const left = (width - 500) / 2 / systemZoom + dualScreenLeft;
+            const top = (height - 550) / 2 / systemZoom + dualScreenTop;
 
-        const systemZoom = width / window.screen.availWidth;
+            const newWindow = window.open(
+                url,
+                title,
+                `width=${500 / systemZoom},height=${550 / systemZoom},top=${top},left=${left}`
+            );
 
-        const left = (width - 500) / 2 / systemZoom + dualScreenLeft;
-        const top = (height - 550) / 2 / systemZoom + dualScreenTop;
+            if (!newWindow) {
+                throw new Error("Popup window blocked by browser");
+            }
 
-        const newWindow = window.open(
-            url,
-            title,
-            `width=${500 / systemZoom},height=${550 / systemZoom
-            },top=${top},left=${left}`
-        );
-
-        newWindow?.focus();
+            newWindow.focus();
+            return newWindow;
+        } catch (error) {
+            console.error("Popup error:", error);
+            // Fallback ke redirect biasa jika popup diblokir
+            window.location.href = url;
+        }
     };
+
+    {
+        githubError && (
+            <Box xcss={xcss({color: "color.text.danger", marginTop: "space.200"})}>
+                <Text>{githubError}</Text>
+            </Box>
+        )
+    }
 
     const onAuth = async () => {
         setIsLoading(true)
@@ -177,8 +190,15 @@ const Auth: NextPage = () => {
                                                 </Flex>
                                             </Button>
                                             <Button
-                                                isDisabled
-                                                onClick={() => popupCenter("/google-signin", "Github Sign In")}>
+                                                onClick={() => {
+                                                    setGithubError(null);
+                                                    try {
+                                                        popupCenter("/github-signin", "Github Sign In");
+                                                    } catch (error) {
+                                                        setGithubError("Failed to open GitHub login. Please allow popups.");
+                                                    }
+                                                }}
+                                            >
                                                 <Flex justifyContent={"center"} alignItems={"center"}>
                                                     <GithubSVG/>&nbsp;&nbsp;Sign In with Github
                                                 </Flex>
