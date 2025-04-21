@@ -5,8 +5,8 @@ import NextAuth from "next-auth";
 export default NextAuth({
     providers: [
         GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            clientId: process.env.NEXT_PIUBLIC_GOOGLE_CLIENT_ID,
+            clientSecret: process.env.NEXT_PIUBLIC_GOOGLE_CLIENT_SECRET,
         }),
         GithubProvider({
             clientId: process.env.GITHUB_CLIENT_ID,
@@ -17,11 +17,5 @@ export default NextAuth({
                 },
             },
         }),
-    ],
-    callbacks: {
-        async redirect({ url, baseUrl }) {
-            return url.startsWith(baseUrl) ? url : baseUrl;
-        },
-    },
-    debug: process.env.NODE_ENV === "development",
+    ]
 });
