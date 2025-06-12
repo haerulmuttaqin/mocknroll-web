@@ -24,14 +24,14 @@ const About: NextPage = () => {
         <FlagsProvider>
             <Layout
                 shouldShowBreadcrumbs={false}
-                title={t("about")}
+                title={t("About")}
                 shouldShowPageHeader={false}
             >
                 <ContentWrapper>
                     <Box xcss={xcss({paddingTop: "space.400", paddingBottom: "space.400"})}>
                         <Inline spread="space-between" space="space.0">
                             <Heading level="h800" as="h2">
-                                {t("about")}
+                                {t("About")}
                             </Heading>
                         </Inline>
                         <p>Streamline your development workflow! Our platform offers instant mock API creation, real-time testing, and seamless integration</p>
