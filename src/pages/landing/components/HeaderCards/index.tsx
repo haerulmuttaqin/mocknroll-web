@@ -37,22 +37,22 @@ const features: FeatureProps[] = [
     {
         title: "Free & Unlimited",
         desc: "Mock N' Roll is free to use, no ads, no hidden subscriptions or service limits. Your mocks will be available forever",
-        image: "https://wac-cdn-bfldr.atlassian.com/K3MHR9G8/at/mk553cskk88f65k68cbsk353/Icon-Checkmark.svg"
+        image: "/assets/images/AT12Y0I.svg"
     },
     {
         title: "Developer Friendly",
         desc: "Mock N' Roll is compatible with JS, Mobile and Server applications, featuring CORS, JSONP and GZIP responses. No authentication, just call it!",
-        image: "https://wac-cdn-bfldr.atlassian.com/K3MHR9G8/at/gb5s8vfb4rvbmpf8nncg2h/Icon-Certification.svg"
+        image: "/assets/images/AT12Y3N.svg"
     },
     {
         title: "Total control",
         desc: "New in Mock N' Roll, you can now update or delete your mocks at any time. The next release will go further and offer you request inspector.",
-        image: "https://wac-cdn-bfldr.atlassian.com/K3MHR9G8/at/2qmscb2qr53mwvhxm9rw6spk/Icon-Chat.svg"
+        image: "/assets/images/AT12Y50.svg"
     },
     {
         title: "Unblock Client Teams",
         desc: "Stop waiting for backend APIs. Start building UI features immediately. Teams report 60% faster development cycles.",
-        image: "https://wac-cdn-bfldr.atlassian.com/K3MHR9G8/at/chsr65pwjsg84gj6rqchv/Icon-Rocket.svg"
+        image: "/assets/images/AT12XUW.svg"
     },
 ]
 

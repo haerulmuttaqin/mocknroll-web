@@ -23,14 +23,14 @@ const Privacy: NextPage = () => {
         <FlagsProvider>
             <Layout
                 shouldShowBreadcrumbs={false}
-                title={t("privacy_policy")}
+                title={t("Privacy Policy")}
                 shouldShowPageHeader={false}
             >
                 <ContentWrapper>
                     <Box xcss={xcss({paddingTop: "space.400", paddingBottom: "space.400"})}>
                         <Inline spread="space-between" space="space.0">
                             <Heading level="h800" as="h2">
-                                {t("privacy_policy")}
+                                {t("Privacy Policy")}
                             </Heading>
                         </Inline>
                     </Box>

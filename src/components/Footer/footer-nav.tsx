@@ -106,13 +106,13 @@ const FooterNavigation = () => {
                             <Box as={"ul"} xcss={navLinksStyles}>
                                 <Box as={"li"}>
                                     <Box onClick={() => navigate("/about")} xcss={navLinkStyles}>
-                                        {t("about")}
+                                        {t("About")}
                                     </Box>
                                 </Box>
                                 <Box as={"li"}>
                                     <Box onClick={() => navigate(`/privacy-policy`)}
                                          xcss={navLinkStyles}>
-                                        {t("privacy_policy")}
+                                        {t("Privacy Policy")}
                                     </Box>
                                 </Box>
                                 <Box as={"li"}>
