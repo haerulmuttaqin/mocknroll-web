@@ -1,7 +1,7 @@
 import {signIn, useSession} from "next-auth/react";
 import {useEffect} from "react";
 
-const SignInPage = () => {
+const GoogleSignInPage = () => {
     const {data: session, status} = useSession();
 
     useEffect(() => {
@@ -23,4 +23,4 @@ const SignInPage = () => {
     );
 };
 
-export default SignInPage;
+export default GoogleSignInPage;
