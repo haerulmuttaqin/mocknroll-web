@@ -69,8 +69,7 @@ const nextConfig = {
             },
             {
                 protocol: 'http',
-                hostname: 'localhost',
-                port: '8111',
+                hostname: '8111',
                 pathname: '/generate-thumbnail/**',
             },
             {
