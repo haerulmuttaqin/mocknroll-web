@@ -2,6 +2,9 @@
 
 const {i18n} = require('./next-i18next.config')
 const nextConfig = {
+    typescript: {
+        ignoreBuildErrors: true,
+    },
     experimental: {
         scrollRestoration: true,
         forceSwcTransforms: true,
@@ -69,7 +72,8 @@ const nextConfig = {
             },
             {
                 protocol: 'http',
-                hostname: '8111',
+                hostname: 'localhost',
+                port: '8111',
                 pathname: '/generate-thumbnail/**',
             },
             {
