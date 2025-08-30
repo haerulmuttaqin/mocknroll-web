@@ -52,20 +52,27 @@ const Layout: FC<LayoutProps> = (
     const {t} = useTranslation(['common'])
     const router = useRouter()
     const [wSize, setSize] = React.useState(0);
+    const [isClient, setIsClient] = useState(false);
     const {data: session, status} = useSession()
+
+    // Ensure we're on the client side to prevent hydration issues
+    useEffect(() => {
+        setIsClient(true);
+        setSize(window.innerWidth);
+    }, []);
 
     const updateWindowDimensions = () => {
         setSize(window.innerWidth);
     };
-    if (window.innerWidth !== wSize) {
-        setSize(window.innerWidth);
-    }
+
     useEffect(() => {
-        window.addEventListener("resize", updateWindowDimensions);
-        return () => {
-            window.removeEventListener("resize", updateWindowDimensions);
-        };
-    });
+        if (isClient) {
+            window.addEventListener("resize", updateWindowDimensions);
+            return () => {
+                window.removeEventListener("resize", updateWindowDimensions);
+            };
+        }
+    }, [isClient]);
 
     const openHome = () => {
         router.replace("/")
@@ -81,6 +88,27 @@ const Layout: FC<LayoutProps> = (
 
     const openAbout = () => {
         router.push(`${process.env.NEXT_PUBLIC_PAGE_URL}/about`)
+    }
+
+    // Don't render until we're on the client to prevent hydration mismatch
+    if (!isClient) {
+        return (
+            <FlagsProvider>
+                <Head>
+                    <title>{`${title || process.env.NEXT_PUBLIC_APP_NAME}`}</title>
+                    <meta property="og:title" content={`${process.env.NEXT_PUBLIC_APP_NAME} - ${title}`} key="title"/>
+                    <meta name="robots" content="index, follow"/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                    <meta charSet="UTF-8"/>
+                    <link type="image/png" sizes="16x16" rel="icon" href="./assets/images/icons8-rock-emoji-16.png"/>
+                    <link type="image/png" sizes="32x32" rel="icon" href="./assets/images/icons8-rock-emoji-32.png"/>
+                    <link type="image/png" sizes="96x96" rel="icon" href="./assets/images/icons8-rock-emoji-96.png"/>
+                </Head>
+                <div style={{height: "100vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    Loading...
+                </div>
+            </FlagsProvider>
+        );
     }
 
     return (

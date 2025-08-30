@@ -9,12 +9,12 @@ import Grid, {GridItem} from "@atlaskit/grid";
 import Heading from "@atlaskit/heading";
 import ContentWrapper from "@component/Layout/common/content-wrapper";
 import {useTranslation} from "next-i18next";
-import {signOut, useSession} from "next-auth/react";
+import {signOut, useSession, signIn} from "next-auth/react";
 import Button from "@atlaskit/button/new";
 import {cardBasicStyle, cardStyle} from "@component/Common/style-util";
 import {SpinnerWrapper} from "@atlaskit/media-ui/modalSpinner";
 import SpinnerLoading from "@component/Spinner";
-import {useRouter} from "next/router";
+
 import {actionSignIn} from "@api/data/services/auth";
 import {useDispatch} from "react-redux";
 import {showFlag} from '@store/actions/show-flag';
@@ -73,44 +73,7 @@ const Auth: NextPage = () => {
     const {data: session, status} = useSession();
     const [githubError, setGithubError] = useState<string | null>(null);
 
-    const popupCenter = (url: string, title: string) => {
-        try {
-            const dualScreenLeft = window.screenLeft ?? window.screenX;
-            const dualScreenTop = window.screenTop ?? window.screenY;
 
-            const width = window.innerWidth ?? document.documentElement.clientWidth ?? screen.width;
-            const height = window.innerHeight ?? document.documentElement.clientHeight ?? screen.height;
-
-            const systemZoom = width / window.screen.availWidth;
-            const left = (width - 500) / 2 / systemZoom + dualScreenLeft;
-            const top = (height - 550) / 2 / systemZoom + dualScreenTop;
-
-            const newWindow = window.open(
-                url,
-                title,
-                `width=${500 / systemZoom},height=${550 / systemZoom},top=${top},left=${left}`
-            );
-
-            if (!newWindow) {
-                throw new Error("Popup window blocked by browser");
-            }
-
-            newWindow.focus();
-            return newWindow;
-        } catch (error) {
-            console.error("Popup error:", error);
-            // Fallback ke redirect biasa jika popup diblokir
-            window.location.href = url;
-        }
-    };
-
-    {
-        githubError && (
-            <Box xcss={xcss({color: "color.text.danger", marginTop: "space.200"})}>
-                <Text>{githubError}</Text>
-            </Box>
-        )
-    }
 
     const onAuth = async () => {
         setIsLoading(true)
@@ -118,7 +81,7 @@ const Auth: NextPage = () => {
             email: session?.user?.email as string,
             name: session?.user?.name as string,
             image: session?.user?.image as string,
-            auth_method: "google",
+            auth_method: "oauth", // Since we're using OAuth providers
         }
         await actionSignIn(payload)
             .then((res) => {
@@ -158,6 +121,15 @@ const Auth: NextPage = () => {
         );
     }
 
+    const handleGoogleSignIn = () => {
+        signIn("google", { callbackUrl: "/projects" });
+    };
+
+    const handleGithubSignIn = () => {
+        setGithubError(null);
+        signIn("github", { callbackUrl: "/projects" });
+    };
+
     return (
         <FlagsProvider>
             <Layout
@@ -184,25 +156,23 @@ const Auth: NextPage = () => {
                                             <Text>Sign in to continue managing your magic Mocks API.</Text>
                                             <br/>
                                             <Button
-                                                onClick={() => popupCenter("/google-signin", "Google Sign In")}>
+                                                onClick={handleGoogleSignIn}>
                                                 <Flex justifyContent={"center"} alignItems={"center"}>
                                                     <GoogleSVG/>&nbsp;&nbsp;Sign In with Google
                                                 </Flex>
                                             </Button>
                                             <Button
-                                                onClick={() => {
-                                                    setGithubError(null);
-                                                    try {
-                                                        popupCenter("/github-signin", "Github Sign In");
-                                                    } catch (error) {
-                                                        setGithubError("Failed to open GitHub login. Please allow popups.");
-                                                    }
-                                                }}
+                                                onClick={handleGithubSignIn}
                                             >
                                                 <Flex justifyContent={"center"} alignItems={"center"}>
                                                     <GithubSVG/>&nbsp;&nbsp;Sign In with Github
                                                 </Flex>
                                             </Button>
+                                            {githubError && (
+                                                <Box xcss={xcss({color: "color.text.danger", marginTop: "space.200"})}>
+                                                    <Text>{githubError}</Text>
+                                                </Box>
+                                            )}
                                         </Flex>
                                     </Box>
                                 </Box>
@@ -216,4 +186,3 @@ const Auth: NextPage = () => {
 };
 
 export default CheckAuth(Auth);
-// export default Auth;

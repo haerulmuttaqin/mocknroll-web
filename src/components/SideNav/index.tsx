@@ -118,12 +118,19 @@ const SideNav = ({
         error: errorProject
     } = useFetchProjects()
     const [projectSelected, setProjectSelected] = useState<ProjectProps>()
+    const [isClient, setIsClient] = useState(false)
 
     const pathname = router.pathname.split('/')[1]?.toLowerCase()
     const pathnameSub = router.pathname.split('/')[2]?.toLowerCase()
 
     const [isOpenProject, setIsOpenProject] = useState(false);
     const [projects, setProjects] = useState<any>(JSON.parse(secureLocalStorage.getItem("companies") as string))
+    
+    // Ensure we're on the client side to prevent hydration issues
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
     const navigateTo = (e: any, route: string) => {
         e.preventDefault()
         if (onClick) {
@@ -178,201 +185,79 @@ const SideNav = ({
         }
     }, [isLoadingProjects])
 
+    // Don't render until we're on the client to prevent hydration mismatch
+    if (!isClient) {
+        return (
+            <LeftSidebar
+                id={isMobile ? "left-sidebar-mobile" : "left-sidebar"}
+                skipLinkTitle="Navigation"
+                width={280}
+                isFixed={false}
+                isResizable={!shouldHideResizeButton}
+                testId="left-sidebar"
+            >
+                <div style={{height: "100vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    Loading...
+                </div>
+            </LeftSidebar>
+        );
+    }
+
     return (
         <LeftSidebar
             id={isMobile ? "left-sidebar-mobile" : "left-sidebar"}
             skipLinkTitle="Navigation"
-            isFixed={true}
-            onFlyoutExpand={() => console.log('onFlyoutExpand')}
-            onFlyoutCollapse={() => console.log('onFlyoutCollapse')}
-            resizeGrabAreaLabel="Resize"
-            resizeButtonLabel="Current"
-            valueTextLabel="Width"
-            shouldPersistWidth
-            overrides={
-                {
-                    ResizeButton: {
-                        render: (Component, props) => (
-                            shouldHideResizeButton ? <span></span> :
-                                <Tooltip
-                                    content={
-                                        <p>{props.isLeftSidebarCollapsed ? 'Expand' : 'Collapse'} the
-                                            navigation [
-                                            <br/>(left bracket)</p>
-                                    }
-                                    hideTooltipOnClick
-                                    position="right"
-                                    testId="tooltip"
-                                >
-                                    <Component {...props} />
-                                </Tooltip>
-                        ),
-                    },
-                }
-            }
+            width={280}
+            isFixed={false}
+            isResizable={!shouldHideResizeButton}
+            testId="left-sidebar"
         >
-            {
-                (isLoadingProjects || loading) && (
-                    <Box id={"sidebar-loading"}>
-                        <NavigationContent>
-                            <NavigationHeader>
-                                <div style={{marginTop: '8px'}}>
-                                    <Header>{title}</Header>
-                                </div>
-                            </NavigationHeader>
-                            <LoadingItems
-                                isLoading
-                                fallback={
-                                    <>
-                                        <Box xcss={loadingSideNavStyle}>
-                                            <SkeletonItem isShimmering/>
-                                            <SkeletonItem isShimmering/>
-                                            <SkeletonItem isShimmering/>
-                                            <SkeletonItem isShimmering/>
-                                            <SkeletonItem isShimmering/>
-                                            <SkeletonItem isShimmering/>
-                                            <SkeletonItem isShimmering/>
-                                            <SkeletonItem isShimmering/>
-                                        </Box>
-                                    </>
-                                }>
-                                <Box/>
-                            </LoadingItems>
-                        </NavigationContent>
-                    </Box>
-                )
-            }
-            {
-                !menuList && (!loading && !isLoadingProjects) ?
-                    <SideNavigation label="navigation" testId="side-navigation-app">
-                        <Box xcss={sideNavStyle}>
-                            <NestableNavigationContent initialStack={currentPath()} onChange={handleOnChangeNavigation}>
-                                <Section isList>
-                                    {
-                                        mainMenu.map((menu, i) => {
-                                            const role: any = menu.accessor?.filter((it: any) => it == userRole as any)
-                                            if (role?.length == 0) return null
-                                            const isNestedMenu = (menu.subMenu?.length || 0) > 0
-                                            if (isNestedMenu) {
-                                                return (
-                                                    <NestingItem
-                                                        id={menu.route.replace("/", "")}
-                                                        key={`${i}-${menu.route}`}
-                                                        title={t(menu.locale)}
-                                                        isSelected={menu.route.replace("/", "") == pathname?.split("/")[0]}>
-                                                        {
-                                                            menu.subMenu?.map((subMenu, subI) => {
-                                                                const role: any = subMenu.accessor?.filter((it: any) => it == userRole as any)
-                                                                if (role?.length == 0) return null
-                                                                return (
-                                                                    <Section key={subI} title={t(subMenu.locale)}
-                                                                             isList>
-                                                                        {
-                                                                            subMenu.subMenu?.map((subChildMenu, subChildI) => {
-                                                                                const role: any = subChildMenu.accessor?.filter((it: any) => it == userRole as any)
-                                                                                if (role?.length == 0) return null
-                                                                                return (
-                                                                                    <ButtonItem
-                                                                                        id={`${subChildMenu.route}-${subChildMenu.route}`}
-                                                                                        key={`${subI}-${subChildMenu.route}`}
-                                                                                        isSelected={checkSubUrl(subChildMenu.route?.split('/')[1] as string)}
-                                                                                        onClick={e => navigateTo(e, `${menu.route}${subChildMenu.route}`)}>
-                                                                                        {t(subChildMenu.locale)}
-                                                                                    </ButtonItem>
-                                                                                )
-                                                                            })
-                                                                        }
-                                                                    </Section>
-                                                                )
-                                                            })
-                                                        }
-                                                    </NestingItem>
-                                                )
-                                            }
-                                            return (
-                                                <ButtonItem
-                                                    id={menu.route.replace("/", "")}
-                                                    key={`${i}-${menu.route}`}
-                                                    isSelected={checkUrl(menu.route?.split('/')[1] as string)}
-                                                    onClick={e => navigateTo(e, menu.route)}>
-                                                    {menu.title}
-                                                </ButtonItem>
-                                            )
-                                        })
-                                    }
-                                </Section>
-                            </NestableNavigationContent>
-                        </Box>
-                    </SideNavigation>
-                    :
-                    (!loading && !isLoadingProjects) &&
-                    (<SideNavigation label="navigation" testId="side-navigation">
-                        <Box xcss={sideNavStyle}>
-                            <NavigationHeader>
-                                <Popup
-                                    isOpen={isOpenProject}
-                                    onClose={() => setIsOpenProject(false)}
-                                    placement="bottom-start"
-                                    content={() => <MenuProject data={projects}/>}
-                                    trigger={(triggerProps) => (
-                                        <Button
-                                            isSelected={isOpenProject}
-                                            {...triggerProps}
-                                            shouldFitContainer
-                                            iconBefore={ProjectIcon}
-                                            iconAfter={isOpenProject ? ChevronUpIcon : ChevronDownIcon}
-                                            onClick={() => setIsOpenProject(!isOpenProject)}
-                                        >
-                                            {projectSelected?.name || "Selected Project"}
-                                        </Button>
-                                    )}/>
-                                {/*<ButtonItem*/}
-                                {/*    iconBefore={<ArrowLeftCircleIcon label={"back"}/>}*/}
-                                {/*    onClick={navigateBack}>*/}
-                                {/*    {t('go_back')}*/}
-                                {/*</ButtonItem>*/}
-                            </NavigationHeader>
-                            <NavigationContent showTopScrollIndicator>
-                                <ButtonItem
-                                    isSelected={checkSubUrl("[mock_id]")}
-                                    iconBefore={<AddIcon label="add"/>}
-                                    onClick={e => navigateToCreateNewMock(e, "create")}>
-                                    {t("create_new_endpoint")}
-                                </ButtonItem>
-                                <ButtonItem
-                                    id={"mock"}
-                                    isSelected={checkUrl("mocks") && pathnameSub == undefined}
-                                    iconBefore={<TasksIcon label="mocks"/>}
-                                    onClick={e => navigateToManageMock(e)}>
-                                    {t("manage_my_endpoint")}
-                                </ButtonItem>
-                                {menuList?.length > 0 ?
-                                    <Section title="Endpoints" isList>
-                                        {
-                                            menuList?.map((menu: any, i: number) => {
-                                                return (
-                                                    <ButtonItem
-                                                        testId={"sidebar-item"}
-                                                        id={menu.id}
-                                                        key={`${i}-${menu.name}`}
-                                                        iconBefore={<Lozenge testId={"sidebar-item-icon"}
-                                                                             appearance={getMethodType(menu.method)}>{menu.method}</Lozenge>}
-                                                        description={`${projectSelected?.prefix || ''}/${menu.endpoint}`}
-                                                        isSelected={checkMockUrl(menu.id)}
-                                                        onClick={e => navigateToDetailMock(e, menu.id, menu.pid, menu.sid, menu.idx)}>
-                                                        {menu.name}
-                                                    </ButtonItem>
-                                                )
-                                            })
-                                        }
-                                    </Section>
-                                    : null}
-                            </NavigationContent>
-                        </Box>
-                    </SideNavigation>)
-            }
-            <ExpandLeftSidebarKeyboardShortcut/>
+            <SideNavigation label="Project navigation" testId="side-navigation">
+                <NavigationHeader>
+                    <Header description="Next.js sidebar example">
+                        {title}
+                    </Header>
+                </NavigationHeader>
+                <NavigationContent>
+                    <NestableNavigationContent
+                        initialStack={[]}
+                        testId="nestable-navigation-content"
+                    >
+                        <NestingItem
+                            id="projects"
+                            title="Projects"
+                            iconBefore={<ProjectIcon label="" />}
+                            isSelected={checkUrl("projects")}
+                            onClick={(e) => navigateTo(e, "/projects")}
+                        >
+                            <NestingItem
+                                id="create-project"
+                                title="Create Project"
+                                isSelected={checkUrl("create")}
+                                onClick={(e) => navigateTo(e, "/projects/create")}
+                            />
+                        </NestingItem>
+                        <NestingItem
+                            id="mocks"
+                            title="Mocks"
+                            iconBefore={<TasksIcon label="" />}
+                            isSelected={checkUrl("mocks")}
+                            onClick={(e) => navigateTo(e, "/mocks")}
+                        >
+                            {projectSelected && (
+                                <NestingItem
+                                    id="create-mock"
+                                    title="Create Mock"
+                                    isSelected={checkUrl("create")}
+                                    onClick={(e) => navigateToCreateNewMock(e, "create")}
+                                />
+                            )}
+                        </NestingItem>
+                    </NestableNavigationContent>
+                </NavigationContent>
+            </SideNavigation>
         </LeftSidebar>
-    )
-}
-export default SideNav
+    );
+};
+
+export default SideNav;

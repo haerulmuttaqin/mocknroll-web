@@ -12,6 +12,7 @@ import {Inline} from "@atlaskit/primitives";
 import ContentWrapper from "@component/Layout/common/content-wrapper";
 import {useTranslation} from "next-i18next";
 import LangOption from "@component/LangOption";
+import {useRouter} from "next/router";
 
 const Layout = dynamic(
     () => import('@component/Layout/index'),
@@ -32,8 +33,17 @@ const langOptions = [
 ];
 
 const Lang: NextPage = () => {
-    const [selected, setSelected] = useState<string>(secureLocalStorage.getItem("lang") as string || "en");
+    const router = useRouter();
+    const [selected, setSelected] = useState<string>("en");
+    const [isClient, setIsClient] = useState(false);
     const {t, i18n} = useTranslation(['common'])
+
+    // Initialize language from localStorage only on client side
+    useEffect(() => {
+        const storedLang = secureLocalStorage.getItem("lang") as string || "en";
+        setSelected(storedLang);
+        setIsClient(true);
+    }, []);
 
     const onChange = ({currentTarget: {value}}: SyntheticEvent<HTMLInputElement>) => {
         const option = value || "id";
@@ -41,9 +51,29 @@ const Lang: NextPage = () => {
     };
 
     useEffect(() => {
-        i18n.changeLanguage(selected)
-        secureLocalStorage.setItem("lang", selected)
-    }, [selected]);
+        if (isClient && selected) {
+            i18n.changeLanguage(selected);
+            secureLocalStorage.setItem("lang", selected);
+            
+            // Update the URL to reflect the language change
+            router.push(router.pathname, router.asPath, { locale: selected });
+        }
+    }, [selected, isClient, i18n, router]);
+
+    // Don't render until we're on the client to prevent hydration mismatch
+    if (!isClient) {
+        return (
+            <Layout title="Language Settings" description="Select your language" isSideNavOpen={true}>
+                <ContentWrapper>
+                    <Grid>
+                        <GridItem>
+                            <div>Loading...</div>
+                        </GridItem>
+                    </Grid>
+                </ContentWrapper>
+            </Layout>
+        );
+    }
 
     return (
         <>
