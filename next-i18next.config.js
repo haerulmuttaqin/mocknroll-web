@@ -16,10 +16,10 @@ module.exports = {
         backends: isBrowser ? [LocalStorageBackend, HttpBackend] : [],
     },
     partialBundledLanguages: isBrowser && true,
-    react: { 
-        useSuspense: false,
-        wait: true
-    },
+    // react: { // used only for the lazy reload
+    //   bindI18n: 'languageChanged loaded',
+    //   useSuspense: false
+    // },
     i18n: {
         defaultLocale: 'en',
         locales: ['id', 'en'],
