@@ -150,8 +150,14 @@ const MockForm: FC<MockFormProps> = (
                                                                     <Fragment>
                                                                         <TextField {...fieldProps} type={"text"}
                                                                                    elemBeforeInput={<Box xcss={xcss({
-                                                                                       paddingInlineStart: "space.150",
-                                                                                       color: "color.text.disabled"
+                                                                                       paddingInlineStart: "space.100",
+                                                                                       color: "color.text.disabled",
+                                                                                       lineBreak: "auto",
+                                                                                       whiteSpace: "nowrap",
+                                                                                       overflow: "hidden",
+                                                                                       textOverflow: "ellipsis",
+                                                                                       direction: "rtl",
+                                                                                       textAlign: "left"
                                                                                    })}>{project?.prefix}/</Box>}
                                                                                    placeholder="Input endpoint"/>
                                                                         {error && (
