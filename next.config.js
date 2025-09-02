@@ -23,6 +23,7 @@ const nextConfig = {
     pageExtensions: ['tsx'],
     i18n,
     images: {
+        unoptimized: true,
         dangerouslyAllowSVG: true,
         remotePatterns: [
             {
