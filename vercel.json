@@ -10,5 +10,6 @@
       "NEXT_DISABLE_SHARP": "1",
       "NEXT_SHARP_PATH": "/tmp/node_modules/sharp"
     }
-  }
+  },
+  "buildCommand": "chmod +x vercel-build.sh && ./vercel-build.sh"
 }
