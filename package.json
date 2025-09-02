@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "dev-inspect": "NODE_OPTIONS='--inspect' next dev -p 3001",
-    "build": "npm uninstall sharp --silent && next build",
+    "build": "npm install --legacy-peer-deps --silent && npm install typescript@^5.9.2 --save-dev --silent && npm uninstall sharp --silent && next build",
     "start": "next start -p 3001",
     "lint": "next lint",
-    "postinstall": "npm uninstall sharp --silent || true"
+    "postinstall": "npm install typescript@^5.9.2 --save-dev --silent && npm uninstall sharp --silent || true"
   },
   "dependencies": {
     "@atlaskit/app-provider": "^1.0.0",
