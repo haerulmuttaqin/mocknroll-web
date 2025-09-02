@@ -6,7 +6,7 @@ export const adminMenu: MainMenu[] = [
     {
         title: 'Home',
         locale: 'Home',
-        icon: ScreenIcon,
+        icon: ScreenIcon as any,
         route: '/',
         accessor: [Role.SuperAdmin, Role.Admin, Role.User],
     },

@@ -57,6 +57,7 @@ const CardRegion: FC<CardRegionProps> = (props) => {
                             </Inline>
                         </Inline>
                         <Text size={"small"}>
+                            {data?.data || ""}
                         </Text>
                     </Stack>
                 </Stack>

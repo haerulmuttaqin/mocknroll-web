@@ -2,7 +2,7 @@
   "home": "Home",
   "api_doc": "API Documentation",
   "projects": "Projects",
-  "my_projects": "My Projects",
+  "My Projects": "My Projects",
   "create_new_project": "Create New Project",
   "create_new_endpoint": "Create New Endpoint",
   "manage_my_endpoint": "Manage Endpoints",

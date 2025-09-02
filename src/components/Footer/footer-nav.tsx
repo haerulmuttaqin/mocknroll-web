@@ -118,7 +118,7 @@ const FooterNavigation = () => {
                                 <Box as={"li"}>
                                     <Box onClick={() => navigate(`/projects`)}
                                          xcss={navLinkStyles}>
-                                        {t("my_projects")}
+                                        {t("My Projects")}
                                     </Box>
                                 </Box>
                                 <Box as={"li"}>

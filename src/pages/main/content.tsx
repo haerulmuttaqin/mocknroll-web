@@ -33,6 +33,7 @@ const Content: FC<any> = () => {
                 xcss={xcss({justifyContent: "center", alignItems: "center", paddingBlock: "space.400"})}
             >
                 <Grid maxWidth="wide">
+                    <div>Content will be added here</div>
                 </Grid>
 
             </Box>

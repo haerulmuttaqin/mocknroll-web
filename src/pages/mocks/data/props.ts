@@ -1,6 +1,5 @@
 import {ProjectProps} from "@api/data/interfaces/project";
-import {GroupedOptionsType} from "@atlaskit/select/types";
-import {OptionType} from "@atlaskit/select";
+import {GroupedOptionsType, OptionType} from "@atlaskit/select";
 
 export interface ContentProjectProps {
     area?: ProjectProps

@@ -16,7 +16,7 @@ import {useTranslation} from "next-i18next";
 import Popup from "@atlaskit/popup";
 import LangOptionSmall from "@component/LangOption/small";
 import MenuIcon from '@atlaskit/icon/core/menu';
-import {ColorMode} from '@atlaskit/app-provider/theme-provider';
+type ColorMode = "light" | "dark" | "auto";
 import {useRouter} from "next/router";
 
 const navStyle = xcss({
@@ -152,7 +152,7 @@ const ButtonSignIn = () => {
                 <IconButton
                     onClick={onClick}
                     appearance="subtle"
-                    icon={MenuIcon}
+                    icon={MenuIcon as any}
                     isSelected={isOpen}
                     label={"More"}
                     {...triggerProps}
@@ -167,9 +167,14 @@ const LandingPageNavigation = () => {
     const router = useRouter()
 
     const handleFeatureClick = () => {
+        router.push("#features")
     }
     const handleAboutClick = () => {
         router.push("/about")
+    }
+
+    const handleGithubClick = () => {
+        window.open("https://github.com/haerulmuttaqin/mocknroll-web", "_blank", "noopener,noreferrer")
     }
 
     useEffect(() => {
@@ -183,6 +188,7 @@ const LandingPageNavigation = () => {
                     primaryItems={[
                         <PrimaryButton key={0} onClick={handleFeatureClick}>Features</PrimaryButton>,
                         <PrimaryButton key={1} onClick={handleAboutClick}>About</PrimaryButton>,
+                        <PrimaryButton key={2} onClick={handleGithubClick}>Github <b>↗</b></PrimaryButton>,
                     ]}
                     renderProductHome={AtlassianProductHome}
                     renderSignIn={isLogin != undefined ? (isLogin ? DefaultProfile : ButtonSignIn) : ButtonSignIn}

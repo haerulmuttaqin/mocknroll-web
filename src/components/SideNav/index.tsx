@@ -12,7 +12,6 @@ import {
     SideNavigation,
     SkeletonItem,
 } from "@atlaskit/side-navigation";
-import {ExpandLeftSidebarKeyboardShortcut} from "../Layout/common";
 import React, {useEffect, useState} from "react";
 import {mainMenu} from "@/resources/main-menu";
 import {useRouter} from "next/router";
@@ -90,7 +89,7 @@ const MenuProject = ({data}: any) => {
                 }
             </SectionMenu>
             <SectionMenu hasSeparator>
-                <ButtonItemMenu onClick={handleGoToManageProject}>{t("my_projects")}</ButtonItemMenu>
+                <ButtonItemMenu onClick={handleGoToManageProject}>{t("My Projects")}</ButtonItemMenu>
                 <ButtonItemMenu onClick={handleCreateNewProject}>{t("create_new_project")}</ButtonItemMenu>
             </SectionMenu>
         </MenuGroup>
@@ -196,9 +195,10 @@ const SideNav = ({
                             shouldHideResizeButton ? <span></span> :
                                 <Tooltip
                                     content={
-                                        <p>{props.isLeftSidebarCollapsed ? 'Expand' : 'Collapse'} the
-                                            navigation [
-                                            <br/>(left bracket)</p>
+                                        // <p>{props.isLeftSidebarCollapsed ? 'Expand' : 'Collapse'} 
+                                        // the navigation [ <br/>(left bracket)
+                                        // </p>
+                                        <p>{props.isLeftSidebarCollapsed ? 'Expand' : 'Collapse'} the navigation</p>
                                     }
                                     hideTooltipOnClick
                                     position="right"
@@ -319,7 +319,7 @@ const SideNav = ({
                                             isSelected={isOpenProject}
                                             {...triggerProps}
                                             shouldFitContainer
-                                            iconBefore={ProjectIcon}
+                                            iconBefore={ProjectIcon as any}
                                             iconAfter={isOpenProject ? ChevronUpIcon : ChevronDownIcon}
                                             onClick={() => setIsOpenProject(!isOpenProject)}
                                         >
@@ -371,7 +371,6 @@ const SideNav = ({
                         </Box>
                     </SideNavigation>)
             }
-            <ExpandLeftSidebarKeyboardShortcut/>
         </LeftSidebar>
     )
 }

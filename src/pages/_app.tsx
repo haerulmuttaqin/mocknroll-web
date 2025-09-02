@@ -6,7 +6,8 @@ import store from "@/store/store";
 import AppThemeProvider from "@component/Layout/common/theme-provider";
 import {SWRConfig} from 'swr'
 import React from "react";
-import {appWithTranslation, UserConfig} from 'next-i18next'
+// @ts-ignore
+import {appWithTranslation} from 'next-i18next'
 import nextI18nConfig from '../../next-i18next.config'
 import {SessionProvider} from "next-auth/react";
 
@@ -24,4 +25,4 @@ function MyApp({Component, pageProps: {session, ...pageProps}}: AppProps) {
     )
 }
 
-export default appWithTranslation(MyApp, nextI18nConfig as UserConfig);
+export default appWithTranslation(MyApp, nextI18nConfig as any);
