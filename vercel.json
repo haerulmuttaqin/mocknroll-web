@@ -6,7 +6,9 @@
   },
   "build": {
     "env": {
-      "SHARP_IGNORE_GLOBAL_LIBVIPS": "1"
+      "SHARP_IGNORE_GLOBAL_LIBVIPS": "1",
+      "NEXT_DISABLE_SHARP": "1",
+      "NEXT_SHARP_PATH": "/tmp/node_modules/sharp"
     }
   }
 }

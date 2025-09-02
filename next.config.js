@@ -6,6 +6,33 @@ const nextConfig = {
         scrollRestoration: true,
         forceSwcTransforms: true,
     },
+    webpack: (config, { isServer }) => {
+        // Completely disable Sharp for both client and server
+        config.resolve.fallback = {
+            ...config.resolve.fallback,
+            sharp: false,
+        };
+        
+        // Exclude Sharp from the bundle
+        config.externals = config.externals || [];
+        if (isServer) {
+            config.externals.push('sharp');
+        }
+        
+        // Add alias to prevent Sharp imports
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            sharp: false,
+        };
+        
+        // Ignore Sharp in module resolution
+        config.resolve.modules = [
+            ...config.resolve.modules,
+            'node_modules'
+        ];
+        
+        return config;
+    },
     async headers() {
         return [{
             //cache all images, fonts, etc. in the public folder
