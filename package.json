@@ -8,8 +8,7 @@
     "dev-inspect": "NODE_OPTIONS='--inspect' next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "lint": "next lint",
-    "postinstall": "npm rebuild --platform=linux --arch=x64"
+    "lint": "next lint"
   },
   "dependencies": {
     "@atlaskit/app-provider": "^1.0.0",

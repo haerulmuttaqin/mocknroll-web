@@ -22,6 +22,9 @@ const nextConfig = {
     reactStrictMode: false,
     pageExtensions: ['tsx'],
     i18n,
+    poweredByHeader: false,
+    generateEtags: false,
+    trailingSlash: false,
     images: {
         unoptimized: true,
         dangerouslyAllowSVG: true,
