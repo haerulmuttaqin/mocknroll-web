@@ -3,10 +3,5 @@
     "app/api/**/*.js": {
       "maxDuration": 30
     }
-  },
-  "build": {
-    "env": {
-      "SHARP_IGNORE_GLOBAL_LIBVIPS": "1"
-    }
   }
 }
