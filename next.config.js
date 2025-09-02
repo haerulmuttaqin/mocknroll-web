@@ -6,6 +6,9 @@ const nextConfig = {
         scrollRestoration: true,
         forceSwcTransforms: true,
     },
+    env: {
+        SHARP_IGNORE_GLOBAL_LIBVIPS: '1',
+    },
     async headers() {
         return [{
             //cache all images, fonts, etc. in the public folder
