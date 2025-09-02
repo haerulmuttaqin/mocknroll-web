@@ -31,6 +31,14 @@ const nextConfig = {
             'node_modules'
         ];
         
+        // Add plugin to ignore Sharp
+        config.plugins.push(
+            new (require('webpack')).IgnorePlugin({
+                resourceRegExp: /^sharp$/,
+                contextRegExp: /.*/
+            })
+        );
+        
         return config;
     },
     async headers() {

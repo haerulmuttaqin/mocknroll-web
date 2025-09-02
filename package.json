@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "dev-inspect": "NODE_OPTIONS='--inspect' next dev -p 3001",
-    "build": "next build",
-    "start": "node server.js",
-    "lint": "next lint"
+    "build": "npm uninstall sharp --silent && next build",
+    "start": "next start -p 3001",
+    "lint": "next lint",
+    "postinstall": "npm uninstall sharp --silent || true"
   },
   "dependencies": {
     "@atlaskit/app-provider": "^1.0.0",
