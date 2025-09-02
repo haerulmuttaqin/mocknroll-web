@@ -1,0 +1,4 @@
+# Ignore Sharp module
+node_modules/sharp
+**/sharp
+sharp

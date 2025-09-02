@@ -2,6 +2,10 @@
 
 const {i18n} = require('./next-i18next.config')
 const nextConfig = {
+    env: {
+        SHARP_IGNORE_GLOBAL_LIBVIPS: '1',
+        NEXT_DISABLE_SHARP: '1'
+    },
     experimental: {
         scrollRestoration: true,
         forceSwcTransforms: true,
