@@ -2,9 +2,48 @@
 
 const {i18n} = require('./next-i18next.config')
 const nextConfig = {
+    env: {
+        SHARP_IGNORE_GLOBAL_LIBVIPS: '1',
+        NEXT_DISABLE_SHARP: '1'
+    },
     experimental: {
         scrollRestoration: true,
         forceSwcTransforms: true,
+    },
+    webpack: (config, { isServer }) => {
+        // Completely disable Sharp for both client and server
+        config.resolve.fallback = {
+            ...config.resolve.fallback,
+            sharp: false,
+        };
+        
+        // Exclude Sharp from the bundle
+        config.externals = config.externals || [];
+        if (isServer) {
+            config.externals.push('sharp');
+        }
+        
+        // Add alias to prevent Sharp imports
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            sharp: false,
+        };
+        
+        // Ignore Sharp in module resolution
+        config.resolve.modules = [
+            ...config.resolve.modules,
+            'node_modules'
+        ];
+        
+        // Add plugin to ignore Sharp
+        config.plugins.push(
+            new (require('webpack')).IgnorePlugin({
+                resourceRegExp: /^sharp$/,
+                contextRegExp: /.*/
+            })
+        );
+        
+        return config;
     },
     async headers() {
         return [{
@@ -22,7 +61,11 @@ const nextConfig = {
     reactStrictMode: false,
     pageExtensions: ['tsx'],
     i18n,
+    poweredByHeader: false,
+    generateEtags: false,
+    trailingSlash: false,
     images: {
+        unoptimized: true,
         dangerouslyAllowSVG: true,
         remotePatterns: [
             {

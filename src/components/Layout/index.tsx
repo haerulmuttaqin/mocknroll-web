@@ -83,6 +83,10 @@ const Layout: FC<LayoutProps> = (
         router.push(`${process.env.NEXT_PUBLIC_PAGE_URL}/about`)
     }
 
+    const openGithub = () => {
+        window.open("https://github.com/haerulmuttaqin/mocknroll-web", "_blank", "noopener,noreferrer")
+    }
+
     return (
         <FlagsProvider>
             <Head>
@@ -135,8 +139,9 @@ const Layout: FC<LayoutProps> = (
                                         primaryItems={[
                                             <PrimaryButton key={0} onClick={openHome}>{t('home')}</PrimaryButton>,
                                             status == "authenticated" ? <PrimaryButton key={1}
-                                                                                       onClick={openProject}>{t('my_projects')}</PrimaryButton> : null,
-                                            <PrimaryButton key={3} onClick={openAbout}>{t('about')}</PrimaryButton>,
+                                                                                       onClick={openProject}>{t("My Projects")}</PrimaryButton> : null,
+                                            <PrimaryButton key={3} onClick={openAbout}>{t('About')}</PrimaryButton>,
+                                            <PrimaryButton key={3} onClick={openGithub}>Github <b>↗</b></PrimaryButton>,
                                         ]}
                                         renderProductHome={AtlassianProductHome}
                                         renderSettings={DefaultSettings}

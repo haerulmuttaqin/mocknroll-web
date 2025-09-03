@@ -9,7 +9,7 @@ import Grid, {GridItem} from "@atlaskit/grid";
 import Heading from "@atlaskit/heading";
 import ContentWrapper from "@component/Layout/common/content-wrapper";
 import {useTranslation} from "next-i18next";
-import {signOut, useSession} from "next-auth/react";
+import {signIn, signOut, useSession} from "next-auth/react";
 import Button from "@atlaskit/button/new";
 import {cardBasicStyle, cardStyle} from "@component/Common/style-util";
 import {SpinnerWrapper} from "@atlaskit/media-ui/modalSpinner";
@@ -95,11 +95,22 @@ const Auth: NextPage = () => {
                 throw new Error("Popup window blocked by browser");
             }
 
+            // Add event listener to handle popup close
+            const checkClosed = setInterval(() => {
+                if (newWindow.closed) {
+                    clearInterval(checkClosed);
+                    // Check if user is authenticated after popup closes
+                    if (status === 'authenticated') {
+                        window.location.reload();
+                    }
+                }
+            }, 1000);
+
             newWindow.focus();
             return newWindow;
         } catch (error) {
             console.error("Popup error:", error);
-            // Fallback ke redirect biasa jika popup diblokir
+            // Fallback to direct redirect if popup is blocked
             window.location.href = url;
         }
     };
@@ -118,7 +129,7 @@ const Auth: NextPage = () => {
             email: session?.user?.email as string,
             name: session?.user?.name as string,
             image: session?.user?.image as string,
-            auth_method: "google",
+            auth_method: "google", // Default to google, can be updated based on session data
         }
         await actionSignIn(payload)
             .then((res) => {
@@ -192,11 +203,9 @@ const Auth: NextPage = () => {
                                             <Button
                                                 onClick={() => {
                                                     setGithubError(null);
-                                                    try {
-                                                        popupCenter("/github-signin", "Github Sign In");
-                                                    } catch (error) {
-                                                        setGithubError("Failed to open GitHub login. Please allow popups.");
-                                                    }
+                                                    signIn('github', { callbackUrl: '/projects' }).catch(() => {
+                                                        setGithubError('Failed to sign in with GitHub.');
+                                                    });
                                                 }}
                                             >
                                                 <Flex justifyContent={"center"} alignItems={"center"}>

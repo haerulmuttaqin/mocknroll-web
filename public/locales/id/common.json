@@ -2,7 +2,7 @@
   "home": "Home",
   "api_doc": "Dokumentasi API",
   "projects": "Projects",
-  "my_projects": "Proyek Saya",
+  "My Projects": "Proyek Saya",
   "create_new_project": "Buat Proyek Baru",
   "create_new_endpoint": "Buat Endpoint Baru",
   "manage_my_endpoint": "Kelola Endpoints",

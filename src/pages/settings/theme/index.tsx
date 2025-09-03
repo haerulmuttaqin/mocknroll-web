@@ -9,7 +9,7 @@ import ThemeOption from "@component/ThemeOption";
 import {css} from "@emotion/react";
 import {token} from "@atlaskit/tokens";
 import {B400} from "@atlaskit/theme/colors";
-import {ColorMode} from "@atlaskit/app-provider/theme-provider";
+type ColorMode = "light" | "dark" | "auto";
 import Grid, {GridItem} from "@atlaskit/grid";
 import {Inline} from "@atlaskit/primitives";
 import ContentWrapper from "@component/Layout/common/content-wrapper";

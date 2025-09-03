@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
-import {Box, xcss} from "@atlaskit/primitives";
-import {media} from "@atlaskit/primitives/responsive";
-import {useTranslation} from "next-i18next";
-import {Col, Row} from "react-grid-system";
+import { Box, xcss } from "@atlaskit/primitives";
+import { media } from "@atlaskit/primitives/responsive";
+import { useTranslation } from "next-i18next";
+import { Col, Row } from "react-grid-system";
 import ContainerGrid from "@components/ContainerGrid";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import LandingWrapper from "@pages/landing/components/Layout/landing-wrapper";
 
 const navLinksStyles = xcss({
@@ -45,7 +45,7 @@ const footerStyles = xcss({
 
 
 const FooterNavigation = () => {
-    const {t} = useTranslation(["common"])
+    const { t } = useTranslation(["common"])
     const router = useRouter()
     const navigate = (args: string, isNewTab: boolean = false) => {
         if (isNewTab) {
@@ -62,40 +62,48 @@ const FooterNavigation = () => {
                         <Col sm={12} md={6} lg={6}>
                             <h3>{"🤘 Mock N' Roll"}</h3>
                             <p>Mocks API Service for unparalleled Dev!</p>
-                            <br/>
-                            <br/>
+                            <br />
+                            <br />
                         </Col>
                         <Col sm={12} md={3} lg={3}>
                             <h5>Other Tools</h5>
                             <Box as={"ul"} xcss={navLinksStyles}>
                                 <Box as={"li"}>
-                                    <Box onClick={() => navigate(`/`)}
-                                         xcss={navLinkStyles}>
-                                        MediumWebID
+                                    <Box onClick={() => navigate(`https://medium.web.id/`, true)}
+                                        xcss={navLinkStyles}>
+                                        MediumWebID <b>↗</b>
                                     </Box>
                                 </Box>
                                 <Box as={"li"}>
                                     <Box
-                                        onClick={() => navigate(`https://github.com/haerulmuttaqin/medium-web-id-extension/releases`, true)}
+                                        onClick={() => navigate(`https://github.com/haerulmuttaqin/medium-web-id-extension/releases/latest`, true)}
                                         xcss={navLinkStyles}>
                                         MediumWebID Extension <b>↗</b>
                                     </Box>
                                 </Box>
                                 <Box as={"li"}>
-                                    <Box onClick={() => navigate("https://mocknroll.me/", true)}
-                                         xcss={navLinkStyles}>
-                                        Mock N Roll (Mock API Generator) <b>↗</b>
+                                    <Box
+                                        onClick={() => navigate(`https://ogx.web.id/`, true)}
+                                        xcss={navLinkStyles}>
+                                        OGX (Open Graph Image Generator) <b>↗</b>
+                                    </Box>
+                                </Box>
+
+                                <Box as={"li"}>
+                                    <Box onClick={() => navigate("/")}
+                                        xcss={navLinkStyles}>
+                                        Mock N Roll (Mock API Generator)
                                     </Box>
                                 </Box>
                                 <Box as={"li"}>
                                     <Box onClick={() => navigate("https://cctv.hae.my.id/", true)}
-                                         xcss={navLinkStyles}>
+                                        xcss={navLinkStyles}>
                                         CCTV Indonesia <b>↗</b>
                                     </Box>
                                 </Box>
                                 <Box as={"li"}>
                                     <Box onClick={() => navigate("https://vid-thumb.hae.my.id/", true)}
-                                         xcss={navLinkStyles}>
+                                        xcss={navLinkStyles}>
                                         HLS Video Thumbnail <b>↗</b>
                                     </Box>
                                 </Box>
@@ -111,14 +119,14 @@ const FooterNavigation = () => {
                                 </Box>
                                 <Box as={"li"}>
                                     <Box onClick={() => navigate(`/privacy-policy`)}
-                                         xcss={navLinkStyles}>
+                                        xcss={navLinkStyles}>
                                         {t("Privacy Policy")}
                                     </Box>
                                 </Box>
                                 <Box as={"li"}>
                                     <Box onClick={() => navigate(`/projects`)}
-                                         xcss={navLinkStyles}>
-                                        {t("my_projects")}
+                                        xcss={navLinkStyles}>
+                                        {t("My Projects")}
                                     </Box>
                                 </Box>
                                 <Box as={"li"}>

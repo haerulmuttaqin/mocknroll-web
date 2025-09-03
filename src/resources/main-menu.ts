@@ -6,14 +6,14 @@ export const mainMenu: MainMenu[] = [
     {
         title: 'Home',
         locale: 'Home',
-        icon: ScreenIcon,
+        icon: ScreenIcon as any,
         route: '/',
         accessor: [Role.SuperAdmin, Role.Admin, Role.User],
     },
     {
         title: 'Settings',
         locale: 'setting',
-        icon: SettingsIcon,
+        icon: SettingsIcon as any,
         route: '/settings',
         accessor: [Role.SuperAdmin, Role.Admin, Role.User],
         subMenu: [

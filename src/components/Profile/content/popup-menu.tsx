@@ -6,8 +6,9 @@ import {Box, Flex, Text, Stack, xcss} from "@atlaskit/primitives";
 import {PopupSelect} from "@atlaskit/select";
 import useThemeSwitcher from "@component/Profile/content/ThemeSwither/useThemeSwithcer";
 import {useSetColorMode} from "@atlaskit/app-provider";
-import {ColorMode} from "@atlaskit/app-provider/theme-provider";
 import secureLocalStorage from "react-secure-storage";
+
+type ColorMode = "light" | "dark" | "auto";
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 import LogoutModal from "@component/Logout";
 import {useRouter} from "next/router";
@@ -130,7 +131,7 @@ const ProfilePopupMenu = () => {
                     />
                 </Section>
                 <Section title={t("projects")} hasSeparator>
-                    <ButtonItem onClick={openMyProject}>{t("my_projects")}</ButtonItem>
+                    <ButtonItem onClick={openMyProject}>{t("My Projects")}</ButtonItem>
                     <ButtonItem onClick={openNewProject}>{t("create_new_project")}</ButtonItem>
                 </Section>
                 <Section hasSeparator>

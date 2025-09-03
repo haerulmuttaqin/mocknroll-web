@@ -178,8 +178,8 @@ const Mock: NextPage = () => {
     return (
         <FlagsProvider>
             <Layout
-                title={loading ? undefined : action == "edit" ? "Edit Endpoint" : action === "view" ? mockData?.name : "Create Endpoint"}
-                description={loading ? undefined : action === "view" ? `Endpoint url: ${dataProject?.prefix}/${mockData?.endpoint}` : undefined}
+                title={loading ? "Endpoint..." : action == "edit" ? "Edit Endpoint" : action === "view" ? mockData?.name : "Create Endpoint"}
+                description={loading ? "Endpoint details..." : action === "view" ? `Endpoint url: ${dataProject?.prefix}/${mockData?.endpoint}` : undefined}
                 isSideNavOpen={true}
                 isAdmin={true}
                 sidebarList={dataMocks}

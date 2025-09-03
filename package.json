@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "dev-inspect": "NODE_OPTIONS='--inspect' next dev -p 3001",
-    "build": "next build",
+    "build": "npm uninstall sharp --silent && next build",
     "start": "next start -p 3001",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "npm uninstall sharp --silent || true"
   },
   "dependencies": {
     "@atlaskit/app-provider": "^1.0.0",
@@ -116,9 +117,9 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "registry.npmjs.org": "^1.0.1",
-    "sharp": "^0.33.5",
     "styled-components": "^6.1.10",
     "swr": "^2.2.5",
+    "typescript": "^5.9.2",
     "yarn": "^1.22.22"
   },
   "devDependencies": {
@@ -131,7 +132,6 @@
     "eslint": "8.24.0",
     "eslint-config-next": "12.3.1",
     "postcss": "^8.4.31",
-    "tailwindcss": "^3.1.8",
-    "typescript": "4.8.4"
+    "tailwindcss": "^3.1.8"
   }
 }

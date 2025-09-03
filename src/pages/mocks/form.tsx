@@ -10,9 +10,8 @@ import Button, {IconButton} from '@atlaskit/button/new';
 import Toggle from '@atlaskit/toggle';
 import {MockFormProps} from "@api/data/interfaces/mock";
 import Heading from "@atlaskit/heading";
-import {OptionType, ValueType} from "@atlaskit/select/types";
 import {Code} from '@atlaskit/code';
-import Select, {GroupedOptionsType} from "@atlaskit/select";
+import Select, {GroupedOptionsType, ValueType, OptionType} from "@atlaskit/select";
 import LinkExternalIcon from '@atlaskit/icon/core/link-external';
 import {codeOption, methodOption} from "@pages/mocks/data/props";
 import {useUserId} from "@utils/hooks";
@@ -110,7 +109,7 @@ const MockForm: FC<MockFormProps> = (
                                                                 </code>
                                                                 {
                                                                     data?.endpoint ? <IconButton
-                                                                        onClick={handleOpenLink} icon={LinkExternalIcon}
+                                                                        onClick={handleOpenLink} icon={LinkExternalIcon as any}
                                                                         appearance={'subtle'}
                                                                         label="Link"/> : null
                                                                 }
@@ -151,7 +150,8 @@ const MockForm: FC<MockFormProps> = (
                                                                         <TextField {...fieldProps} type={"text"}
                                                                                    elemBeforeInput={<Box xcss={xcss({
                                                                                        paddingInlineStart: "space.150",
-                                                                                       color: "color.text.disabled"
+                                                                                       color: "color.text.disabled",
+                                                                                       whiteSpace: "nowrap"
                                                                                    })}>{project?.prefix}/</Box>}
                                                                                    placeholder="Input endpoint"/>
                                                                         {error && (
