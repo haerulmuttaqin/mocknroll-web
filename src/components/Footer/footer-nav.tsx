@@ -69,7 +69,7 @@ const FooterNavigation = () => {
                             <h5>Other Tools</h5>
                             <Box as={"ul"} xcss={navLinksStyles}>
                                 <Box as={"li"}>
-                                    <Box onClick={() => navigate(`https://medium.web.id/`, true)}
+                                    <Box onClick={() => navigate(`https://medium.haeworks.id/`, true)}
                                         xcss={navLinkStyles}>
                                         MediumWebID <b>↗</b>
                                     </Box>
