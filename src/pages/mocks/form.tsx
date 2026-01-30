@@ -47,7 +47,7 @@ const MockForm: FC<MockFormProps> = (
     const [codeOptions, setCodeOptions] = useState<GroupedOptionsType<OptionType>>(codeOption)
 
     const handleOpenLink = () => {
-        window?.open(`${window.location.origin.split("//")[0]}//${userId}-${project?.id}.${process.env.NEXT_PUBLIC_MOCK_DOMAIN}/${project?.prefix}/${data?.endpoint}`, "_blank")
+        window?.open(`${window.location.origin.split("//")[0]}//${userId}-${project?.id}.${process.env.NEXT_PUBLIC_MOCK_DOMAIN}${project?.prefix}/${data?.endpoint}`, "_blank")
     }
 
     const handleOnEdit = () => {
@@ -105,7 +105,7 @@ const MockForm: FC<MockFormProps> = (
                                                                     .<Code
                                                                         onPointerEnterCapture={() => {
                                                                         }} onPointerLeaveCapture={() => {
-                                                                    }}>{process.env.NEXT_PUBLIC_API_URL?.replaceAll("http:", "").replaceAll("https:", "").replaceAll("api.", "").replaceAll("//", "").replaceAll("/", "").replaceAll("apiv1", "")}{project?.prefix}/</Code>{data?.endpoint == null ? ":" : ""}{data?.endpoint || 'endpoint'}
+                                                                    }}>{process.env.NEXT_PUBLIC_MOCK_DOMAIN}{project?.prefix}/</Code>{data?.endpoint == null ? ":" : ""}{data?.endpoint || 'endpoint'}
                                                                 </code>
                                                                 {
                                                                     data?.endpoint ? <IconButton
